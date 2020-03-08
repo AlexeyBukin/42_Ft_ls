@@ -1,6 +1,6 @@
 # RTv1
 ft_ls
-build/*
+build/
 cmake-build-debug
 
 !.gitignore
