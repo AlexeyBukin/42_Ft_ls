@@ -1,3 +1,14 @@
+# RTv1
+ft_ls
+build/*
+cmake-build-debug
+
+!.gitignore
+!.idea/
+
+# libft
+libft/build/*
+
 # Prerequisites
 *.d
 
