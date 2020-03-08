@@ -7,7 +7,7 @@ cmake-build-debug
 !.idea/
 
 # libft
-libft/build/*
+libft/build/
 
 # Prerequisites
 *.d
