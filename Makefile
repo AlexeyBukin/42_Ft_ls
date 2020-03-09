@@ -5,7 +5,6 @@ NAME = ft_ls
 
 CC = clang
 
-LIBM =
 DEBUG =
 OPTIM = -O2
 
@@ -41,7 +40,7 @@ all: $(NAME)
 
 $(NAME): $(LIB_FT_FILE) $(BUILD_DIRS_REC) $(O_FILES)
 	@echo "\033[0;32m" "Building RTv1 executable..." "\033[0m"
-	$(CC) $(CFLAGS) $(O_FILES) $(INCLUDE) -o $(NAME) $(LIB_FT_FILE) $(LIBM)
+	$(CC) $(CFLAGS) $(O_FILES) $(INCLUDE) -o $(NAME) $(LIB_FT_FILE)
 	@echo "\033[0;32m" "Done" "\033[0m"
 
 $(LIB_FT_FILE):

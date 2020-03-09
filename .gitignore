@@ -1,7 +1,7 @@
 # RTv1
 ft_ls
 build/
-cmake-build-debug
+cmake-build-debug/
 
 !.gitignore
 !.idea/
