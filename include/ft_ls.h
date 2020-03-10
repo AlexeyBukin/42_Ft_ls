@@ -2,7 +2,9 @@
 # define FT_LS_H
 
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <dirent.h>
+#include <errno.h>
 #include "libft.h"
 
 //typedef struct _dirdesc {
@@ -69,12 +71,18 @@ typedef struct		s_entry
 	struct s_entry	*prev;
 }					t_entry;
 
+typedef enum		e_ls_values
+{
+	LS_OK = 0,
+}					t_ls_values;
+
 typedef enum		e_ls_error
 {
 	E_LS_NULL_POINTER = -64,
 	E_LS_ILLEGAL_OPTION,
 	E_LS_NO_SUCH_FILE,
-
+	E_LS_PERMISSION_DENIED,
+	E_LS_UNKNOWN_ERROR,
 }					t_ls_error;
 
 typedef enum		e_param_res
@@ -90,7 +98,7 @@ int 				ls_get_flags(int ac, char **av, t_input *input);
 
 t_entry				*ls_ent_create(t_dirent *entry, t_stat *input);
 
-t_entry				**ls_get_rights(t_dirent **entry);
+t_entry				**ls_get_rights(t_entry **entries);
 
 t_entry				**ls_ent_get(char **dirs, t_input *input);
 t_entry				**ls_ent_get_rec(char **dirs, t_input *input);
@@ -99,4 +107,9 @@ t_entry				**ls_ent_sort(t_entry **entries, t_input *input);
 
 int 				ls_print_short(t_entry **entries, t_input *input);
 int 				ls_print_long(t_entry **entries, t_input *input);
+
+/*
+** TODO comment
+*/
+
 #endif
