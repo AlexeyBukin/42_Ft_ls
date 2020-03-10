@@ -1,80 +1,92 @@
-#RTv1 Makefile
-#@kcharla, 2010
+# ecole 42 project | school 21 project
+# ft_ls Makefile
+# @kcharla, 2020
 
-NAME = ft_ls
-
-CC = clang
-
-DEBUG =
-OPTIM = -O2
-
-CFLAGS = -Wall -Wextra -Werror $(DEBUG) $(OPTIM)
-
-LIB_FT = libft
-LIB_FT_FILE = $(LIB_FT)/libft.a
-
-INCLUDE = -I include/ -I $(LIB_FT)/include/
-
-# find include -type f -name '*.h' | sed "s/\$/ \\\\/"
-HEADERS = \
-include/ft_ls.h
-
-BUILD_DIR = build/
-SRC_DIR = src/
-
-#SRC_FILES = $(shell find $(SRC_DIR) -not \( -path $(MAIN_DIR) -prune \) -type f -name "*.c")
-# find src -type f -name '*.c' | sed "s/\$/ \\\\/"
-
-SRC_FILES = \
-src/main.c
+BLACK   := "\e[0;30m"
+RED     := "\e[0;31m"
+GREEN   := "\e[0;32m"
+YELLOW  := "\e[0;33m"
+BLUE    := "\e[1;34m"
+MAGENTA := "\e[1;35m"
+CYAN    := "\e[1;36m"
+WHITE   := "\e[1;37m"
+RESET   := "\e[0m"
+INDEX   := 1
 
 
-O_FILES = $(patsubst $(SRC_DIR)%.c, $(BUILD_DIR)%.o, $(SRC_FILES))
+NAME    := ft_ls
 
-SRC_DIRS = $(shell find $(SRC_DIR) -type d)
-BUILD_DIRS_REC = $(patsubst $(SRC_DIR)%, $(BUILD_DIR)%, $(SRC_DIRS))
+CC      := clang
+DEBUG   :=
+OPTIM   := -O2
+CFLAGS  := -Wall -Wextra -Werror $(DEBUG) $(OPTIM)
 
-.PHONY: clean fclean all
+BUILD_DIR := build
+OBJ_DIR   := $(BUILD_DIR)/obj
+DEPDIR    := $(BUILD_DIR)/.deps
+SRC_DIR   := src
+
+LIB_FT_DIR  := libft
+LIB_FT_FILE := $(LIB_FT_DIR)/libft.a
+INCLUDE     := -I include/ -I $(LIB_FT_DIR)/include/
+
+#find src -type f -name '*.c' | sed 'N;N;s/\n/ /g' | sed "s/\$/ \\\\/" | column -t
+SRC_FILES := \
+src/main.c src/ls_get_flags.c
+
+SRC_FILES_LEN := $(words $(SRC_FILES))
+OBJ_FILES     := $(SRC_FILES:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+
+DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.d
+DEPFILES = $(SRC_FILES:$(SRC_DIR)/%.c=$(DEPDIR)/%.d)
+
+.PHONY:    clean fclean all re lclean lfclean lre offset
+.PRECIOUS: $(DEPFILES)
 
 all: $(NAME)
+	@printf "%b %s %b\n" $(CYAN) "$(NAME) is ready" $(RESET)
 
-$(NAME): $(LIB_FT_FILE) $(BUILD_DIRS_REC) $(O_FILES)
-	@echo "\033[0;32m" "Building RTv1 executable..." "\033[0m"
-	$(CC) $(CFLAGS) $(O_FILES) $(INCLUDE) -o $(NAME) $(LIB_FT_FILE)
-	@echo "\033[0;32m" "Done" "\033[0m"
+$(NAME): $(LIB_FT_FILE) $(OBJ_FILES)
+	@$(CC) $(CFLAGS) $(OBJ_FILES) $(INCLUDE) -o $(NAME) $(LIB_FT_FILE)
+	@printf "%b %s compiled %b\n" $(GREEN) $(NAME) $(RESET)
+
+$(OBJ_DIR)/%.o : $(SRC_DIR)/%.c $(DEPDIR)/%.d
+	@make -j $(DEPDIR)/%.d
+	@mkdir -p $(@D)
+	@$(CC) $(CFLAGS) $(DEPFLAGS) $(INCLUDE) -c $< -o $@
+	@printf "%b %s / %s : %s\n" $(YELLOW) $(INDEX) $(SRC_FILES_LEN) $@
+	@$(eval INDEX=$(shell echo $$(($(INDEX)+1))))
 
 $(LIB_FT_FILE):
-	@make DEBUG=$(DEBUG) -C $(LIB_FT)
+	@make DEBUG=$(DEBUG) OPTIM=$(OPTIM) -C $(LIB_FT_DIR)
 
-$(BUILD_DIRS_REC):
-	@mkdir -vp $(BUILD_DIRS_REC)
-
-$(BUILD_DIR)%.o: $(SRC_DIR)%.c ${HEADERS}
-	@$(CC) $(CFLAGS) $(INCLUDE) -c -o $@ $<
-	@echo "\033[0;32m"
-	@printf "%-30s | %-25s" $@ $<
-	@echo "\033[0m"
+$(DEPDIR)/%.d:
+	@mkdir -p $(@D)
 
 clean:
-	@make -C $(LIB_FT) clean
+	@make -C $(LIB_FT_DIR) clean
 	@rm -rf $(BUILD_DIR)
-	@echo "make: Done clean of \`$(NAME)'."
+	@printf "%b %s successfully cleaned %b\n" $(BLUE) $(NAME) $(RESET)
 
 fclean: lclean
-	@make fclean -C $(LIB_FT)
+	@make -C $(LIB_FT_DIR) fclean
 	@rm -f $(NAME)
-	@echo "make: Done full clean of \`$(NAME)'."
+	@printf "%b %s fully cleaned %b\n" $(RED) $(NAME) $(RESET)
 
 re: fclean all
-	@echo "make: Done recompile of \`$(NAME)'."
+	@printf "%b %s recompiled %b\n" $(GREEN) $(NAME) $(RESET)
 
-lclean:
+lclean: offset
 	@rm -rf $(BUILD_DIR)
-	@echo "make: Done local clean of \`$(NAME)'."
+	@printf "%b %s locally cleaned %b\n" $(BLUE) $(NAME) $(RESET)
 
-lfclean: lclean
+lfclean: offset lclean
 	@rm -f $(NAME)
-	@echo "make: Done local full clean of \`$(NAME)'."
+	@printf "%b %s locally full-cleaned %b\n" $(RED) $(NAME) $(RESET)
 
 lre: lfclean all
-	@echo "make: Done local recompile of \`$(NAME)'."
+	@printf "%b %s locally recompiled %b\n" $(GREEN) $(NAME) $(RESET)
+
+$(DEPFILES):
+
+-include $(wildcard $(DEPFILES))

@@ -40,12 +40,14 @@
 //#define DT_SOCK         12
 //#define DT_WHT          14
 
+
 typedef struct		dirent	t_dirent;
 typedef struct		stat	t_stat;
 
-typedef struct		s_flags
+typedef struct		s_input
 {
-	char			**dirs;
+	char			**ent_names;
+	size_t			ent_num;
 
 	t_bool			all;
 	t_bool			rec;
@@ -54,7 +56,8 @@ typedef struct		s_flags
 	t_bool			time;
 
 	t_bool			p_slash;
-}					t_flags;
+}					t_input;
+
 
 typedef struct		s_entry
 {
@@ -66,18 +69,34 @@ typedef struct		s_entry
 	struct s_entry	*prev;
 }					t_entry;
 
+typedef enum		e_ls_error
+{
+	E_LS_NULL_POINTER = -64,
+	E_LS_ILLEGAL_OPTION,
+	E_LS_NO_SUCH_FILE,
 
-int 				ls_get_flags(int ac, char **av, t_flags *flags);
+}					t_ls_error;
 
-t_entry				*ls_ent_create(t_dirent *entry, t_stat *stat);
+typedef enum		e_param_res
+{
+	PARAM_ERROR = -1,
+	PARAM_UNSET,
+	PARAM_FILE,
+	PARAM_FLAG,
+	PARAM_DOUBLE_DASH
+}					t_param_res;
+
+int 				ls_get_flags(int ac, char **av, t_input *input);
+
+t_entry				*ls_ent_create(t_dirent *entry, t_stat *input);
 
 t_entry				**ls_get_rights(t_dirent **entry);
 
-t_entry				**ls_ent_get(char **dirs, t_flags *flags);
-t_entry				**ls_ent_get_rec(char **dirs, t_flags *flags);
+t_entry				**ls_ent_get(char **dirs, t_input *input);
+t_entry				**ls_ent_get_rec(char **dirs, t_input *input);
 
-t_entry				**ls_ent_sort(t_entry **entries, t_flags *flags);
+t_entry				**ls_ent_sort(t_entry **entries, t_input *input);
 
-int 				ls_print_short(t_entry **entries, t_flags *flags);
-int 				ls_print_long(t_entry **entries, t_flags *flags);
+int 				ls_print_short(t_entry **entries, t_input *input);
+int 				ls_print_long(t_entry **entries, t_input *input);
 #endif

@@ -22,7 +22,7 @@
 # include "printf.h"
 
 typedef unsigned char	t_byte;
-typedef char			t_bool;
+typedef unsigned char	t_bool;
 
 # define FALSE 0
 # define TRUE  1

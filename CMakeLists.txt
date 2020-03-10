@@ -13,6 +13,7 @@ project(ft_ls)
 # find src -type f -name '*.c' | sed "s/^/        /"
 set(SOURCES
         src/main.c
+        src/ls_get_flags.c
         )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
