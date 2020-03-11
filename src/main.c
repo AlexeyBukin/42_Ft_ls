@@ -13,10 +13,12 @@ int		main(int ac, char **av)
 {
 //	int			res;
 	t_input		input;
-//	t_entry		**entries;
+	t_entry		**entries;
+	t_entry		*en;
 
 	ls_get_flags(ac, av, &input);
 
+	printf("dirnum = %lu\n", input.ent_num );
 	size_t i = 0;
 	while (input.ent_names[i] != NULL)
 	{
@@ -25,6 +27,22 @@ int		main(int ac, char **av)
 	}
 	print_flags(&input);
 
+	ls_nullptr((entries = ls_ent_get(&input)));
+	ft_putstr("back in main!\n");
+	i = 0;
+
+	while (entries[i] != NULL)
+	{
+		en = entries[i];
+		ft_printf("dir %s:\n", entries[i]->name);
+		ls_nullptr(en->next);
+		while ((en = en->next) != NULL)
+		{
+			ft_printf("%s \t", en->name);
+		}
+		ft_putstr("\n");
+		i++;
+	}
 //	if (input.rec == TRUE)
 //		entries = ls_ent_get_rec(input.ent_names, &input);
 //	else

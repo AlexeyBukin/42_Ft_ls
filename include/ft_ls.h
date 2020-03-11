@@ -69,8 +69,11 @@ typedef struct		s_input
 
 typedef struct		s_entry
 {
-	t_dirent		*entry;
-	t_stat			*stat;
+	DIR				*dir;
+	t_dirent		*dirent;
+	t_stat			stat;
+	int				error;
+	char 			*name;
 	char 			*name_full;
 	char			*name_relative;
 	struct s_entry	*next;
@@ -88,7 +91,7 @@ typedef enum		e_ls_error
 	E_LS_ILLEGAL_OPTION,
 	E_LS_NO_SUCH_FILE,
 	E_LS_PERMISSION_DENIED,
-	E_LS_UNKNOWN_ERROR,
+	E_LS_UNKNOWN_ERROR = -2,
 }					t_ls_error;
 
 typedef enum		e_param_res
@@ -104,7 +107,7 @@ int 				ls_get_flags(int ac, char **av, t_input *input);
 
 t_entry				**ls_get_rights(t_entry **entries);
 
-t_entry				**ls_ent_get(char **dirs, t_input *input);
+t_entry				**ls_ent_get(t_input *input);
 t_entry				**ls_ent_get_rec(char **dirs, t_input *input);
 
 t_entry				**ls_ent_sort(t_entry **entries, t_input *input);

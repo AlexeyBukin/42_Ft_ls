@@ -6,7 +6,7 @@
 /*   By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 01:08:21 by kcharla           #+#    #+#             */
-/*   Updated: 2020/03/11 03:42:03 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/03/11 05:28:34 by kcharla          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,11 @@ int					ls_add_ent_name(t_input *input, char *ent_name)
 		new_arr[i] = input->ent_names[i];
 		i++;
 	}
-	new_arr[i++] = ent_name;
-	new_arr[i] = NULL;
+	new_arr[i] = ent_name;
+	new_arr[i + 1] = NULL;
 	free(input->ent_names);
 	input->ent_names = new_arr;
+	input->ent_num++;
 	return (LS_OK);
 }
 
@@ -98,6 +99,8 @@ int					ls_get_flags(int ac, char **av, t_input *input)
 	input->ent_names = (char**)malloc(sizeof(char*) * 2);
 	ls_nullptr(input->ent_names);
 	input->ent_names[0] = NULL;
+	input->ent_names[1] = NULL;
+	input->ent_num = 0;
 	while ((int)++i < ac)
 		ls_check_arg(av[i], &flags_done, input);
 	return (LS_OK);
