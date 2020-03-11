@@ -1,55 +1,47 @@
 #include "ft_ls.h"
 
+void	print_flags(t_input *input)
+{
+	printf("R = %c\n", input->rec + '0');
+	printf("a = %c\n", input->all + '0');
+	printf("l = %c\n", input->list + '0');
+	printf("r = %c\n", input->rev + '0');
+	printf("t = %c\n", input->time + '0');
+}
+
 int		main(int ac, char **av)
 {
+//	int			res;
 	t_input		input;
-	t_entry		**entries;
+//	t_entry		**entries;
 
-	if (ls_get_flags(ac, av, &input) != LS_OK)
+	ls_get_flags(ac, av, &input);
+
+	size_t i = 0;
+	while (input.ent_names[i] != NULL)
 	{
-		// print error
-		return (0);
+		printf(" dir %s\n", input.ent_names[i]);
+		i++;
 	}
+	print_flags(&input);
 
-	if (input.rec == TRUE)
-		entries = ls_ent_get_rec(input.ent_names, &input);
-	else
-		entries = ls_ent_get(input.ent_names, &input);
-
-	entries = ls_ent_sort(entries, &input);
-
-	if (input.list == TRUE)
-	{
-		entries = ls_get_rights(entries);
-		ls_print_long(entries, &input);
-	}
-	else
-	{
-		ls_print_short(entries, &input);
-	}
+//	if (input.rec == TRUE)
+//		entries = ls_ent_get_rec(input.ent_names, &input);
+//	else
+//		entries = ls_ent_get(input.ent_names, &input);
+//
+//	entries = ls_ent_sort(entries, &input);
+//
+//	if (input.list == TRUE)
+//	{
+//		entries = ls_get_rights(entries);
+//		ls_print_long(entries, &input);
+//	}
+//	else
+//	{
+//		ls_print_short(entries, &input);
+//	}
 
 
 	return (0);
 }
-
-
-//int					ls_is_unreachable(char *ent_name)
-//{
-//	struct stat info;
-//
-//	if (ent_name == NULL)
-//		return (E_LS_NULL_POINTER);
-//	if (stat(ent_name, &info) != 0)
-//	{
-//		if (errno == ENOENT)
-//		{
-//			return (E_LS_NO_SUCH_FILE);
-//		}
-//		else if (errno == EACCES)
-//		{
-//			return (E_LS_PERMISSION_DENIED);
-//		}
-//		return (E_LS_UNKNOWN_ERROR);
-//	}
-//	return (LS_OK);
-//}

@@ -14,6 +14,8 @@ project(ft_ls)
 set(SOURCES
         src/main.c
         src/ls_get_flags.c
+        src/ls_ent_get.c
+        src/ls_errors.c
         )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

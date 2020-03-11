@@ -1,10 +1,15 @@
 #ifndef FT_LS_H
 # define FT_LS_H
 
+/*
+** TODO delete stdio.h
+*/
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <dirent.h>
 #include <errno.h>
+#include <stdio.h>
 #include "libft.h"
 
 //typedef struct _dirdesc {
@@ -42,6 +47,7 @@
 //#define DT_SOCK         12
 //#define DT_WHT          14
 
+# define LS_USAGE "usage: ft_ls [-Ralrt] [file ...]"
 
 typedef struct		dirent	t_dirent;
 typedef struct		stat	t_stat;
@@ -96,8 +102,6 @@ typedef enum		e_param_res
 
 int 				ls_get_flags(int ac, char **av, t_input *input);
 
-t_entry				*ls_ent_create(t_dirent *entry, t_stat *input);
-
 t_entry				**ls_get_rights(t_entry **entries);
 
 t_entry				**ls_ent_get(char **dirs, t_input *input);
@@ -107,6 +111,13 @@ t_entry				**ls_ent_sort(t_entry **entries, t_input *input);
 
 int 				ls_print_short(t_entry **entries, t_input *input);
 int 				ls_print_long(t_entry **entries, t_input *input);
+
+/*
+** ls_errors.c, error management
+*/
+
+void				ls_illegal_option(char c);
+void				ls_nullptr(void* ptr);
 
 /*
 ** TODO comment

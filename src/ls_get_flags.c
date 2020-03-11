@@ -6,7 +6,7 @@
 /*   By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 01:08:21 by kcharla           #+#    #+#             */
-/*   Updated: 2020/03/11 01:14:07 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/03/11 03:42:03 by kcharla          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,13 @@ int					ls_add_ent_name(t_input *input, char *ent_name)
 	char		**new_arr;
 	size_t		i;
 
-	if (input == NULL || ent_name == NULL)
-		return (E_LS_NULL_POINTER);
-	if (input->ent_names == NULL)
-		return (E_LS_NULL_POINTER);
+	ls_nullptr(ent_name);
+	ls_nullptr(input);
+	ls_nullptr(input->ent_names);
 	i = 0;
 	while (input->ent_names[i] != NULL)
 		i++;
-	if ((new_arr = (char**)malloc(sizeof(char*) * (i + 2))) == NULL)
-		return (E_LS_NULL_POINTER);
+	ls_nullptr(new_arr = (char**)malloc(sizeof(char*) * (i + 2)));
 	i = 0;
 	while (input->ent_names[i] != NULL)
 	{
@@ -45,8 +43,7 @@ int					ls_add_ent_name(t_input *input, char *ent_name)
 
 int					ls_enter_flag(char c, t_input *input)
 {
-	if (input == NULL)
-		return (E_LS_NULL_POINTER);
+	ls_nullptr(input);
 	if (c == 'R')
 		input->rec = TRUE;
 	else if (c == 'a')
@@ -58,21 +55,20 @@ int					ls_enter_flag(char c, t_input *input)
 	else if (c == 't')
 		input->time = TRUE;
 	else
-		return (E_LS_ILLEGAL_OPTION);
+		ls_illegal_option(c);
 	return (LS_OK);
 }
 
 int					ls_check_arg(char *arg, t_bool *flags_done, t_input *input)
 {
 	size_t			j;
-	int				res;
 
-	if (arg == NULL || flags_done == NULL || input == NULL)
-		return (E_LS_NULL_POINTER);
+	ls_nullptr(arg);
+	ls_nullptr(flags_done);
+	ls_nullptr(input);
 	if (arg[0] != '-' || *flags_done == TRUE)
 	{
-		if ((res = ls_add_ent_name(input, arg)) != LS_OK)
-			return (res);
+		ls_add_ent_name(input, arg);
 		*flags_done = TRUE;
 	}
 	else
@@ -85,8 +81,7 @@ int					ls_check_arg(char *arg, t_bool *flags_done, t_input *input)
 			}
 		j = 1;
 		while (arg[j] != '\0')
-			if ((res = ls_enter_flag(arg[j++], input)) != LS_OK)
-				return (res);
+			ls_enter_flag(arg[j++], input);
 	}
 	return (LS_OK);
 }
@@ -94,16 +89,16 @@ int					ls_check_arg(char *arg, t_bool *flags_done, t_input *input)
 int					ls_get_flags(int ac, char **av, t_input *input)
 {
 	t_bool			flags_done;
-	int				res;
 	size_t			i;
-	size_t			j;
 
-	if (input == NULL || av == NULL)
-		return (E_LS_NULL_POINTER);
+	ls_nullptr(input);
+	ls_nullptr(av);
 	i = 0;
 	flags_done = FALSE;
+	input->ent_names = (char**)malloc(sizeof(char*) * 2);
+	ls_nullptr(input->ent_names);
+	input->ent_names[0] = NULL;
 	while ((int)++i < ac)
-		if ((res = ls_check_arg(av[i], &flags_done, input)) != LS_OK)
-			return (res);
+		ls_check_arg(av[i], &flags_done, input);
 	return (LS_OK);
 }

@@ -32,7 +32,7 @@ INCLUDE     := -I include/ -I $(LIB_FT_DIR)/include/
 
 #find src -type f -name '*.c' | sed 'N;N;s/\n/ /g' | sed "s/\$/ \\\\/" | column -t
 SRC_FILES := \
-src/main.c src/ls_get_flags.c
+src/main.c src/ls_get_flags.c src/ls_errors.c
 
 SRC_FILES_LEN := $(words $(SRC_FILES))
 OBJ_FILES     := $(SRC_FILES:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
