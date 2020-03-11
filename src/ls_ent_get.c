@@ -6,7 +6,7 @@
 /*   By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 01:19:28 by kcharla           #+#    #+#             */
-/*   Updated: 2020/03/11 06:55:03 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/03/11 07:48:07 by kcharla          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,21 @@ t_entry				*ls_ent_main(char *name)
 	if (stat(name, &(entry->stat)) != 0)
 	{
 		if (errno == ENOENT)
+		{
+//			ft_putstr("ft_ls: no files!");
 			entry->error = E_LS_NO_SUCH_FILE;
+		}
+
 		else if (errno == EACCES)
 			entry->error = E_LS_PERMISSION_DENIED;
 		else
 			entry->error = E_LS_UNKNOWN_ERROR;
+	}
+	if (entry->error == E_LS_NO_SUCH_FILE)
+	{
+		ft_putstr("ft_ls: ");
+		ft_putstr(entry->name);
+		ft_putstr(": No such file or directory\n");
 	}
 	return (entry);
 }
@@ -53,7 +63,7 @@ t_entry				*ls_ent_create(t_dirent *dirent)
 
 t_entry				**ls_ent_get(t_input *input)
 {
-	size_t			i;
+	int				i;
 	t_entry			**entries;
 	t_dirent		*tmp_ent;
 	t_entry			*ptr;
@@ -64,26 +74,49 @@ t_entry				**ls_ent_get(t_input *input)
 	ls_nullptr(entries);
 	entries[input->ent_num] = NULL;
 	i = 0;
-	while (i < input->ent_num)
+	while (i < (int)input->ent_num)
 	{
 		entries[i] = ls_ent_main(input->ent_names[i]);
 		ls_nullptr(entries[i]);
+//		if (entries[i]->error == E_LS_NO_SUCH_FILE)
+//		{
+//			ft_putstr("do_nothing...\n");
+//			free(entries[i]);
+//			i--;
+//		}
+//		else
+//		if (entries[i]->stat.st_mode)
 		if (entries[i]->error == LS_OK)
 			if (S_ISDIR(entries[i]->stat.st_mode))
 			{
-				entries[i]->dir = opendir(input->ent_names[i]);
-				ls_nullptr(entries[i]->dir);
-				ptr = entries[i];
-				while ((tmp_ent = readdir(entries[i]->dir)) != NULL)
+				if (entries[i]->stat.st_mode & S_IRUSR)
 				{
-					ptr->next = ls_ent_create(tmp_ent);
-					ptr->next->prev = ptr;
-					ptr = ptr->next;
+					ft_putstr("is dir@\n");
+					entries[i]->dir = opendir(input->ent_names[i]);
+					ft_putstr("is dir_2\n");
+					ls_nullptr(entries[i]->dir);
+					ft_putstr("is dir_3\n");
+					ptr = entries[i];
+					while ((tmp_ent = readdir(entries[i]->dir)) != NULL)
+					{
+						if (tmp_ent->d_name[0] == '.' && input->all == FALSE)
+						{
+							continue ;
+						}
+						ptr->next = ls_ent_create(tmp_ent);
+						ptr->next->prev = ptr;
+						ptr = ptr->next;
+					}
+					closedir(entries[i]->dir);
 				}
-				closedir(entries[i]->dir);
+				else
+				{
+					entries[i]->error = E_LS_PERMISSION_DENIED;
+				}
 			}
 		i++;
 	}
+	//ft_putstr("entries\n");
 	return (entries);
 }
 

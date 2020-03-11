@@ -91,7 +91,7 @@ typedef enum		e_ls_error
 	E_LS_ILLEGAL_OPTION,
 	E_LS_NO_SUCH_FILE,
 	E_LS_PERMISSION_DENIED,
-	E_LS_UNKNOWN_ERROR = -2,
+	E_LS_UNKNOWN_ERROR,
 }					t_ls_error;
 
 typedef enum		e_param_res
