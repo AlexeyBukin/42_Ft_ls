@@ -6,7 +6,7 @@
 /*   By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 01:08:21 by kcharla           #+#    #+#             */
-/*   Updated: 2020/03/15 16:04:25 by hush             ###   ########.fr       */
+/*   Updated: 2020/03/15 21:10:40 by hush             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,17 +64,35 @@ t_bool				arg_is_double_dash(char *arg)
 }
 
 static
-void				ls_check_arg(char *arg, t_bool *flags_done, t_input *input)
+t_bool				arg_is_dot(char *arg)
 {
-	size_t			j;
+	if (arg[0] == '.')
+		if (arg[1] == '\0')
+			return (TRUE);
+	return (FALSE);
+}
+
+static
+void				ls_check_arg(char *arg, t_bool *flags_done, t_input *input) {
+	size_t j;
 
 	ls_nullptr(arg);
 	ls_nullptr(flags_done);
 	ls_nullptr(input);
-	if (arg[0] != '-' || *flags_done == TRUE)
-		ls_add_order_name(input, arg);
-	else if (arg_is_double_dash(arg))
+	if (arg_is_dot(arg))
+	{
+		if (input->order_num == 0)
+			input->current_dir = TRUE;
+		else
+			input->current_dir = FALSE;
+	}
+	else
+		input->current_dir = FALSE;
+
+	if (arg_is_double_dash(arg))
 		*flags_done = TRUE;
+	else if (arg[0] != '-' || *flags_done == TRUE)
+		ls_add_order_name(input, arg);
 	else
 	{
 		j = 1;
@@ -96,13 +114,14 @@ void				ls_flags(int ac, char **av, t_input *input)
 	ls_nullptr(input->order_names);
 	input->order_names[0] = NULL;
 	input->order_num = 0;
+	input->current_dir = FALSE;
 	while ((int)++i < ac)
 	{
 		ls_check_arg(av[i], &flags_done, input);
 	}
 	if (input->order_num == 0)
 	{
-//		ft_printf("shit\n");
 		ls_add_order_name(input, ".");
+		input->current_dir = TRUE;
 	}
 }

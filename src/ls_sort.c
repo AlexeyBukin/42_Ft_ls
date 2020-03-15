@@ -6,7 +6,7 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 16:31:44 by hush              #+#    #+#             */
-/*   Updated: 2020/03/15 19:29:44 by hush             ###   ########.fr       */
+/*   Updated: 2020/03/15 19:29:55 by hush             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,7 @@ t_ls_order	*ls_order_list_sort_alpha(t_ls_order *order_list)
 	tmp = order_list;
 	while (tmp != NULL)
 	{
-		if (tmp->error == 0 && tmp->is_dir == TRUE)
+		if (tmp->error == 0 && tmp->is_dir == TRUE && tmp->list_size > 0)
 		{
 			tmp->list = (t_entry*)sort_listable(
 					(t_listable*)tmp->list, entry_compare_alphabet);

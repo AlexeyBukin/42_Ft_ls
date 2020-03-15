@@ -49,9 +49,9 @@ int		main(int ac, char **av)
 	ls_flags(ac, av, &input);
 
 	ls_nullptr((order_list = ls_order_list_create(&input)));
-
-	ft_printf("\n------before sort:\n");
-	print_order_list(order_list);
+//
+//	ft_printf("\n------before sort:\n");
+//	print_order_list(order_list);
 
 	if (stat_needed(&input))
 		order_list_fill_stat(order_list);
@@ -59,18 +59,19 @@ int		main(int ac, char **av)
 	//sorting
 	ls_nullptr((order_list = ls_order_list_sort(order_list, &input)));
 
-	ft_printf("\n------after sort:\n");
-	print_order_list(order_list);
+//	ft_printf("\n------after sort:\n");
+//	print_order_list(order_list);
 
 	//reverting
 	if (input.rev == TRUE)
 		ls_nullptr((order_list = order_list_revert(order_list)));
 
-	ft_printf("\n------after revert:\n");
-	print_order_list(order_list);
+//	ft_printf("\n------after revert>\n");
+//	print_order_list(order_list);
+//	ft_printf("\n------after revert>\n");
 
 
-//	ls_print(order_list);
+	ls_print(order_list, &input);
 
 //	print_order_list(order_list);
 	free_order_list(order_list);

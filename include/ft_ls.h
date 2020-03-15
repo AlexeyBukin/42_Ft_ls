@@ -49,8 +49,10 @@ typedef struct		stat	t_stat;
 
 typedef struct		s_input
 {
+	t_bool			current_dir;
 	char			**order_names;
 	size_t			order_num;
+
 
 	t_bool			all;
 	t_bool			rec;
@@ -119,7 +121,7 @@ t_entry				**ls_ent_get(t_input *input);
 t_entry				**ls_ent_get_rec(char **dirs, t_input *input);
 
 
-
+void	ls_print(t_ls_order *order_list, t_input *input);
 
 int 				ls_print_short(t_entry **entries, t_input *input);
 int 				ls_print_long(t_entry **entries, t_input *input);

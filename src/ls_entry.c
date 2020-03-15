@@ -6,7 +6,7 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 01:33:37 by hush              #+#    #+#             */
-/*   Updated: 2020/03/15 19:32:34 by hush             ###   ########.fr       */
+/*   Updated: 2020/03/15 20:51:09 by hush             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,24 +33,25 @@ t_entry			*ls_entry_list_create(t_input *input, t_ls_order *order)
 
 	ls_nullptr(order);
 	ls_nullptr(input);
+	entry_list = NULL;
+	entry = NULL;
 	order->dir = opendir(order->name);
 	ls_nullptr(order->dir);
 	order->list_size = 0;
-	dir_ent = readdir(order->dir);
-	if (dir_ent == NULL)
-	{
-		closedir(order->dir);
-		return (NULL);
-	}
-	ls_nullptr((entry_list = ls_entry_create(dir_ent)));
-	order->list_size++;
-	entry = entry_list;
 	while ((dir_ent = readdir(order->dir)) != NULL)
 	{
 		if (dir_ent->d_name[0] == '.' && input->all == FALSE)
 			continue ;
-		entry->entry_next = ls_entry_create(dir_ent);
-		entry = entry->entry_next;
+		if (entry_list == NULL)
+		{
+			ls_nullptr((entry_list = ls_entry_create(dir_ent)));
+			entry = entry_list;
+		}
+		else
+		{
+			ls_nullptr((entry->entry_next = ls_entry_create(dir_ent)));
+			entry = entry->entry_next;
+		}
 		order->list_size++;
 	}
 	closedir(order->dir);
