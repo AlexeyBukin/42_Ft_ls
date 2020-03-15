@@ -61,23 +61,28 @@ typedef struct		s_input
 	t_bool			p_slash;
 }					t_input;
 
+typedef struct		s_listable
+{
+	struct s_listable	*next;
+}					t_listable;
+
 typedef struct		s_entry
 {
-	t_dirent		dirent;
-	t_stat			stat;
-	char 			*name;
 	struct s_entry	*entry_next;
 	struct s_entry	*prev;
+	char 			*name;
+	t_dirent		dirent;
+	t_stat			stat;
 }					t_entry;
 
 typedef struct		s_ls_order
 {
+	struct s_ls_order	*next;
+	struct s_ls_order	*prev;
 	char 				*name;
 	t_stat				stat;
 	t_bool				is_dir;
 	int					error;
-	struct s_ls_order	*next;
-	struct s_ls_order	*prev;
 	DIR					*dir;
 	size_t 				list_size;
 	t_entry				*list;
@@ -106,7 +111,7 @@ typedef enum		e_param_res
 	PARAM_DOUBLE_DASH
 }					t_param_res;
 
-void	print_order_list(t_ls_order *order_list);
+void				print_order_list(t_ls_order *order_list);
 
 void 				ls_flags(int ac, char **av, t_input *input);
 
@@ -115,14 +120,28 @@ t_entry				**ls_get_rights(t_entry **entries);
 t_entry				**ls_ent_get(t_input *input);
 t_entry				**ls_ent_get_rec(char **dirs, t_input *input);
 
-t_entry				**ls_order_list_sort(t_ls_order *order_list, t_input *input);
-t_entry				**ls_entry_list_sort(t_entry *entry_list, t_input *input);
+
+
 
 int 				ls_print_short(t_entry **entries, t_input *input);
 int 				ls_print_long(t_entry **entries, t_input *input);
 
 t_entry				*ls_entry_list_create(t_input *input, t_ls_order *order);
 t_ls_order			*ls_order_list_create(t_input *input);
+
+/*
+** ls_sort.c
+*/
+
+t_ls_order			*ls_entry_list_sort(t_entry *entry_list, t_input *input);
+t_ls_order			*ls_order_list_sort(t_ls_order *order_list, t_input *input);
+
+/*
+** ls_free.c
+*/
+
+void				free_order_list(t_ls_order *order_list);
+void				free_entry_list(t_entry *e_list);
 
 /*
 ** ls_errors.c, error management

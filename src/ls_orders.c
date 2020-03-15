@@ -6,7 +6,7 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 01:00:57 by hush              #+#    #+#             */
-/*   Updated: 2020/03/15 16:21:20 by hush             ###   ########.fr       */
+/*   Updated: 2020/03/15 16:26:50 by hush             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ t_ls_order			*ls_order_list_create(t_input *input)
 
 	ls_nullptr(input);
 	order_list = NULL;
-	order = NULL;
 	i = 0;
 	if (input->order_num > 0)
 	{
