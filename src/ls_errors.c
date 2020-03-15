@@ -12,7 +12,7 @@ void	ls_illegal_option(char c)
 	exit(0);
 }
 
-void	ls_nullptr(void* ptr)
+void	ls_nullptr(const void* ptr)
 {
 	if (ptr == NULL)
 	{

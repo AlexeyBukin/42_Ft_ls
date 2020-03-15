@@ -8,7 +8,20 @@ int 	stat_needed(t_input *input)
 	return (FALSE);
 }
 
+/*
+** TODO implement order_list_fill_stat(t_ls_order *order_list)
+*/
+
 void	order_list_fill_stat(t_ls_order *order_list)
+{
+	(void)order_list;
+}
+
+/*
+** TODO order_list_revert(t_ls_order *order_list)
+*/
+
+void	order_list_revert(t_ls_order *order_list)
 {
 	(void)order_list;
 }
@@ -32,6 +45,9 @@ int		main(int ac, char **av)
 		order_list_fill_stat(order_list);
 
 	ls_nullptr((order_list = ls_order_list_sort(order_list, &input)));
+
+	if (input.rev == TRUE)
+		order_list_revert(order_list);
 
 	ft_printf("\n------after sort:\n");
 	print_order_list(order_list);

@@ -6,7 +6,7 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 01:33:37 by hush              #+#    #+#             */
-/*   Updated: 2020/03/15 15:09:37 by hush             ###   ########.fr       */
+/*   Updated: 2020/03/15 19:32:34 by hush             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ t_entry				*ls_entry_create(t_dirent *dirent)
 	entry->dirent = *dirent;
 	entry->name = entry->dirent.d_name;
 	entry->entry_next = NULL;
-	entry->prev = NULL;
 	return (entry);
 }
 
@@ -51,7 +50,6 @@ t_entry			*ls_entry_list_create(t_input *input, t_ls_order *order)
 		if (dir_ent->d_name[0] == '.' && input->all == FALSE)
 			continue ;
 		entry->entry_next = ls_entry_create(dir_ent);
-		entry->entry_next->prev = entry;
 		entry = entry->entry_next;
 		order->list_size++;
 	}

@@ -69,7 +69,6 @@ typedef struct		s_listable
 typedef struct		s_entry
 {
 	struct s_entry	*entry_next;
-	struct s_entry	*prev;
 	char 			*name;
 	t_dirent		dirent;
 	t_stat			stat;
@@ -78,7 +77,6 @@ typedef struct		s_entry
 typedef struct		s_ls_order
 {
 	struct s_ls_order	*next;
-	struct s_ls_order	*prev;
 	char 				*name;
 	t_stat				stat;
 	t_bool				is_dir;
@@ -149,7 +147,7 @@ void				free_entry_list(t_entry *e_list);
 
 void				ls_unknown_error(int err_id);
 void				ls_illegal_option(char c);
-void				ls_nullptr(void* ptr);
+void				ls_nullptr(const void* ptr);
 
 /*
 ** TODO comment
