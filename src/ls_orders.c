@@ -6,25 +6,36 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 01:00:57 by hush              #+#    #+#             */
-/*   Updated: 2020/03/15 15:55:34 by hush             ###   ########.fr       */
+/*   Updated: 2020/03/15 16:21:20 by hush             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
 static
-t_ls_order		*ls_order_create(t_input *input, char *order_name)
+t_ls_order		*ls_order_malloc(char *order_name)
 {
 	t_ls_order		*order;
 
 	ls_nullptr(order_name);
-	ls_nullptr(input);
 	ls_nullptr((order = (t_ls_order*)malloc(sizeof(t_ls_order))));
 	order->name = order_name;
 	order->next = NULL;
 	order->prev = NULL;
 	order->list = NULL;
+	order->list_size = 0;
 	order->error = 0;
+	order->is_dir = FALSE;
+	return (order);
+}
+
+static
+t_ls_order		*ls_order_create(t_input *input, char *order_name)
+{
+	t_ls_order		*order;
+
+	ls_nullptr(input);
+	ls_nullptr((order = ls_order_malloc(order_name)));
 	if (stat(order_name, &(order->stat)) != 0)
 	{
 		if (errno == ENOENT)
@@ -34,23 +45,12 @@ t_ls_order		*ls_order_create(t_input *input, char *order_name)
 		else
 			ls_unknown_error(errno);
 	}
-	else
+	else if (!(order->stat.st_mode & S_IRUSR))
+		order->error = E_LS_PERMISSION_DENIED;
+	else if (S_ISDIR(order->stat.st_mode))
 	{
-		if (S_ISDIR(order->stat.st_mode))
-		{
-			if (order->stat.st_mode & S_IRUSR)
-			{
-				order->list = ls_entry_list_create(input, order);
-			}
-			else
-			{
-				order->error = E_LS_PERMISSION_DENIED;
-			}
-		}
-		else
-		{
-			order->is_dir = FALSE;
-		}
+		order->is_dir = TRUE;
+		order->list = ls_entry_list_create(input, order);
 	}
 	if (order->error == E_LS_NO_SUCH_FILE)
 		ft_printf("ft_ls: %s: No such file or directory\n", order_name);

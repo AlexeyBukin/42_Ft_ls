@@ -128,8 +128,6 @@ t_ls_order			*ls_order_list_create(t_input *input);
 ** ls_errors.c, error management
 */
 
-
-
 void				ls_unknown_error(int err_id);
 void				ls_illegal_option(char c);
 void				ls_nullptr(void* ptr);
