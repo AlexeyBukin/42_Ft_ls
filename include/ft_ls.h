@@ -1,15 +1,10 @@
 #ifndef FT_LS_H
 # define FT_LS_H
 
-/*
-** TODO delete stdio.h
-*/
-
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <dirent.h>
 #include <errno.h>
-#include <stdio.h>
 #include "libft.h"
 
 //typedef struct _dirdesc {
@@ -54,8 +49,8 @@ typedef struct		stat	t_stat;
 
 typedef struct		s_input
 {
-	char			**ent_names;
-	size_t			ent_num;
+	char			**order_names;
+	size_t			order_num;
 
 	t_bool			all;
 	t_bool			rec;
@@ -66,19 +61,27 @@ typedef struct		s_input
 	t_bool			p_slash;
 }					t_input;
 
-
 typedef struct		s_entry
 {
-	DIR				*dir;
-	t_dirent		*dirent;
+	t_dirent		dirent;
 	t_stat			stat;
-	int				error;
 	char 			*name;
-	char 			*name_full;
-	char			*name_relative;
-	struct s_entry	*next;
+	struct s_entry	*entry_next;
 	struct s_entry	*prev;
 }					t_entry;
+
+typedef struct		s_ls_order
+{
+	char 				*name;
+	t_stat				stat;
+	t_bool				is_dir;
+	int					error;
+	struct s_ls_order	*next;
+	struct s_ls_order	*prev;
+	DIR					*dir;
+	size_t 				list_size;
+	t_entry				*list;
+}					t_ls_order;
 
 typedef enum		e_ls_values
 {
@@ -103,22 +106,31 @@ typedef enum		e_param_res
 	PARAM_DOUBLE_DASH
 }					t_param_res;
 
-int 				ls_get_flags(int ac, char **av, t_input *input);
+void	print_order_list(t_ls_order *order_list);
+
+void 				ls_flags(int ac, char **av, t_input *input);
 
 t_entry				**ls_get_rights(t_entry **entries);
 
 t_entry				**ls_ent_get(t_input *input);
 t_entry				**ls_ent_get_rec(char **dirs, t_input *input);
 
-t_entry				**ls_ent_sort(t_entry **entries, t_input *input);
+t_entry				**ls_order_list_sort(t_ls_order *order_list, t_input *input);
+t_entry				**ls_entry_list_sort(t_entry *entry_list, t_input *input);
 
 int 				ls_print_short(t_entry **entries, t_input *input);
 int 				ls_print_long(t_entry **entries, t_input *input);
+
+t_entry				*ls_entry_list_create(t_input *input, t_ls_order *order);
+t_ls_order			*ls_order_list_create(t_input *input);
 
 /*
 ** ls_errors.c, error management
 */
 
+
+
+void				ls_unknown_error(int err_id);
 void				ls_illegal_option(char c);
 void				ls_nullptr(void* ptr);
 

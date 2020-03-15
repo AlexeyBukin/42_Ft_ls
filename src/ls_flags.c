@@ -6,42 +6,35 @@
 /*   By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 01:08:21 by kcharla           #+#    #+#             */
-/*   Updated: 2020/03/11 05:28:34 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/03/15 16:04:25 by hush             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-/*
-** TODO smart array resizing
-*/
-
-int					ls_add_ent_name(t_input *input, char *ent_name)
+static
+void				ls_add_order_name(t_input *input, char *order_name)
 {
 	char		**new_arr;
 	size_t		i;
 
-	ls_nullptr(ent_name);
+	ls_nullptr(order_name);
 	ls_nullptr(input);
-	ls_nullptr(input->ent_names);
+	i = input->order_num;
+	ls_nullptr((new_arr = (char**)malloc(sizeof(char*) * (i + 1)  )));
 	i = 0;
-	while (input->ent_names[i] != NULL)
-		i++;
-	ls_nullptr(new_arr = (char**)malloc(sizeof(char*) * (i + 2)));
-	i = 0;
-	while (input->ent_names[i] != NULL)
+	while (i < input->order_num)
 	{
-		new_arr[i] = input->ent_names[i];
+		new_arr[i] = input->order_names[i];
 		i++;
 	}
-	new_arr[i] = ent_name;
-	new_arr[i + 1] = NULL;
-	free(input->ent_names);
-	input->ent_names = new_arr;
-	input->ent_num++;
-	return (LS_OK);
+	new_arr[i] = order_name;
+	free(input->order_names);
+	input->order_names = new_arr;
+	input->order_num++;
 }
 
+static
 int					ls_enter_flag(char c, t_input *input)
 {
 	ls_nullptr(input);
@@ -60,7 +53,18 @@ int					ls_enter_flag(char c, t_input *input)
 	return (LS_OK);
 }
 
-int					ls_check_arg(char *arg, t_bool *flags_done, t_input *input)
+static
+t_bool				arg_is_double_dash(char *arg)
+{
+	if (arg[0] == '-')
+		if (arg[1] == '-')
+			if (arg[2] == '\0')
+				return (TRUE);
+	return (FALSE);
+}
+
+static
+void				ls_check_arg(char *arg, t_bool *flags_done, t_input *input)
 {
 	size_t			j;
 
@@ -68,26 +72,18 @@ int					ls_check_arg(char *arg, t_bool *flags_done, t_input *input)
 	ls_nullptr(flags_done);
 	ls_nullptr(input);
 	if (arg[0] != '-' || *flags_done == TRUE)
-	{
-		ls_add_ent_name(input, arg);
+		ls_add_order_name(input, arg);
+	else if (arg_is_double_dash(arg))
 		*flags_done = TRUE;
-	}
 	else
 	{
-		if (arg[1] == '-')
-			if (arg[2] == '\0')
-			{
-				*flags_done = TRUE;
-				return (LS_OK);
-			}
 		j = 1;
 		while (arg[j] != '\0')
 			ls_enter_flag(arg[j++], input);
 	}
-	return (LS_OK);
 }
 
-int					ls_get_flags(int ac, char **av, t_input *input)
+void				ls_flags(int ac, char **av, t_input *input)
 {
 	t_bool			flags_done;
 	size_t			i;
@@ -96,12 +92,17 @@ int					ls_get_flags(int ac, char **av, t_input *input)
 	ls_nullptr(av);
 	i = 0;
 	flags_done = FALSE;
-	input->ent_names = (char**)malloc(sizeof(char*) * 2);
-	ls_nullptr(input->ent_names);
-	input->ent_names[0] = NULL;
-	input->ent_names[1] = NULL;
-	input->ent_num = 0;
+	input->order_names = (char**)malloc(sizeof(char*) * 2);
+	ls_nullptr(input->order_names);
+	input->order_names[0] = NULL;
+	input->order_num = 0;
 	while ((int)++i < ac)
+	{
 		ls_check_arg(av[i], &flags_done, input);
-	return (LS_OK);
+	}
+	if (input->order_num == 0)
+	{
+//		ft_printf("shit\n");
+		ls_add_order_name(input, ".");
+	}
 }

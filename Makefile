@@ -32,7 +32,9 @@ INCLUDE     := -I include/ -I $(LIB_FT_DIR)/include/
 
 #find src -type f -name '*.c' | sed 'N;N;s/\n/ /g' | sed "s/\$/ \\\\/" | column -t
 SRC_FILES := \
-src/main.c src/ls_get_flags.c src/ls_errors.c src/ls_ent_get.c
+src/main.c              src/ls_flags.c  src/ls_errors.c  \
+src/ls_entry.c        \
+src/ls_orders.c
 
 SRC_FILES_LEN := $(words $(SRC_FILES))
 OBJ_FILES     := $(SRC_FILES:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
@@ -55,7 +57,7 @@ $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c $(DEPDIR)/%.d
 	@mkdir -p $(@D)
 	@$(CC) $(CFLAGS) $(DEPFLAGS) $(INCLUDE) -c $< -o $@
 	@printf "%b %s / %s : %s\n" $(YELLOW) $(INDEX) $(SRC_FILES_LEN) $@
-	@$(eval INDEX=$(shell echo $$(($(INDEX)+1))))
+	#@$(eval INDEX=$(shell echo $$(($(INDEX)+1))))
 
 $(LIB_FT_FILE):
 	@make DEBUG=$(DEBUG) OPTIM=$(OPTIM) -C $(LIB_FT_DIR)
