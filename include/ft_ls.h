@@ -4,6 +4,9 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <dirent.h>
+#include <time.h>
+#include <pwd.h>
+#include <grp.h>
 #include <errno.h>
 #include "libft.h"
 
@@ -46,6 +49,8 @@
 
 typedef struct		dirent	t_dirent;
 typedef struct		stat	t_stat;
+typedef struct		passwd	t_passwd;
+typedef struct		group	t_group;
 
 typedef struct		s_input
 {
@@ -72,8 +77,14 @@ typedef struct		s_entry
 {
 	struct s_entry	*entry_next;
 	char 			*name;
+	char 			*print_user;
 	t_dirent		dirent;
 	t_stat			stat;
+	char 			*owner;
+	char 			*group;
+	char 			*link_num_str;
+	char 			*size_str;
+
 }					t_entry;
 
 typedef struct		s_ls_order

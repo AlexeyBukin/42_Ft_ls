@@ -6,7 +6,7 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 16:31:44 by hush              #+#    #+#             */
-/*   Updated: 2020/03/15 19:29:55 by hush             ###   ########.fr       */
+/*   Updated: 2020/03/18 22:50:26 by hush             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,37 +106,7 @@ int			order_compare_alphabet(void* order_1_void, void* order_2_void)
 			return (1);
 		return (0);
 	}
-	return (strcmp(order_1->name, order_2->name));
-}
-
-/*
-** TODO implement
-*/
-
-int			order_compare_time(void* order_1_void, void* order_2_void)
-{
-	t_ls_order		*order_1;
-	t_ls_order		*order_2;
-
-	order_1 = (t_ls_order*)order_1_void;
-	order_2 = (t_ls_order*)order_2_void;
-	ls_nullptr(order_1);
-	ls_nullptr(order_2);
-	return (0);
-}
-
-/*
-** TODO implement
-*/
-
-int			entry_compare_time(void* en_1_void, void* en_2_void)
-{
-	t_entry			*en_1;
-	t_entry			*en_2;
-
-	en_1 = (t_entry*)en_1_void;
-	en_2 = (t_entry*)en_2_void;
-	return (0);
+	return (ft_strcmp(order_1->name, order_2->name));
 }
 
 int		ls_strcmp(const char *s1, const char *s2)
@@ -157,6 +127,32 @@ int		ls_strcmp(const char *s1, const char *s2)
 	return (res);
 }
 
+/*
+** TODO implement
+*/
+
+int			order_compare_time(void *order_1_void, void *order_2_void)
+{
+	t_ls_order		*order_1;
+	t_ls_order		*order_2;
+
+	order_1 = (t_ls_order*)order_1_void;
+	order_2 = (t_ls_order*)order_2_void;
+	if (order_1 == NULL || order_2 == NULL)
+	{
+		if (order_1 != NULL)
+			return (-1);
+		else if (order_2 != NULL)
+			return (1);
+		return (0);
+	}
+	if (order_1->stat.st_mtim.tv_sec != order_2->stat.st_mtim.tv_sec)
+		return ((int)(order_1->stat.st_mtim.tv_sec - order_2->stat.st_mtim.tv_sec));
+	if (order_1->stat.st_mtim.tv_nsec != order_2->stat.st_mtim.tv_nsec)
+		return ((int)(order_1->stat.st_mtim.tv_nsec - order_2->stat.st_mtim.tv_nsec));
+	return (order_compare_alphabet(order_1_void, order_2_void));
+}
+
 int			entry_compare_alphabet(void* en_1_void, void* en_2_void)
 {
 	t_entry			*en_1;
@@ -173,6 +169,28 @@ int			entry_compare_alphabet(void* en_1_void, void* en_2_void)
 		return (0);
 	}
 	return (ls_strcmp(en_1->name, en_2->name));
+}
+
+int			entry_compare_time(void* en_1_void, void* en_2_void)
+{
+	t_entry			*en_1;
+	t_entry			*en_2;
+
+	en_1 = (t_entry*)en_1_void;
+	en_2 = (t_entry*)en_2_void;
+	if (en_1 == NULL || en_2 == NULL)
+	{
+		if (en_1 != NULL)
+			return (-1);
+		else if (en_2 != NULL)
+			return (1);
+		return (0);
+	}
+	if (en_2->stat.st_mtim.tv_sec != en_1->stat.st_mtim.tv_sec)
+		return ((int)(en_2->stat.st_mtim.tv_sec - en_1->stat.st_mtim.tv_sec));
+	if (en_2->stat.st_mtim.tv_nsec != en_1->stat.st_mtim.tv_nsec)
+		return ((int)(en_2->stat.st_mtim.tv_nsec - en_1->stat.st_mtim.tv_nsec));
+	return (entry_compare_alphabet(en_1_void, en_2_void));
 }
 
 t_ls_order	*ls_order_list_sort_alpha(t_ls_order *order_list)
@@ -217,13 +235,13 @@ t_ls_order	*ls_order_list_sort_time(t_ls_order *order_list)
 
 t_ls_order	*ls_order_list_sort(t_ls_order *order_list, t_input *input)
 {
+	t_ls_order	*sorted;
+
 	ls_nullptr(input);
-	if (input->time == FALSE)
+	sorted = ls_order_list_sort_alpha(order_list);
+	if (input->time == TRUE)
 	{
-		return (ls_order_list_sort_alpha(order_list));
+		sorted = ls_order_list_sort_time(sorted);
 	}
-	else
-	{
-		return (ls_order_list_sort_time(order_list));
-	}
+	return (sorted);
 }

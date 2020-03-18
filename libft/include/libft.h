@@ -6,7 +6,7 @@
 /*   By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 19:12:07 by kcharla           #+#    #+#             */
-/*   Updated: 2020/03/06 03:10:00 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/03/19 01:04:26 by hush             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,9 @@ void			ft_striteri(char *s, void (*f)(unsigned int, char *));
 
 char			*ft_strjoin(char const *s1, char const *s2);
 char			*ft_strjoin_free(char *s1, char *s2);
+char			*ft_strjoin_free_2(char *s1, char *s2);
+char			*ft_strjoin_free_3(char *s1, char *s2, char *s3);
+char			*ft_strjoin_free_4(char *s1, char *s2, char *s3, char *s4);
 
 size_t			ft_strlcat(char *s1, const char *s2, size_t length);
 size_t			ft_strlen(const char *s);
@@ -177,6 +180,12 @@ char			*ft_strsub_free(char *s, unsigned int start, size_t len);
 
 char			*ft_strtrim(char const *s);
 
+/*
+** strf - string formatting
+*/
+
+char			*ft_strf_width(const char *str,
+				int width, char filler, t_bool align_left);
 /*
 ** other
 */

@@ -27,3 +27,18 @@ char	*ft_strjoin_free(char *s1, char *s2)
 	free(s2);
 	return (res);
 }
+
+char	*ft_strjoin_free_2(char *s1, char *s2)
+{
+	return (ft_strjoin_free(s1, s2));
+}
+
+char	*ft_strjoin_free_3(char *s1, char *s2, char *s3)
+{
+	return (ft_strjoin_free(ft_strjoin_free(s1, s2), s3));
+}
+
+char	*ft_strjoin_free_4(char *s1, char *s2, char *s3, char *s4)
+{
+	return (ft_strjoin_free(ft_strjoin_free(s1, s2), ft_strjoin_free(s3, s4)));
+}
