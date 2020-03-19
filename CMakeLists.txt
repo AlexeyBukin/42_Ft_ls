@@ -8,6 +8,8 @@ project(ft_ls)
 
 #file(GLOB SOURCES "src/*.c")
 
+#TODO change makefile, laggyy when make
+
 # find src -type f -name '*.c' | sed "s/^/        /"
 set(SOURCES
         src/main.c
