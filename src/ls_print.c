@@ -6,7 +6,7 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 18:46:58 by hush              #+#    #+#             */
-/*   Updated: 2020/03/19 02:08:53 by hush             ###   ########.fr       */
+/*   Updated: 2020/03/19 03:49:49 by hush             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,24 +77,25 @@ void	ls_print_list(t_ls_order *order_list, t_input *input)
 {
 	t_bool		is_first;
 	t_entry		*entry;
-	char		*str_rwx;
+	char		str_rwx[11];
 
 	(void)input;
-	ls_nullptr((str_rwx = ft_strnew(11)));
 	str_rwx[10] = '\0';
 	ls_nullptr(order_list);
 	is_first = TRUE;
 	while (order_list != NULL)
 	{
-		if (is_first == FALSE)
-			ft_printf("\n");
-		else
-			is_first = FALSE;
-
 		if (order_list->error == 0)
 		{
+			if (is_first == FALSE)
+				ft_printf("\n");
+			else
+				is_first = FALSE;
+			if (input->order_num > 1)
+				ft_printf("%s:\n", order_list->name);
 			//biggest user str size
 			entry = order_list->list;
+			size_t dirsize = 0;
 			size_t max_len_owner = 0;
 			size_t max_len_group = 0;
 			size_t max_len_size = 0;
@@ -116,22 +117,32 @@ void	ls_print_list(t_ls_order *order_list, t_input *input)
 				len = ft_strlen(entry->size_str);
 				if (len > max_len_size)
 					max_len_size = len;
+				dirsize += entry->stat.st_blocks;
+//				ft_printf("ent %llu %lld\n", entry->stat.st_blocks, entry->stat.st_blksize);
 				entry = entry->entry_next;
 			}
-
+			//dirsize += order_list->stat.st_blocks;
+			dirsize = dirsize >> 1;
+			// TODO fix, no need to divide
+			ft_printf("total %llu %lld\n", dirsize, order_list->stat.st_blocks);
 			entry = order_list->list;
 			while (entry != NULL)
 			{
-				ls_nullptr(ls_rwx(entry, str_rwx));
+				ls_nullptr((ls_rwx(entry, str_rwx)));
 				char * time_str = ft_strsub(ctime(&entry->stat.st_mtim.tv_sec), 4, 12);
 				char * links_str = ft_strf_width(entry->link_num_str, max_len_links, ' ', FALSE);
 				char * bytes_str = ft_strf_width(entry->size_str, max_len_size, ' ', FALSE);
 				char * ownername = ft_strf_width(entry->owner, max_len_owner, ' ', TRUE);
 				char * groupname = ft_strf_width(entry->group, max_len_group, ' ', TRUE);
-				ft_printf("%s %2s %s %s %s %s %s\n", str_rwx, links_str, ownername, groupname, bytes_str, time_str, entry->name);
+				ft_printf("%s %s %s %s %s %s %s\n", str_rwx, links_str, ownername, groupname, bytes_str, time_str, entry->name);
+				free(time_str);
+				free(links_str);
+				free(bytes_str);
+				free(ownername);
+				free(groupname);
 				entry = entry->entry_next;
 			}
-			ft_printf("\n", order_list->name);
+//			ft_printf("\n");
 		}
 		order_list = order_list->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 01:33:37 by hush              #+#    #+#             */
-/*   Updated: 2020/03/15 20:51:09 by hush             ###   ########.fr       */
+/*   Updated: 2020/03/19 03:31:51 by hush             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@ t_entry				*ls_entry_create(t_dirent *dirent)
 	ls_nullptr(entry);
 	entry->dirent = *dirent;
 	entry->name = entry->dirent.d_name;
+	entry->full_name = NULL;
+	entry->group = NULL;
+	entry->owner = NULL;
+	entry->size_str = NULL;
+	entry->link_num_str = NULL;
 	entry->entry_next = NULL;
 	return (entry);
 }

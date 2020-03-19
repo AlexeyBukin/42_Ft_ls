@@ -150,6 +150,7 @@ void			ft_striter(char *s, void (*f)(char *));
 void			ft_striteri(char *s, void (*f)(unsigned int, char *));
 
 char			*ft_strjoin(char const *s1, char const *s2);
+char			*ft_strjoin_3(const char *s1, const char *s2, const char *s3);
 char			*ft_strjoin_free(char *s1, char *s2);
 char			*ft_strjoin_free_2(char *s1, char *s2);
 char			*ft_strjoin_free_3(char *s1, char *s2, char *s3);

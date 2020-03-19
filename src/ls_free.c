@@ -6,7 +6,7 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 18:44:24 by hush              #+#    #+#             */
-/*   Updated: 2020/03/15 18:44:24 by hush             ###   ########.fr       */
+/*   Updated: 2020/03/19 03:32:04 by hush             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@ void	free_entry_list(t_entry *e_list)
 	t_entry *temp = e_list;
 	while (e_list != NULL)
 	{
+		free(e_list->full_name);
+		free(e_list->owner);
+		free(e_list->group);
+		free(e_list->link_num_str);
+		free(e_list->size_str);
 		temp = e_list->entry_next;
 		free(e_list);
 		e_list = temp;

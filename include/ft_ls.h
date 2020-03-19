@@ -77,7 +77,7 @@ typedef struct		s_entry
 {
 	struct s_entry	*entry_next;
 	char 			*name;
-	char 			*print_user;
+	char 			*full_name;
 	t_dirent		dirent;
 	t_stat			stat;
 	char 			*owner;
@@ -91,6 +91,7 @@ typedef struct		s_ls_order
 {
 	struct s_ls_order	*next;
 	char 				*name;
+	char 				*full_name;
 	t_stat				stat;
 	t_bool				is_dir;
 	int					error;
@@ -139,6 +140,8 @@ int 				ls_print_long(t_entry **entries, t_input *input);
 
 t_entry				*ls_entry_list_create(t_input *input, t_ls_order *order);
 t_ls_order			*ls_order_list_create(t_input *input);
+
+void				order_list_fill_stat(t_ls_order *order_list);
 
 /*
 ** ls_sort.c

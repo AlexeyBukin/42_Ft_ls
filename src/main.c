@@ -8,37 +8,6 @@ int 	stat_needed(t_input *input)
 	return (FALSE);
 }
 
-/*
-** TODO implement order_list_fill_stat(t_ls_order *order_list)
-*/
-
-void	order_list_fill_stat(t_ls_order *order_list)
-{
-	t_passwd	*passwd;
-	t_group		*group;
-	t_entry		*entry;
-
-	while (order_list != NULL)
-	{
-		entry = order_list->list;
-		while (entry != NULL)
-		{
-			if (stat(entry->name, &(entry->stat)) != 0)
-				ls_unknown_error(errno);
-			if ((passwd = getpwuid(entry->stat.st_uid)) != NULL)
-				entry->owner = ft_strdup(passwd->pw_name);
-			else
-				ls_unknown_error(errno);
-			if ((group = getgrgid(entry->stat.st_gid)) != NULL)
-				entry->group = ft_strdup(group->gr_name);
-			else
-				ls_unknown_error(errno);
-			entry = entry->entry_next;
-		}
-		order_list = order_list->next;
-	}
-}
-
 t_ls_order	*order_list_revert(t_ls_order *temp)
 {
 	t_ls_order		*reversed;
@@ -71,6 +40,7 @@ int		main(int ac, char **av)
 	ls_flags(ac, av, &input);
 
 	ls_nullptr((order_list = ls_order_list_create(&input)));
+
 //
 //	ft_printf("\n------before sort:\n");
 //	print_order_list(order_list);
