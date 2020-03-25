@@ -6,7 +6,7 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 18:46:58 by hush              #+#    #+#             */
-/*   Updated: 2020/03/19 03:49:49 by hush             ###   ########.fr       */
+/*   Updated: 2020/03/25 11:14:37 by hush             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	ls_print_list(t_ls_order *order_list, t_input *input)
 				ft_printf("\n");
 			else
 				is_first = FALSE;
-			if (input->order_num > 1)
+			if (input->order_num > 1 || input->rec == TRUE)
 				ft_printf("%s:\n", order_list->name);
 			//biggest user str size
 			entry = order_list->list;
@@ -167,10 +167,12 @@ void	ls_print_plain(t_ls_order *order_list, t_input *input)
 		{
 //			if (input->current_dir == FALSE)
 //				ft_printf("%s: curdir=%d\n", order_list->name, input->current_dir);
+			if (input->order_num > 1 || input->rec == TRUE)
+				ft_printf("%s:\n", order_list->name);
 			entry = order_list->list;
 			while (entry != NULL)
 			{
-				ft_printf("%s\n", entry->name);
+				ft_printf("%s  ", entry->name);
 				entry = entry->entry_next;
 			}
 			ft_printf("\n", order_list->name);

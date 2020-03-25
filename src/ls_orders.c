@@ -6,7 +6,7 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 01:00:57 by hush              #+#    #+#             */
-/*   Updated: 2020/03/19 03:17:46 by hush             ###   ########.fr       */
+/*   Updated: 2020/03/25 10:49:03 by hush             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,28 +84,92 @@ t_ls_order		*ls_order_create(t_input *input, char *order_name)
 	return (order);
 }
 
-t_ls_order			*ls_order_list_create(t_input *input)
+static
+t_ls_order		*ls_order_create_rec(t_input *input, char *order_name)
 {
-	t_ls_order			*order_list;
+	t_entry			*entry;
+	t_ls_order		*order;
+	t_ls_order		*order_rec;
+
+	ls_nullptr((order_rec = ls_order_create(input, order_name)));
+	if (order_rec->is_dir == FALSE)
+		return (NULL);
+	order = order_rec;
+	entry = order->list;
+	while (entry != NULL)
+	{
+		order->next = ls_order_create_rec(input,
+				ft_strjoin_3(order_name, "/", entry->name));
+		while (order->next != NULL)
+			order = order->next;
+		//
+		entry = entry->entry_next;
+	}
+	return (order_rec);
+}
+
+static
+t_ls_order			*ls_order_list_create_rec(t_input *input,
+					t_ls_order *order_list)
+{
+	t_ls_order			*order_tmp;
 	t_ls_order			*order;
 	size_t 				i;
 
 	ls_nullptr(input);
-	order_list = NULL;
+	order_tmp = NULL;
 	i = 0;
-	if (input->order_num > 0)
+	while (i < input->order_num)
 	{
-		order_list = ls_order_create(input, input->order_names[i]);
-		ls_nullptr(order_list);
-		order = order_list;
-		i++;
-		while (i < input->order_num)
+		ls_nullptr((order = ls_order_create_rec(input, input->order_names[i])));
+		if (order_list != NULL)
 		{
-			order->next = ls_order_create(input, input->order_names[i]);
-			ls_nullptr(order->next);
-			order = order->next;
-			i++;
+			if (order_tmp == NULL)
+				order_tmp = order_list;
+			while (order_tmp->next != NULL)
+				order_tmp = order_tmp->next;
+			order_tmp->next = order;
 		}
+		else
+			order_list = order;
+		i++;
 	}
 	return (order_list);
+}
+
+static
+t_ls_order			*ls_order_list_create_plain(t_input *input,
+					t_ls_order *order_list)
+{
+	t_ls_order			*order_tmp;
+	t_ls_order			*order;
+	size_t 				i;
+
+	ls_nullptr(input);
+	order_tmp = NULL;
+	i = 0;
+	while (i < input->order_num)
+	{
+		ls_nullptr((order = ls_order_create(input, input->order_names[i])));
+		if (order_list != NULL)
+		{
+			if (order_tmp == NULL)
+				order_tmp = order_list;
+			order_tmp->next = order;
+		}
+		else
+			order_list = order;
+		i++;
+	}
+	return (order_list);
+}
+
+t_ls_order			*ls_order_list_create(t_input *input)
+{
+	t_ls_order			*order_list;
+
+	order_list = NULL;
+	if (input->rec == TRUE)
+		return (ls_order_list_create_rec(input, order_list));
+	return (ls_order_list_create_plain(input, order_list));
 }
