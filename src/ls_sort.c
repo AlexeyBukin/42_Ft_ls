@@ -6,7 +6,7 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 16:31:44 by hush              #+#    #+#             */
-/*   Updated: 2020/03/18 22:50:26 by hush             ###   ########.fr       */
+/*   Updated: 2020/03/25 13:20:40 by hush             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ t_listable	*sort_listable(t_listable *list, int (compare)(void*, void*))
 	char			levels[32];
 	unsigned char	pos;
 
+	if (list == NULL || compare == NULL)
+		ft_printf("here - e\n");
 	ls_nullptr(list);
 	ls_nullptr(compare);
 	pos = 0;
@@ -218,18 +220,22 @@ t_ls_order	*ls_order_list_sort_time(t_ls_order *order_list)
 	t_ls_order		*tmp;
 
 	ls_nullptr(order_list);
+	ft_printf("here\n");
 	tmp = order_list;
 	while (tmp != NULL)
 	{
-		if (tmp->error == 0 && tmp->is_dir == TRUE)
+		if (tmp->error == 0 && tmp->is_dir == TRUE && tmp->list != NULL)
 		{
 			tmp->list = (t_entry*)sort_listable(
 					(t_listable*)tmp->list, entry_compare_time);
 		}
 		tmp = tmp->next;
 	}
+	ft_printf("here\n");
 	order_list = (t_ls_order*)sort_listable(
 			(t_listable*)order_list, order_compare_time);
+//	if (order_list == NULL)
+//		ft_printf("order_list inside sort time");
 	return (order_list);
 }
 

@@ -48,7 +48,8 @@ int		main(int ac, char **av)
 	if (stat_needed(&input))
 		order_list_fill_stat(order_list);
 
-//	print_order_list(order_list);
+	//print_order_list(order_list);
+//	ft_printf("\n------after sort:\n");
 
 	//sorting
 	ls_nullptr((order_list = ls_order_list_sort(order_list, &input)));
