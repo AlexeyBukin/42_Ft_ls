@@ -3,7 +3,7 @@
 int 	stat_needed(t_input *input)
 {
 	ls_nullptr(input);
-	if (input->list == TRUE || input->tmod == TRUE)
+	if (input->list == TRUE || input->time_sort == TRUE)
 		return (TRUE);
 	return (FALSE);
 }

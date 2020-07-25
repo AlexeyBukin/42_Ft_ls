@@ -6,7 +6,7 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 18:46:58 by hush              #+#    #+#             */
-/*   Updated: 2020/07/25 09:19:21 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/07/25 14:03:04 by kcharla          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ void	print_order_list(t_ls_order *order_list)
 void	print_flags(t_input *input)
 {
 	ft_printf("R = %c\n", input->rec + '0');
-	ft_printf("a = %c\n", input->all + '0');
+	ft_printf("a = %c\n", input->show + '0');
 	ft_printf("l = %c\n", input->list + '0');
 	ft_printf("r = %c\n", input->rev + '0');
-	ft_printf("t = %c\n", input->tmod + '0');
+	ft_printf("t = %c\n", input->time_sort + '0');
 }
 
 char	*ls_rwx(t_entry *entry, char *str_10)

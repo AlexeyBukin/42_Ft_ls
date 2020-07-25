@@ -249,7 +249,7 @@ t_ls_order	*ls_order_list_sort(t_ls_order *order_list, t_input *input)
 
 	ls_nullptr(input);
 	sorted = ls_order_list_sort_alpha(order_list);
-	if (input->tmod == TRUE)
+	if (input->time_sort == TRUE)
 	{
 		sorted = ls_order_list_sort_time(sorted);
 	}

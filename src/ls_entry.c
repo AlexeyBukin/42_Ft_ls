@@ -45,7 +45,7 @@ t_entry			*ls_entry_list_create(t_input *input, t_ls_order *order)
 	order->list_size = 0;
 	while ((dir_ent = readdir(order->dir)) != NULL)
 	{
-		if (dir_ent->d_name[0] == '.' && input->all == FALSE)
+		if (dir_ent->d_name[0] == '.' && input->show == FALSE)
 			continue ;
 		if (entry_list == NULL)
 		{

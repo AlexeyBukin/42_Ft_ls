@@ -52,21 +52,35 @@ typedef struct		stat	t_stat;
 typedef struct		passwd	t_passwd;
 typedef struct		group	t_group;
 
+//TODO implement
+
+typedef enum		e_sort_time
+{
+	SORT_TIME_NONE,
+	SORT_TIME_MOD,
+	SORT_TIME_ACCESS
+}					t_sort_time;
+
+//TODO implement
+typedef enum		e_show
+{
+	SHOW_VISIBLE,
+	SHOW_ALL,
+	SHOW_HIDDEN
+}					t_show;
+
+//TODO implement -F fancy
+
 typedef struct		s_input
 {
-	t_bool			current_dir;
 	char			**order_names;
 	size_t			order_num;
-
-
-	t_bool			all;
+	t_show			show;
 	t_bool			rec;
 	t_bool			rev;
 	t_bool			list;
-	t_bool			tmod;
-	t_bool			tacc;
-
-	t_bool			p_slash;
+	t_sort_time		time_sort;
+	t_bool			fancy;
 }					t_input;
 
 typedef struct		s_listable

@@ -6,7 +6,7 @@
 /*   By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 01:08:21 by kcharla           #+#    #+#             */
-/*   Updated: 2020/03/15 21:10:40 by hush             ###   ########.fr       */
+/*   Updated: 2020/07/25 14:05:17 by kcharla          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,17 @@ int					ls_enter_flag(char c, t_input *input)
 	if (c == 'R')
 		input->rec = TRUE;
 	else if (c == 'a')
-		input->all = TRUE;
+		input->show = SHOW_ALL;
+	else if (c == 'A')
+		input->show = SHOW_HIDDEN;
 	else if (c == 'l')
 		input->list = TRUE;
 	else if (c == 'r')
 		input->rev = TRUE;
 	else if (c == 't')
-		input->tmod = TRUE;
+		input->time_sort = SORT_TIME_MOD;
+	else if (c == 'u')
+		input->time_sort = SORT_TIME_ACCESS;
 	else
 		ls_illegal_option(c);
 	return (LS_OK);
