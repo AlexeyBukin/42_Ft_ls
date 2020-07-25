@@ -6,7 +6,7 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 16:31:44 by hush              #+#    #+#             */
-/*   Updated: 2020/03/25 13:20:40 by hush             ###   ########.fr       */
+/*   Updated: 2020/07/25 09:16:54 by kcharla          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,10 @@ t_listable	*sort_listable(t_listable *list, int (compare)(void*, void*))
 	unsigned char	pos;
 
 	if (list == NULL || compare == NULL)
+	{
 		ft_printf("here - e\n");
+		return (NULL);
+	}
 	ls_nullptr(list);
 	ls_nullptr(compare);
 	pos = 0;
@@ -111,23 +114,23 @@ int			order_compare_alphabet(void* order_1_void, void* order_2_void)
 	return (ft_strcmp(order_1->name, order_2->name));
 }
 
-int		ls_strcmp(const char *s1, const char *s2)
-{
-	char		*name_1;
-	char		*name_2;
-	int			res;
-
-	name_1 = ft_strdup(s1);
-	name_2 = ft_strdup(s2);
-	ls_nullptr(name_1);
-	ls_nullptr(name_2);
-	ft_str_low(name_1);
-	ft_str_low(name_2);
-	res = ft_strcmp(name_1, name_2);
-	free(name_1);
-	free(name_2);
-	return (res);
-}
+//int		ls_strcmp(const char *s1, const char *s2)
+//{
+//	char		*name_1;
+//	char		*name_2;
+//	int			res;
+//
+//	name_1 = ft_strdup(s1);
+//	name_2 = ft_strdup(s2);
+//	ls_nullptr(name_1);
+//	ls_nullptr(name_2);
+////	ft_str_low(name_1);
+////	ft_str_low(name_2);
+//	res = ft_strcmp(name_1, name_2);
+//	free(name_1);
+//	free(name_2);
+//	return (res);
+//}
 
 /*
 ** TODO implement
@@ -148,10 +151,10 @@ int			order_compare_time(void *order_1_void, void *order_2_void)
 			return (1);
 		return (0);
 	}
-	if (order_1->stat.st_mtim.tv_sec != order_2->stat.st_mtim.tv_sec)
-		return ((int)(order_1->stat.st_mtim.tv_sec - order_2->stat.st_mtim.tv_sec));
-	if (order_1->stat.st_mtim.tv_nsec != order_2->stat.st_mtim.tv_nsec)
-		return ((int)(order_1->stat.st_mtim.tv_nsec - order_2->stat.st_mtim.tv_nsec));
+	if (order_1->stat.st_mtime != order_2->stat.st_mtime)
+		return ((int)(order_1->stat.st_mtime - order_2->stat.st_mtime));
+	if (order_1->stat.st_mtime != order_2->stat.st_mtime)
+		return ((int)(order_1->stat.st_mtime - order_2->stat.st_mtime));
 	return (order_compare_alphabet(order_1_void, order_2_void));
 }
 
@@ -170,7 +173,8 @@ int			entry_compare_alphabet(void* en_1_void, void* en_2_void)
 			return (1);
 		return (0);
 	}
-	return (ls_strcmp(en_1->name, en_2->name));
+//	return (ls_strcmp(en_1->name, en_2->name));
+	return (ft_strcmp(en_1->name, en_2->name));
 }
 
 int			entry_compare_time(void* en_1_void, void* en_2_void)
@@ -188,10 +192,10 @@ int			entry_compare_time(void* en_1_void, void* en_2_void)
 			return (1);
 		return (0);
 	}
-	if (en_2->stat.st_mtim.tv_sec != en_1->stat.st_mtim.tv_sec)
-		return ((int)(en_2->stat.st_mtim.tv_sec - en_1->stat.st_mtim.tv_sec));
-	if (en_2->stat.st_mtim.tv_nsec != en_1->stat.st_mtim.tv_nsec)
-		return ((int)(en_2->stat.st_mtim.tv_nsec - en_1->stat.st_mtim.tv_nsec));
+	if (en_2->stat.st_mtime != en_1->stat.st_mtime)
+		return ((int)(en_2->stat.st_mtime - en_1->stat.st_mtime));
+	if (en_2->stat.st_mtime != en_1->stat.st_mtime)
+		return ((int)(en_2->stat.st_mtime - en_1->stat.st_mtime));
 	return (entry_compare_alphabet(en_1_void, en_2_void));
 }
 
@@ -220,7 +224,7 @@ t_ls_order	*ls_order_list_sort_time(t_ls_order *order_list)
 	t_ls_order		*tmp;
 
 	ls_nullptr(order_list);
-	ft_printf("here\n");
+	//ft_printf("here\n");
 	tmp = order_list;
 	while (tmp != NULL)
 	{
@@ -245,7 +249,7 @@ t_ls_order	*ls_order_list_sort(t_ls_order *order_list, t_input *input)
 
 	ls_nullptr(input);
 	sorted = ls_order_list_sort_alpha(order_list);
-	if (input->time == TRUE)
+	if (input->tmod == TRUE)
 	{
 		sorted = ls_order_list_sort_time(sorted);
 	}

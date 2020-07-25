@@ -47,7 +47,7 @@ int					ls_enter_flag(char c, t_input *input)
 	else if (c == 'r')
 		input->rev = TRUE;
 	else if (c == 't')
-		input->time = TRUE;
+		input->tmod = TRUE;
 	else
 		ls_illegal_option(c);
 	return (LS_OK);

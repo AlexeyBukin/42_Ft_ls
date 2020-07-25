@@ -6,7 +6,7 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 18:46:58 by hush              #+#    #+#             */
-/*   Updated: 2020/03/25 11:14:37 by hush             ###   ########.fr       */
+/*   Updated: 2020/07/25 09:19:21 by kcharla          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	print_flags(t_input *input)
 	ft_printf("a = %c\n", input->all + '0');
 	ft_printf("l = %c\n", input->list + '0');
 	ft_printf("r = %c\n", input->rev + '0');
-	ft_printf("t = %c\n", input->time + '0');
+	ft_printf("t = %c\n", input->tmod + '0');
 }
 
 char	*ls_rwx(t_entry *entry, char *str_10)
@@ -122,19 +122,21 @@ void	ls_print_list(t_ls_order *order_list, t_input *input)
 				entry = entry->entry_next;
 			}
 			//dirsize += order_list->stat.st_blocks;
-			dirsize = dirsize >> 1;
+//			dirsize = dirsize >> 1;
 			// TODO fix, no need to divide
-			ft_printf("total %llu %lld\n", dirsize, order_list->stat.st_blocks);
+//			ft_printf("total %llu %lld\n", dirsize, order_list->stat.st_blocks);
+			ft_printf("total %llu\n", dirsize);
 			entry = order_list->list;
 			while (entry != NULL)
 			{
 				ls_nullptr((ls_rwx(entry, str_rwx)));
-				char * time_str = ft_strsub(ctime(&entry->stat.st_mtim.tv_sec), 4, 12);
+//				char * time_str = ft_strsub(ctime(&entry->stat.st_mtim.tv_sec), 4, 12);
+				char * time_str = ft_strsub(ctime(&entry->stat.st_mtime), 4, 12);
 				char * links_str = ft_strf_width(entry->link_num_str, max_len_links, ' ', FALSE);
 				char * bytes_str = ft_strf_width(entry->size_str, max_len_size, ' ', FALSE);
 				char * ownername = ft_strf_width(entry->owner, max_len_owner, ' ', TRUE);
 				char * groupname = ft_strf_width(entry->group, max_len_group, ' ', TRUE);
-				ft_printf("%s %s %s %s %s %s %s\n", str_rwx, links_str, ownername, groupname, bytes_str, time_str, entry->name);
+				ft_printf("%s  %s %s  %s  %s %s %s\n", str_rwx, links_str, ownername, groupname, bytes_str, time_str, entry->name);
 				free(time_str);
 				free(links_str);
 				free(bytes_str);

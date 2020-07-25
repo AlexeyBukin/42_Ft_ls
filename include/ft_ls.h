@@ -63,7 +63,8 @@ typedef struct		s_input
 	t_bool			rec;
 	t_bool			rev;
 	t_bool			list;
-	t_bool			time;
+	t_bool			tmod;
+	t_bool			tacc;
 
 	t_bool			p_slash;
 }					t_input;
