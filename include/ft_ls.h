@@ -53,7 +53,6 @@ typedef struct		passwd	t_passwd;
 typedef struct		group	t_group;
 
 //TODO implement
-
 typedef enum		e_sort_time
 {
 	SORT_TIME_NONE,
@@ -81,6 +80,7 @@ typedef struct		s_input
 	t_bool			list;
 	t_sort_time		time_sort;
 	t_bool			fancy;
+	t_bool			current_dir;
 }					t_input;
 
 typedef struct		s_listable

@@ -8,7 +8,7 @@ void	ls_unknown_error(int err_id)
 
 void	ls_illegal_option(char c)
 {
-	ft_printf("ft_ls: illegal option -- %c\n%s", c, LS_USAGE);
+	ft_printf("ft_ls: illegal option -- %c\n%s\n", c, LS_USAGE);
 	exit(0);
 }
 
