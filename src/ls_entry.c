@@ -6,7 +6,7 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 01:33:37 by hush              #+#    #+#             */
-/*   Updated: 2020/03/19 03:31:51 by hush             ###   ########.fr       */
+/*   Updated: 2020/08/23 03:19:35 by kcharla          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,12 @@ t_entry			*ls_entry_list_create(t_input *input, t_ls_order *order)
 	ls_nullptr(input);
 	entry_list = NULL;
 	entry = NULL;
+//	if (ft_strequ(order->name, "."))
+//		return (NULL);
+//		ft_printf("error, dot!\n");
+//	if (ft_strequ(order->name, ".."))
+//		return (NULL);
+//		ft_printf("error, dot!\n");
 	order->dir = opendir(order->name);
 	ls_nullptr(order->dir);
 	order->list_size = 0;

@@ -6,7 +6,7 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 01:00:57 by hush              #+#    #+#             */
-/*   Updated: 2020/03/25 10:49:03 by hush             ###   ########.fr       */
+/*   Updated: 2020/08/23 03:28:16 by kcharla          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,28 @@ void	order_list_fill_stat(t_ls_order *order_list)
 			ls_nullptr((entry->full_name = ft_strjoin_3(order_list->name, "/", entry->name)));
 			if (stat(entry->full_name, &(entry->stat)) != 0)
 				ls_unknown_error(errno);
+
+			if (entry->dirent.d_type == DT_LNK)
+			{
+				//TODO delete me
+				ft_printf("found link\n");
+				ft_printf("full name is %s\n", entry->full_name);
+				char *full_buf = ft_memalloc(entry->stat.st_size);
+				ssize_t size = readlink(entry->full_name, full_buf, entry->stat.st_size + 1);
+				size++;
+				//
+//			if (size < 0)
+//			{
+//				ft_printf("meh, error\n");
+//			}
+//			else
+//			{
+				char *new_buf = ft_strdup(full_buf);
+				ft_free(full_buf);
+				ft_printf("look, (%s)!\n", new_buf);
+//			}
+			}
+
 			if ((passwd = getpwuid(entry->stat.st_uid)) != NULL)
 				entry->owner = ft_strdup(passwd->pw_name);
 			else
@@ -98,10 +120,13 @@ t_ls_order		*ls_order_create_rec(t_input *input, char *order_name)
 	entry = order->list;
 	while (entry != NULL)
 	{
-		order->next = ls_order_create_rec(input,
+		if (ft_strcmp(entry->name, ".") != 0 && ft_strcmp(entry->name, "..") != 0)
+		{
+			order->next = ls_order_create_rec(input,
 				ft_strjoin_3(order_name, "/", entry->name));
-		while (order->next != NULL)
-			order = order->next;
+			while (order->next != NULL)
+				order = order->next;
+		}
 		//
 		entry = entry->entry_next;
 	}

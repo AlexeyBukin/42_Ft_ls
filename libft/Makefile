@@ -15,7 +15,7 @@ INCLUDE := -I include
 
 BUILD_DIR := build
 SRC_DIR   := src
-DEPDIR    := $(BUILD_DIR)/.deps
+#DEPDIR    := $(BUILD_DIR)/.deps
 
 #find src -type f -name '*.c' | sed 'N;N;s/\n/ /g' | sed "s/\$/ \\\\/" | column -t
 
@@ -64,8 +64,8 @@ src/ft_free_char_2d_arr.c
 SRC_FILES_LEN = $(words $(SRC_FILES))
 
 O_FILES = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRC_FILES))
-DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.d
-DEPFILES = $(SRC_FILES:$(SRC_DIR)/%.c=$(DEPDIR)/%.d)
+#DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.d
+#DEPFILES = $(SRC_FILES:$(SRC_DIR)/%.c=$(DEPDIR)/%.d)
 
 SRC_DIRS = $(shell find $(SRC_DIR) -type d)
 
@@ -82,42 +82,43 @@ WHITE   := "\e[1;37m"
 RESET   := "\e[0m"
 
 .PHONY: clean fclean all
-.PRECIOUS: $(DEPFILES)
+#.PRECIOUS: $(DEPFILES)
 
 all: $(NAME)
-	@printf "%b %s %b\n" $(CYAN) "$(NAME) is ready" $(RESET)
+#	@printf "%b %s %b\n" $(CYAN) "$(NAME) is ready" $(RESET)
 
 $(NAME): $(O_FILES)
 	@ranlib $(NAME)
-	@printf "%b %s compiled %b\n" $(GREEN) $(NAME) $(RESET)
+#	@printf "%b %s compiled %b\n" $(GREEN) $(NAME) $(RESET)
 
 $(BUILD_DIRS_REC):
 	@mkdir -vp $(BUILD_DIRS_REC)
 
 INDEX = 0
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c  $(DEPDIR)/%.d
-	@make -j $(DEPDIR)/%.d
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c # $(DEPDIR)/%.d
+#	@make -j $(DEPDIR)/%.d
 	@mkdir -p $(@D)
+#	@$(CC) $(CFLAGS) $(DEPFLAGS) $(INCLUDE) -c -o $@ $<
 	@$(CC) $(CFLAGS) $(DEPFLAGS) $(INCLUDE) -c -o $@ $<
-	@$(eval INDEX=$(shell echo $$(($(INDEX)+1))))
-	@printf "%b #%3.3s of %3.3s : %s %b\n" $(YELLOW) $(INDEX) $(SRC_FILES_LEN) $@ $(RESET)
+#	@$(eval INDEX=$(shell echo $$(($(INDEX)+1))))
+#	@printf "%b #%3.3s of %3.3s : %s %b\n" $(YELLOW) $(INDEX) $(SRC_FILES_LEN) $@ $(RESET)
 	@ar rcs $(NAME) $@
 
-$(DEPDIR)/%.d:
-	@mkdir -p $(@D)
+#$(DEPDIR)/%.d:
+#	@mkdir -p $(@D)
 
 clean:
 	@rm -rf $(BUILD_DIR)
-	@printf "%b %s successfully cleaned %b\n" $(BLUE) $(NAME) $(RESET)
+#	@printf "%b %s successfully cleaned %b\n" $(BLUE) $(NAME) $(RESET)
 
 fclean: clean
 	@rm -f $(NAME)
-	@printf "%b %s fully cleaned %b\n" $(RED) $(NAME) $(RESET)
+#	@printf "%b %s fully cleaned %b\n" $(RED) $(NAME) $(RESET)
 
 re: fclean all
-	@printf "%b %s recompiled %b\n" $(GREEN) $(NAME) $(RESET)
+#	@printf "%b %s recompiled %b\n" $(GREEN) $(NAME) $(RESET)
 
-$(DEPFILES):
+#$(DEPFILES):
 
--include $(wildcard $(DEPFILES))
+#-include $(wildcard $(DEPFILES))
