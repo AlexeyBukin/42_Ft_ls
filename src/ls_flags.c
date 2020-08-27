@@ -12,8 +12,7 @@
 
 #include "ft_ls.h"
 
-static
-void				ls_add_order_name(t_input *input, char *order_name)
+void		ls_add_order_name(t_input *input, char *order_name)
 {
 	char		**new_arr;
 	size_t		i;
@@ -21,7 +20,7 @@ void				ls_add_order_name(t_input *input, char *order_name)
 	ls_nullptr(order_name);
 	ls_nullptr(input);
 	i = input->order_num;
-	ls_nullptr((new_arr = (char**)malloc(sizeof(char*) * (i + 1)  )));
+	ls_nullptr((new_arr = (char**)malloc(sizeof(char*) * (i + 1))));
 	i = 0;
 	while (i < input->order_num)
 	{
@@ -34,8 +33,7 @@ void				ls_add_order_name(t_input *input, char *order_name)
 	input->order_num++;
 }
 
-static
-int					ls_enter_flag(char c, t_input *input)
+int			ls_enter_flag(char c, t_input *input)
 {
 	ls_nullptr(input);
 	if (c == 'R')
@@ -57,8 +55,7 @@ int					ls_enter_flag(char c, t_input *input)
 	return (LS_OK);
 }
 
-static
-t_bool				arg_is_double_dash(char *arg)
+t_bool		arg_is_double_dash(char *arg)
 {
 	if (arg[0] == '-')
 		if (arg[1] == '-')
@@ -67,8 +64,7 @@ t_bool				arg_is_double_dash(char *arg)
 	return (FALSE);
 }
 
-static
-t_bool				arg_is_dot(char *arg)
+t_bool		arg_is_dot(char *arg)
 {
 	if (arg[0] == '.')
 		if (arg[1] == '\0')
@@ -76,9 +72,9 @@ t_bool				arg_is_dot(char *arg)
 	return (FALSE);
 }
 
-static
-void				ls_check_arg(char *arg, t_bool *flags_done, t_input *input) {
-	size_t j;
+void		ls_check_arg(char *arg, t_bool *flags_done, t_input *input)
+{
+	size_t		j;
 
 	ls_nullptr(arg);
 	ls_nullptr(flags_done);
@@ -92,7 +88,6 @@ void				ls_check_arg(char *arg, t_bool *flags_done, t_input *input) {
 	}
 	else
 		input->current_dir = FALSE;
-
 	if (arg_is_double_dash(arg))
 		*flags_done = TRUE;
 	else if (arg[0] != '-' || *flags_done == TRUE)
@@ -102,30 +97,5 @@ void				ls_check_arg(char *arg, t_bool *flags_done, t_input *input) {
 		j = 1;
 		while (arg[j] != '\0')
 			ls_enter_flag(arg[j++], input);
-	}
-}
-
-void				ls_flags(int ac, char **av, t_input *input)
-{
-	t_bool			flags_done;
-	size_t			i;
-
-	ls_nullptr(input);
-	ls_nullptr(av);
-	i = 0;
-	flags_done = FALSE;
-	input->order_names = (char**)malloc(sizeof(char*) * 2);
-	ls_nullptr(input->order_names);
-	input->order_names[0] = NULL;
-	input->order_num = 0;
-	input->current_dir = FALSE;
-	while ((int)++i < ac)
-	{
-		ls_check_arg(av[i], &flags_done, input);
-	}
-	if (input->order_num == 0)
-	{
-		ls_add_order_name(input, ".");
-		input->current_dir = TRUE;
 	}
 }
