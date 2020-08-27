@@ -6,17 +6,21 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 01:00:57 by hush              #+#    #+#             */
-/*   Updated: 2020/08/23 03:28:16 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/08/28 00:59:09 by u18600003        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
+#define READLINK_BUF_SIZE 1023
 
 void	order_list_fill_stat(t_ls_order *order_list)
 {
 	t_passwd	*passwd;
 	t_group		*group;
 	t_entry		*entry;
+	char		buf[READLINK_BUF_SIZE + 1];
+	ssize_t		name_size;
 
 	while (order_list != NULL)
 	{
@@ -32,20 +36,13 @@ void	order_list_fill_stat(t_ls_order *order_list)
 				//TODO delete me
 				ft_printf("found link\n");
 				ft_printf("full name is %s\n", entry->full_name);
-				char *full_buf = ft_memalloc(entry->stat.st_size);
-				ssize_t size = readlink(entry->full_name, full_buf, entry->stat.st_size + 1);
-				size++;
-				//
-//			if (size < 0)
-//			{
-//				ft_printf("meh, error\n");
-//			}
-//			else
-//			{
-				char *new_buf = ft_strdup(full_buf);
-				ft_free(full_buf);
-				ft_printf("look, (%s)!\n", new_buf);
-//			}
+
+//				ft_bzero(buf, READLINK_BUF_SIZE + 1);
+				if ((name_size = readlink(entry->full_name, buf, READLINK_BUF_SIZE)) < 0)
+					ls_unknown_error(1);
+				buf[name_size] = '\0';
+				char *new_buf = ft_strdup(buf);
+				ft_printf("look, (%s) sized (%llu)!\n", new_buf, name_size);
 			}
 
 			if ((passwd = getpwuid(entry->stat.st_uid)) != NULL)
