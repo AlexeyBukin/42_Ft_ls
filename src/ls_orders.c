@@ -6,21 +6,40 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 01:00:57 by hush              #+#    #+#             */
-/*   Updated: 2020/08/28 00:59:09 by u18600003        ###   ########.fr       */
+/*   Updated: 2020/08/28 01:38:47 by u18600003        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
 #define READLINK_BUF_SIZE 1023
+void	entry_fill_link(t_entry *entry)
+{
+	char		buf[READLINK_BUF_SIZE + 1];
+	ssize_t		name_size;
+
+	ls_nullptr(entry);
+	if (lstat(entry->full_name, &(entry->stat)) != 0)
+		ls_unknown_error(errno);
+	//TODO delete me
+	ft_printf("found link\n");
+	ft_printf("full name is %s\n", entry->full_name);
+
+//				ft_bzero(buf, READLINK_BUF_SIZE + 1);
+	if ((name_size = readlink(entry->full_name, buf, READLINK_BUF_SIZE)) < 0)
+		ls_unknown_error(1);
+	buf[name_size] = '\0';
+	char *new_buf = ft_strdup(buf);
+	ft_printf("look, (%s) sized (%llu)!\n", new_buf, name_size);
+
+	entry->name = ft_strjoin_3(entry->name, " -> ", new_buf);
+}
 
 void	order_list_fill_stat(t_ls_order *order_list)
 {
 	t_passwd	*passwd;
 	t_group		*group;
 	t_entry		*entry;
-	char		buf[READLINK_BUF_SIZE + 1];
-	ssize_t		name_size;
 
 	while (order_list != NULL)
 	{
@@ -28,27 +47,19 @@ void	order_list_fill_stat(t_ls_order *order_list)
 		while (entry != NULL)
 		{
 			ls_nullptr((entry->full_name = ft_strjoin_3(order_list->name, "/", entry->name)));
-			if (stat(entry->full_name, &(entry->stat)) != 0)
-				ls_unknown_error(errno);
+//			if (stat(entry->full_name, &(entry->stat)) != 0)
+//				ls_unknown_error(errno);
 
 			if (entry->dirent.d_type == DT_LNK)
-			{
-				//TODO delete me
-				ft_printf("found link\n");
-				ft_printf("full name is %s\n", entry->full_name);
-
-//				ft_bzero(buf, READLINK_BUF_SIZE + 1);
-				if ((name_size = readlink(entry->full_name, buf, READLINK_BUF_SIZE)) < 0)
-					ls_unknown_error(1);
-				buf[name_size] = '\0';
-				char *new_buf = ft_strdup(buf);
-				ft_printf("look, (%s) sized (%llu)!\n", new_buf, name_size);
-			}
+				entry_fill_link(entry);
+			else if (stat(entry->full_name, &(entry->stat)) != 0)
+				ls_unknown_error(errno);
 
 			if ((passwd = getpwuid(entry->stat.st_uid)) != NULL)
 				entry->owner = ft_strdup(passwd->pw_name);
 			else
 				ls_unknown_error(errno);
+
 			if ((group = getgrgid(entry->stat.st_gid)) != NULL)
 				entry->group = ft_strdup(group->gr_name);
 			else

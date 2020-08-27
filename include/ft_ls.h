@@ -99,7 +99,6 @@ typedef struct		s_entry
 	char 			*group;
 	char 			*link_num_str;
 	char 			*size_str;
-
 }					t_entry;
 
 typedef struct		s_ls_order
