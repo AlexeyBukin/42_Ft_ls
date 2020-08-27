@@ -6,7 +6,7 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 18:46:58 by hush              #+#    #+#             */
-/*   Updated: 2020/07/25 14:03:04 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/08/28 00:09:57 by u18600003        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,10 +89,9 @@ void	ls_print_list(t_ls_order *order_list, t_input *input)
 		{
 			if (is_first == FALSE)
 				ft_printf("\n");
-			else
-				is_first = FALSE;
-			if (input->order_num > 1 || input->rec == TRUE)
+			if (input->order_num > 1 || (input->rec == TRUE && is_first == FALSE))
 				ft_printf("%s:\n", order_list->name);
+			is_first = FALSE;
 			//biggest user str size
 			entry = order_list->list;
 			size_t dirsize = 0;
@@ -118,19 +117,14 @@ void	ls_print_list(t_ls_order *order_list, t_input *input)
 				if (len > max_len_size)
 					max_len_size = len;
 				dirsize += entry->stat.st_blocks;
-//				ft_printf("ent %llu %lld\n", entry->stat.st_blocks, entry->stat.st_blksize);
 				entry = entry->entry_next;
 			}
-			//dirsize += order_list->stat.st_blocks;
-//			dirsize = dirsize >> 1;
-			// TODO fix, no need to divide
-//			ft_printf("total %llu %lld\n", dirsize, order_list->stat.st_blocks);
-			ft_printf("total %llu\n", dirsize);
+			if (order_list->list != NULL)
+				ft_printf("total %llu\n", dirsize);
 			entry = order_list->list;
 			while (entry != NULL)
 			{
 				ls_nullptr((ls_rwx(entry, str_rwx)));
-//				char * time_str = ft_strsub(ctime(&entry->stat.st_mtim.tv_sec), 4, 12);
 				char * time_str = ft_strsub(ctime(&entry->stat.st_mtime), 4, 12);
 				char * links_str = ft_strf_width(entry->link_num_str, max_len_links, ' ', FALSE);
 				char * bytes_str = ft_strf_width(entry->size_str, max_len_size, ' ', FALSE);
@@ -144,7 +138,6 @@ void	ls_print_list(t_ls_order *order_list, t_input *input)
 				free(groupname);
 				entry = entry->entry_next;
 			}
-//			ft_printf("\n");
 		}
 		order_list = order_list->next;
 	}
