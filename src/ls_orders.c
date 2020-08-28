@@ -6,7 +6,7 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 01:00:57 by hush              #+#    #+#             */
-/*   Updated: 2020/08/28 03:03:58 by u18600003        ###   ########.fr       */
+/*   Updated: 2020/08/28 03:04:20 by u18600003        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,10 @@ void	order_list_fill_stat(t_ls_order *order_list)
 			}
 			if (xattr < 0)
 				xattr = 0;
-			entry->attr = LS_ATTR_NO;
 			if (xattr > 0)
 				entry->attr = LS_ATTR_YES;
 			else if (acl != NULL)
 				entry->attr = LS_ATTR_ACL;
-			else
-				entry->attr = LS_ATTR_NO;
 
 
 			entry = entry->entry_next;

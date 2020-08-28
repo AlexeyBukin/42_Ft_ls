@@ -6,36 +6,36 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 18:46:58 by hush              #+#    #+#             */
-/*   Updated: 2020/08/28 03:02:09 by u18600003        ###   ########.fr       */
+/*   Updated: 2020/08/28 03:13:18 by u18600003        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void	print_order_list(t_ls_order *order_list)
-{
-	t_ls_order *tmp_ord = order_list;
-	while (tmp_ord != NULL)
-	{
-		ft_printf("main dir : %s, p=%p, next=%p\n", tmp_ord->name, tmp_ord, tmp_ord->next);
-		t_entry *temp = tmp_ord->list;
-		while (temp != NULL)
-		{
-			ft_printf("     ent : \'%20s\', p=%p, next=%p\n", temp->name, temp, temp->entry_next);
-			temp = temp->entry_next;
-		}
-		tmp_ord = tmp_ord->next;
-	}
-}
+//void	print_order_list(t_ls_order *order_list)
+//{
+//	t_ls_order *tmp_ord = order_list;
+//	while (tmp_ord != NULL)
+//	{
+//		ft_printf("main dir : %s, p=%p, next=%p\n", tmp_ord->name, tmp_ord, tmp_ord->next);
+//		t_entry *temp = tmp_ord->list;
+//		while (temp != NULL)
+//		{
+//			ft_printf("     ent : \'%20s\', p=%p, next=%p\n", temp->name, temp, temp->entry_next);
+//			temp = temp->entry_next;
+//		}
+//		tmp_ord = tmp_ord->next;
+//	}
+//}
 
-void	print_flags(t_input *input)
-{
-	ft_printf("R = %c\n", input->rec + '0');
-	ft_printf("a = %c\n", input->show + '0');
-	ft_printf("l = %c\n", input->list + '0');
-	ft_printf("r = %c\n", input->rev + '0');
-	ft_printf("t = %c\n", input->time_sort + '0');
-}
+//void	print_flags(t_input *input)
+//{
+//	ft_printf("R = %c\n", input->rec + '0');
+//	ft_printf("a = %c\n", input->show + '0');
+//	ft_printf("l = %c\n", input->list + '0');
+//	ft_printf("r = %c\n", input->rev + '0');
+//	ft_printf("t = %c\n", input->time_sort + '0');
+//}
 
 char	*ls_rwx(t_entry *entry, char *str_10)
 {
@@ -167,7 +167,8 @@ void	ls_print_plain(t_ls_order *order_list, t_input *input)
 			entry = order_list->list;
 			while (entry != NULL)
 			{
-				ft_printf("%s  ", entry->name);
+//				ft_printf("%s  ", entry->name);
+				ft_printf("%s\n", entry->name);
 				entry = entry->entry_next;
 			}
 			if (order_list->list != NULL)
