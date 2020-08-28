@@ -12,9 +12,9 @@
 
 #include "ft_ls.h"
 
-t_entry				*ls_entry_create(t_dirent *dirent)
+t_entry			*ls_entry_create(t_dirent *dirent)
 {
-	t_entry			*entry;
+	t_entry		*entry;
 
 	ls_nullptr(dirent);
 	entry = (t_entry*)ft_memalloc(sizeof(t_entry));
@@ -31,6 +31,13 @@ t_entry				*ls_entry_create(t_dirent *dirent)
 	return (entry);
 }
 
+static void		entry_tmp(t_entry **data,
+					t_entry **entry, t_dirent **dir_ent)
+{
+	ls_nullptr((*data = ls_entry_create(*dir_ent)));
+	*entry = *data;
+}
+
 t_entry			*ls_entry_list_create(t_input *input, t_ls_order *order)
 {
 	t_entry		*entry_list;
@@ -41,23 +48,16 @@ t_entry			*ls_entry_list_create(t_input *input, t_ls_order *order)
 	ls_nullptr(input);
 	entry_list = NULL;
 	entry = NULL;
-	order->dir = opendir(order->name);
-	ls_nullptr(order->dir);
+	ls_nullptr(order->dir = opendir(order->name));
 	order->list_size = 0;
 	while ((dir_ent = readdir(order->dir)) != NULL)
 	{
 		if (dir_ent->d_name[0] == '.' && input->show == FALSE)
 			continue ;
 		if (entry_list == NULL)
-		{
-			ls_nullptr((entry_list = ls_entry_create(dir_ent)));
-			entry = entry_list;
-		}
+			entry_tmp(&entry_list, &entry, &dir_ent);
 		else
-		{
-			ls_nullptr((entry->entry_next = ls_entry_create(dir_ent)));
-			entry = entry->entry_next;
-		}
+			entry_tmp(&(entry->entry_next), &entry, &dir_ent);
 		order->list_size++;
 	}
 	closedir(order->dir);

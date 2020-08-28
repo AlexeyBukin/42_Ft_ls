@@ -12,38 +12,37 @@
 
 #include "ft_ls.h"
 
-void	print_order_list(t_ls_order *order_list)
+void			ls_print_list2(t_entry *entry, t_sizes sizes)
 {
-	t_ls_order *tmp_ord = order_list;
-	while (tmp_ord != NULL)
+	t_print		print;
+	char		str_rwx[11];
+
+	str_rwx[10] = '\0';
+	while (entry != NULL)
 	{
-		ft_printf("main dir : %s, p=%p, next=%p\n", tmp_ord->name, tmp_ord, tmp_ord->next);
-		t_entry *temp = tmp_ord->list;
-		while (temp != NULL)
-		{
-			ft_printf("     ent : \'%20s\', p=%p, next=%p\n", temp->name, temp, temp->entry_next);
-			temp = temp->entry_next;
-		}
-		tmp_ord = tmp_ord->next;
+		ls_nullptr((ls_rwx(entry, str_rwx)));
+		print.time_str = ft_strsub(ctime(&entry->stat.st_mtime), 4, 12);
+		print.links_str = ft_strf_width(entry->link_num_str,
+								sizes.max_len_links, ' ', FALSE);
+		print.bytes_str = ft_strf_width(entry->size_str,
+								sizes.max_len_size, ' ', FALSE);
+		print.ownername = ft_strf_width(entry->owner,
+					sizes.max_len_owner, ' ', TRUE);
+		print.groupname = ft_strf_width(entry->group,
+							sizes.max_len_group, ' ', TRUE);
+		ft_printf("%s  %s %s  %s  %s %s %s\n", str_rwx, print.links_str,
+			print.ownername, print.groupname,
+			print.bytes_str, print.time_str, entry->name);
+		free_print_list(&print);
+		entry = entry->entry_next;
 	}
 }
 
-//void	print_flags(t_input *input)
-//{
-//	ft_printf("R = %c\n", input->rec + '0');
-//	ft_printf("a = %c\n", input->show + '0');
-//	ft_printf("l = %c\n", input->list + '0');
-//	ft_printf("r = %c\n", input->rev + '0');
-//	ft_printf("t = %c\n", input->time_sort + '0');
-//}
-
-char	*ls_rwx(t_entry *entry, char *str_10)
+void			ls_print_list3(t_ls_order *order_list, t_entry *entry)
 {
 	if (entry == NULL || str_10 == NULL)
 		return (NULL);
 
-//	if (S_ISDIR(entry->stat.st_mode))
-//		str_10[0] = 'u';
 	if (S_ISFIFO(entry->stat.st_mode))
 		str_10[0] = 'p';
 	else if (S_ISCHR(entry->stat.st_mode))
@@ -85,8 +84,7 @@ void	ls_print_list(t_ls_order *order_list, t_input *input)
 	t_entry		*entry;
 	char		str_rwx[12];
 
-	(void)input;
-	str_rwx[11] = '\0';
+	str_rwx[11];
 	ls_nullptr(order_list);
 	is_first = TRUE;
 	while (order_list != NULL)
@@ -155,7 +153,7 @@ void	ls_print_list(t_ls_order *order_list, t_input *input)
 	}
 }
 
-void	ls_print_plain(t_ls_order *order_list, t_input *input)
+void			ls_print_plain(t_ls_order *order_list, t_input *input)
 {
 	t_bool		is_first;
 	t_entry		*entry;
@@ -180,14 +178,4 @@ void	ls_print_plain(t_ls_order *order_list, t_input *input)
 		is_first = FALSE;
 		order_list = order_list->next;
 	}
-}
-
-
-void	ls_print(t_ls_order *order_list, t_input *input)
-{
-	ls_nullptr(input);
-	if (input->list == TRUE)
-		ls_print_list(order_list, input);
-	else
-		ls_print_plain(order_list, input);
 }

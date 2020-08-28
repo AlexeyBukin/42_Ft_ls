@@ -12,9 +12,20 @@
 
 #include "ft_ls.h"
 
+void	free_print_list(t_print *print)
+{
+	free(print->time_str);
+	free(print->links_str);
+	free(print->bytes_str);
+	free(print->ownername);
+	free(print->groupname);
+}
+
 void	free_entry_list(t_entry *e_list)
 {
-	t_entry *temp = e_list;
+	t_entry *temp;
+
+	temp = e_list;
 	while (e_list != NULL)
 	{
 		free(e_list->full_name);
@@ -31,7 +42,9 @@ void	free_entry_list(t_entry *e_list)
 
 void	free_order_list(t_ls_order *order_list)
 {
-	t_ls_order *tmp_ord = order_list;
+	t_ls_order *tmp_ord;
+
+	tmp_ord = order_list;
 	while (order_list != NULL)
 	{
 		free_entry_list(tmp_ord->list);

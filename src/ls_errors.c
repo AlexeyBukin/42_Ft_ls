@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ls_errors.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gekans <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/08/24 19:48:41 by gekans            #+#    #+#             */
+/*   Updated: 2020/08/24 19:48:44 by gekans           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 void	ls_unknown_error(int err_id)
@@ -22,7 +34,7 @@ void	ls_illegal_option(char c)
 	exit(1);
 }
 
-void	ls_nullptr(const void* ptr)
+void	ls_nullptr(const void *ptr)
 {
 	if (ptr == NULL)
 	{

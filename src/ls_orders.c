@@ -87,24 +87,17 @@ void	order_list_fill_stat(t_ls_order *order_list, t_input *input)
 }
 
 static
-t_ls_order		*ls_order_malloc(char *order_name)
+t_ls_order	*ls_order_malloc(char *order_name)
 {
 	t_ls_order		*order;
 
 	ls_nullptr(order_name);
 	ls_nullptr((order = (t_ls_order*)ft_memalloc(sizeof(t_ls_order))));
 	order->name = order_name;
-	//memalloc() does bzero()...
-//	order->next = NULL;
-//	order->list = NULL;
-//	order->list_size = 0;
-//	order->error = 0;
-//	order->is_dir = FALSE;
 	return (order);
 }
 
-static
-t_ls_order		*ls_order_create(t_input *input, char *order_name)
+t_ls_order	*ls_order_create(t_input *input, char *order_name)
 {
 	t_ls_order		*order;
 
@@ -135,8 +128,7 @@ t_ls_order		*ls_order_create(t_input *input, char *order_name)
 	return (order);
 }
 
-static
-t_ls_order		*ls_order_create_rec(t_input *input, char *order_name)
+t_ls_order	*ls_order_create_rec(t_input *input, char *order_name)
 {
 	t_entry			*entry;
 	t_ls_order		*order;
@@ -149,7 +141,8 @@ t_ls_order		*ls_order_create_rec(t_input *input, char *order_name)
 	entry = order->list;
 	while (entry != NULL)
 	{
-		if (ft_strcmp(entry->name, ".") != 0 && ft_strcmp(entry->name, "..") != 0)
+		if (ft_strcmp(entry->name, ".") != 0
+					&& ft_strcmp(entry->name, "..") != 0)
 		{
 			order->next = ls_order_create_rec(input,
 				ft_strjoin_3(order_name, "/", entry->name));
@@ -161,13 +154,12 @@ t_ls_order		*ls_order_create_rec(t_input *input, char *order_name)
 	return (order_rec);
 }
 
-static
-t_ls_order			*ls_order_list_create_rec(t_input *input,
+t_ls_order	*ls_order_list_create_rec(t_input *input,
 					t_ls_order *order_list)
 {
 	t_ls_order			*order_tmp;
 	t_ls_order			*order;
-	size_t 				i;
+	size_t				i;
 
 	ls_nullptr(input);
 	order_tmp = NULL;
@@ -190,13 +182,12 @@ t_ls_order			*ls_order_list_create_rec(t_input *input,
 	return (order_list);
 }
 
-static
-t_ls_order			*ls_order_list_create_plain(t_input *input,
+t_ls_order	*ls_order_list_create_plain(t_input *input,
 					t_ls_order *order_list)
 {
-	t_ls_order			*order_tmp;
-	t_ls_order			*order;
-	size_t 				i;
+	t_ls_order		*order_tmp;
+	t_ls_order		*order;
+	size_t			i;
 
 	ls_nullptr(input);
 	order_tmp = NULL;
@@ -237,14 +228,4 @@ t_ls_order			*ls_order_list_create_plain(t_input *input,
 		i++;
 	}
 	return (order_list);
-}
-
-t_ls_order			*ls_order_list_create(t_input *input)
-{
-	t_ls_order			*order_list;
-
-	order_list = NULL;
-	if (input->rec == TRUE)
-		return (ls_order_list_create_rec(input, order_list));
-	return (ls_order_list_create_plain(input, order_list));
 }

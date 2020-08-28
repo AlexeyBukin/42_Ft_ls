@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gekans <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/08/24 19:47:27 by gekans            #+#    #+#             */
+/*   Updated: 2020/08/24 19:47:33 by gekans           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
-int 	stat_needed(t_input *input)
+int				stat_needed(t_input *input)
 {
 	ls_nullptr(input);
 	if (input->list == TRUE || input->time_sort == TRUE)
@@ -29,7 +41,7 @@ t_entry			*entry_list_reverse(t_entry *temp)
 	return (reversed);
 }
 
-t_ls_order	*order_list_revert(t_ls_order *temp)
+t_ls_order		*order_list_revert(t_ls_order *temp)
 {
 	t_ls_order		*reversed;
 	t_ls_order		*to_do;
@@ -52,7 +64,7 @@ t_ls_order	*order_list_revert(t_ls_order *temp)
 	return (reversed);
 }
 
-int		main(int ac, char **av)
+int				main(int ac, char **av)
 {
 	t_input		input;
 	t_ls_order	*order_list;
@@ -60,13 +72,7 @@ int		main(int ac, char **av)
 
 	ft_bzero(&input, sizeof(t_input));
 	ls_flags(ac, av, &input);
-
 	ls_nullptr((order_list = ls_order_list_create(&input)));
-
-//
-//	ft_printf("\n------before sort:\n");
-//	print_order_list(order_list);
-
 	if (stat_needed(&input))
 		order_list_fill_stat(order_list, &input);
 
@@ -95,16 +101,9 @@ int		main(int ac, char **av)
 	}
 
 	order_list->next = list_second_elem;
-//	ft_printf("\n------after revert>\n");
-//	print_order_list(order_list);
-//	ft_printf("\n------after revert>\n");
-
 
 	ls_print(order_list, &input);
-
-//	print_order_list(order_list);
 	free_order_list(order_list);
 	free(input.order_names);
-
 	return (0);
 }
