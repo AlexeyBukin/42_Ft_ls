@@ -6,7 +6,7 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 16:31:44 by hush              #+#    #+#             */
-/*   Updated: 2020/08/28 03:29:15 by u18600003        ###   ########.fr       */
+/*   Updated: 2020/08/28 04:26:55 by u18600003        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,11 +149,11 @@ int			order_compare_time(void *order_1_void, void *order_2_void)
 			return (1);
 		return (0);
 	}
-	if (order_1->stat.st_mtime != order_2->stat.st_mtime)
-		return ((int)(order_1->stat.st_mtime - order_2->stat.st_mtime));
-	if (order_1->stat.st_mtime != order_2->stat.st_mtime)
-		return ((int)(order_1->stat.st_mtime - order_2->stat.st_mtime));
-	return (order_compare_alphabet(order_1_void, order_2_void));
+//	if (order_1->stat.st_mtime != order_2->stat.st_mtime)
+		return ((int)(order_1->stat.st_mtime - order_2->stat.st_mtime) * (-1));
+//	if (order_1->stat.st_mtime != order_2->stat.st_mtime)
+//		return ((int)(order_1->stat.st_mtime - order_2->stat.st_mtime));
+//	return (order_compare_alphabet(order_1_void, order_2_void));
 }
 
 int			entry_compare_alphabet(void* en_1_void, void* en_2_void)
@@ -190,11 +190,11 @@ int			entry_compare_time(void* en_1_void, void* en_2_void)
 			return (1);
 		return (0);
 	}
-	if (en_2->stat.st_mtime != en_1->stat.st_mtime)
+//	if (en_2->stat.st_mtime != en_1->stat.st_mtime)
 		return ((int)(en_2->stat.st_mtime - en_1->stat.st_mtime));
-	if (en_2->stat.st_mtime != en_1->stat.st_mtime)
-		return ((int)(en_2->stat.st_mtime - en_1->stat.st_mtime));
-	return (entry_compare_alphabet(en_1_void, en_2_void));
+//	if (en_2->stat.st_ctime != en_1->stat.st_ctime)
+//		return ((int)(en_2->stat.st_ctime - en_1->stat.st_ctime));
+//	return (entry_compare_alphabet(en_1_void, en_2_void));
 }
 
 t_ls_order	*ls_order_list_sort_alpha(t_ls_order *order_list)
@@ -232,11 +232,8 @@ t_ls_order	*ls_order_list_sort_time(t_ls_order *order_list)
 		}
 		tmp = tmp->next;
 	}
-//	ft_printf("here\n");
 	order_list = (t_ls_order*)sort_listable(
 			(t_listable*)order_list, order_compare_time);
-//	if (order_list == NULL)
-//		ft_printf("order_list inside sort time");
 	return (order_list);
 }
 

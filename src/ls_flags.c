@@ -6,7 +6,7 @@
 /*   By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 01:08:21 by kcharla           #+#    #+#             */
-/*   Updated: 2020/08/28 03:12:38 by u18600003        ###   ########.fr       */
+/*   Updated: 2020/08/28 03:12:56 by u18600003        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int					ls_enter_flag(char c, t_input *input)
 		input->time_sort = SORT_TIME_MOD;
 	else if (c == 'u')
 		input->time_sort = SORT_TIME_ACCESS;
-	else if (ft_strchr("1gf", c) == NULL)
+	else if (ft_strchr("1gf\\", c) == NULL)
 		ls_illegal_option(c);
 	return (LS_OK);
 }
