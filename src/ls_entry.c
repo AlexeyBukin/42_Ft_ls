@@ -27,6 +27,8 @@ t_entry				*ls_entry_create(t_dirent *dirent)
 	entry->size_str = NULL;
 	entry->link_num_str = NULL;
 	entry->entry_next = NULL;
+	entry->has_acl = FALSE;
+	entry->has_attr = FALSE;
 	return (entry);
 }
 

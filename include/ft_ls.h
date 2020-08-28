@@ -2,7 +2,9 @@
 # define FT_LS_H
 
 #include <sys/types.h>
+#include <sys/xattr.h>
 #include <sys/stat.h>
+#include <sys/acl.h>
 #include <dirent.h>
 #include <time.h>
 #include <pwd.h>
@@ -68,6 +70,13 @@ typedef enum		e_show
 	SHOW_HIDDEN
 }					t_show;
 
+typedef enum		e_ls_attr
+{
+	LS_ATTR_NO,
+	LS_ATTR_YES,
+	LS_ATTR_ACL
+}					t_ls_attr;
+
 //TODO implement -F fancy
 
 typedef struct		s_input
@@ -99,6 +108,7 @@ typedef struct		s_entry
 	char 			*group;
 	char 			*link_num_str;
 	char 			*size_str;
+	t_ls_attr		attr;
 }					t_entry;
 
 typedef struct		s_ls_order

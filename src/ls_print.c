@@ -6,7 +6,7 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 18:46:58 by hush              #+#    #+#             */
-/*   Updated: 2020/08/28 01:18:22 by u18600003        ###   ########.fr       */
+/*   Updated: 2020/08/28 03:02:09 by u18600003        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,10 @@ char	*ls_rwx(t_entry *entry, char *str_10)
 	str_10[7] = (entry->stat.st_mode & S_IROTH) ? 'r' : '-';
 	str_10[8] = (entry->stat.st_mode & S_IWOTH) ? 'w' : '-';
 	str_10[9] = (entry->stat.st_mode & S_IXOTH) ? 'x' : '-';
+	if (entry->attr == LS_ATTR_YES || entry->attr == LS_ATTR_ACL)
+		str_10[10] = (entry->attr == LS_ATTR_YES) ? '@' : '+';
+	else
+		str_10[10] = ' ';
 	return (str_10);
 }
 
@@ -77,10 +81,10 @@ void	ls_print_list(t_ls_order *order_list, t_input *input)
 {
 	t_bool		is_first;
 	t_entry		*entry;
-	char		str_rwx[11];
+	char		str_rwx[12];
 
 	(void)input;
-	str_rwx[10] = '\0';
+	str_rwx[11] = '\0';
 	ls_nullptr(order_list);
 	is_first = TRUE;
 	while (order_list != NULL)
@@ -130,7 +134,7 @@ void	ls_print_list(t_ls_order *order_list, t_input *input)
 				char * bytes_str = ft_strf_width(entry->size_str, max_len_size, ' ', FALSE);
 				char * ownername = ft_strf_width(entry->owner, max_len_owner, ' ', TRUE);
 				char * groupname = ft_strf_width(entry->group, max_len_group, ' ', TRUE);
-				ft_printf("%s  %s %s  %s  %s %s %s\n", str_rwx, links_str, ownername, groupname, bytes_str, time_str, entry->name);
+				ft_printf("%s %s %s  %s  %s %s %s\n", str_rwx, links_str, ownername, groupname, bytes_str, time_str, entry->name);
 				free(time_str);
 				free(links_str);
 				free(bytes_str);

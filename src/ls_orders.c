@@ -6,7 +6,7 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 01:00:57 by hush              #+#    #+#             */
-/*   Updated: 2020/08/28 01:38:47 by u18600003        ###   ########.fr       */
+/*   Updated: 2020/08/28 03:03:58 by u18600003        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,22 @@ void	entry_fill_link(t_entry *entry)
 {
 	char		buf[READLINK_BUF_SIZE + 1];
 	ssize_t		name_size;
+	char		*new_buf;
 
 	ls_nullptr(entry);
 	if (lstat(entry->full_name, &(entry->stat)) != 0)
 		ls_unknown_error(errno);
 	//TODO delete me
-	ft_printf("found link\n");
-	ft_printf("full name is %s\n", entry->full_name);
-
+//	ft_printf("found link\n");
+//	ft_printf("full name is %s\n", entry->full_name);
 //				ft_bzero(buf, READLINK_BUF_SIZE + 1);
+//	ft_printf("look, (%s) sized (%llu)!\n", new_buf, name_size);
+
 	if ((name_size = readlink(entry->full_name, buf, READLINK_BUF_SIZE)) < 0)
 		ls_unknown_error(1);
 	buf[name_size] = '\0';
-	char *new_buf = ft_strdup(buf);
-	ft_printf("look, (%s) sized (%llu)!\n", new_buf, name_size);
-
-	entry->name = ft_strjoin_3(entry->name, " -> ", new_buf);
+	ls_nullptr(new_buf = ft_strdup(buf));
+	ls_nullptr(entry->name = ft_strjoin_3(entry->name, " -> ", new_buf));
 }
 
 void	order_list_fill_stat(t_ls_order *order_list)
@@ -47,9 +47,6 @@ void	order_list_fill_stat(t_ls_order *order_list)
 		while (entry != NULL)
 		{
 			ls_nullptr((entry->full_name = ft_strjoin_3(order_list->name, "/", entry->name)));
-//			if (stat(entry->full_name, &(entry->stat)) != 0)
-//				ls_unknown_error(errno);
-
 			if (entry->dirent.d_type == DT_LNK)
 				entry_fill_link(entry);
 			else if (stat(entry->full_name, &(entry->stat)) != 0)
@@ -64,6 +61,27 @@ void	order_list_fill_stat(t_ls_order *order_list)
 				entry->group = ft_strdup(group->gr_name);
 			else
 				ls_unknown_error(errno);
+			//getting xattr aka '@' and acl aka '+'
+			ssize_t xattr = listxattr(entry->full_name, NULL, 0, XATTR_NOFOLLOW);
+			acl_entry_t dummy;
+
+			acl_t acl = NULL;
+			acl = acl_get_link_np(entry->full_name, ACL_TYPE_EXTENDED);
+			if (acl && acl_get_entry(acl, ACL_FIRST_ENTRY, &dummy) == -1) {
+				acl_free(acl);
+				acl = NULL;
+			}
+			if (xattr < 0)
+				xattr = 0;
+			entry->attr = LS_ATTR_NO;
+			if (xattr > 0)
+				entry->attr = LS_ATTR_YES;
+			else if (acl != NULL)
+				entry->attr = LS_ATTR_ACL;
+			else
+				entry->attr = LS_ATTR_NO;
+
+
 			entry = entry->entry_next;
 		}
 		order_list = order_list->next;
@@ -76,13 +94,14 @@ t_ls_order		*ls_order_malloc(char *order_name)
 	t_ls_order		*order;
 
 	ls_nullptr(order_name);
-	ls_nullptr((order = (t_ls_order*)malloc(sizeof(t_ls_order))));
+	ls_nullptr((order = (t_ls_order*)ft_memalloc(sizeof(t_ls_order))));
 	order->name = order_name;
-	order->next = NULL;
-	order->list = NULL;
-	order->list_size = 0;
-	order->error = 0;
-	order->is_dir = FALSE;
+	//memalloc() does bzero()...
+//	order->next = NULL;
+//	order->list = NULL;
+//	order->list_size = 0;
+//	order->error = 0;
+//	order->is_dir = FALSE;
 	return (order);
 }
 
@@ -93,7 +112,8 @@ t_ls_order		*ls_order_create(t_input *input, char *order_name)
 
 	ls_nullptr(input);
 	ls_nullptr((order = ls_order_malloc(order_name)));
-	if (stat(order_name, &(order->stat)) != 0)
+//	if (stat(order_name, &(order->stat)) != 0)
+	if (lstat(order_name, &(order->stat)) != 0)
 	{
 		if (errno == ENOENT)
 			order->error = E_LS_NO_SUCH_FILE;
@@ -102,10 +122,18 @@ t_ls_order		*ls_order_create(t_input *input, char *order_name)
 		else
 			ls_unknown_error(errno);
 	}
-	else if (!(order->stat.st_mode & S_IRUSR))
-		order->error = E_LS_PERMISSION_DENIED;
+//	else if (!(order->stat.st_mode & S_IRUSR))
+//		order->error = E_LS_PERMISSION_DENIED;
 	else if (S_ISDIR(order->stat.st_mode))
 	{
+//		if (!(S_ISLNK(order->stat.st_mode)))
+//		{
+//			order->is_dir = TRUE;
+//			order->list = ls_entry_list_create(input, order);
+//		}
+//		ft_printf("order-dir: %s\n", order->name);
+//		ft_printf("is-link: %i %i\n\n", S_ISLNK(order->stat.st_mode), (order->stat.st_mode & S_IFMT) == S_IFLNK);
+
 		order->is_dir = TRUE;
 		order->list = ls_entry_list_create(input, order);
 	}
