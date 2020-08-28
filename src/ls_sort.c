@@ -6,7 +6,7 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 16:31:44 by hush              #+#    #+#             */
-/*   Updated: 2020/08/22 20:02:37 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/08/28 03:29:15 by u18600003        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ t_listable	*merge_lists(t_listable *list_1, t_listable *list_2,
 {
 	t_listable		*merged;
 	t_listable		*tmp;
+//	int				cmp;
 
 	ls_nullptr(compare);
 	if (list_1 == NULL)

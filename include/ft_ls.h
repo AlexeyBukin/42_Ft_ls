@@ -47,7 +47,8 @@
 //#define DT_SOCK         12
 //#define DT_WHT          14
 
-# define LS_USAGE "usage: ft_ls [-Ralrt] [file ...]"
+//# define LS_USAGE "usage: ft_ls [-Ralrt] [file ...]"
+# define LS_USAGE "usage: ls [-@ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1%] [file ...]"
 
 typedef struct		dirent	t_dirent;
 typedef struct		stat	t_stat;

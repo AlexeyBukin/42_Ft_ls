@@ -6,7 +6,7 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 18:46:58 by hush              #+#    #+#             */
-/*   Updated: 2020/08/28 03:13:18 by u18600003        ###   ########.fr       */
+/*   Updated: 2020/08/28 03:32:43 by u18600003        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,11 +158,10 @@ void	ls_print_plain(t_ls_order *order_list, t_input *input)
 	{
 		if (is_first == FALSE)
 			ft_printf("\n");
-		is_first = FALSE;
 
 		if (order_list->error == 0)
 		{
-			if (input->order_num > 1 || input->rec == TRUE)
+			if (input->order_num > 1 || (input->rec == TRUE && is_first == FALSE))
 				ft_printf("%s:\n", order_list->name);
 			entry = order_list->list;
 			while (entry != NULL)
@@ -171,9 +170,11 @@ void	ls_print_plain(t_ls_order *order_list, t_input *input)
 				ft_printf("%s\n", entry->name);
 				entry = entry->entry_next;
 			}
-			if (order_list->list != NULL)
-				ft_printf("\n");
+//			if (order_list->list != NULL)
+//				ft_printf("\n");
 		}
+
+		is_first = FALSE;
 		order_list = order_list->next;
 	}
 }
