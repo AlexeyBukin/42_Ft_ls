@@ -28,22 +28,11 @@ void	print_order_list(t_ls_order *order_list)
 	}
 }
 
-//void	print_flags(t_input *input)
-//{
-//	ft_printf("R = %c\n", input->rec + '0');
-//	ft_printf("a = %c\n", input->show + '0');
-//	ft_printf("l = %c\n", input->list + '0');
-//	ft_printf("r = %c\n", input->rev + '0');
-//	ft_printf("t = %c\n", input->time_sort + '0');
-//}
-
 char	*ls_rwx(t_entry *entry, char *str_10)
 {
 	if (entry == NULL || str_10 == NULL)
 		return (NULL);
 
-//	if (S_ISDIR(entry->stat.st_mode))
-//		str_10[0] = 'u';
 	if (S_ISFIFO(entry->stat.st_mode))
 		str_10[0] = 'p';
 	else if (S_ISCHR(entry->stat.st_mode))
@@ -85,7 +74,6 @@ void	ls_print_list(t_ls_order *order_list, t_input *input)
 	t_entry		*entry;
 	char		str_rwx[12];
 
-	(void)input;
 	str_rwx[11] = '\0';
 	ls_nullptr(order_list);
 	is_first = TRUE;

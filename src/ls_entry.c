@@ -41,8 +41,7 @@ t_entry			*ls_entry_list_create(t_input *input, t_ls_order *order)
 	ls_nullptr(input);
 	entry_list = NULL;
 	entry = NULL;
-	order->dir = opendir(order->name);
-	ls_nullptr(order->dir);
+	ls_nullptr(order->dir = opendir(order->name));
 	order->list_size = 0;
 	while ((dir_ent = readdir(order->dir)) != NULL)
 	{

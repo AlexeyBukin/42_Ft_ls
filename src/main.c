@@ -95,10 +95,6 @@ int		main(int ac, char **av)
 	}
 
 	order_list->next = list_second_elem;
-//	ft_printf("\n------after revert>\n");
-//	print_order_list(order_list);
-//	ft_printf("\n------after revert>\n");
-
 
 	ls_print(order_list, &input);
 

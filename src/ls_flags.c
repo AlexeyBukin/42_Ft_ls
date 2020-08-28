@@ -67,18 +67,9 @@ t_bool				arg_is_double_dash(char *arg)
 	return (FALSE);
 }
 
-//static
-//t_bool				arg_is_dot(char *arg)
-//{
-//	if (arg[0] == '.')
-//		if (arg[1] == '\0')
-//			return (TRUE);
-//	return (FALSE);
-//}
-
-static
-void				ls_check_arg(char *arg, t_bool *flags_done, t_input *input) {
-	size_t j;
+void		ls_check_arg(char *arg, t_bool *flags_done, t_input *input)
+{
+	size_t		j;
 
 	ls_nullptr(arg);
 	ls_nullptr(flags_done);

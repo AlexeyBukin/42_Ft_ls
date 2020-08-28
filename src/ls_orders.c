@@ -87,19 +87,13 @@ void	order_list_fill_stat(t_ls_order *order_list, t_input *input)
 }
 
 static
-t_ls_order		*ls_order_malloc(char *order_name)
+t_ls_order	*ls_order_malloc(char *order_name)
 {
 	t_ls_order		*order;
 
 	ls_nullptr(order_name);
 	ls_nullptr((order = (t_ls_order*)ft_memalloc(sizeof(t_ls_order))));
 	order->name = order_name;
-	//memalloc() does bzero()...
-//	order->next = NULL;
-//	order->list = NULL;
-//	order->list_size = 0;
-//	order->error = 0;
-//	order->is_dir = FALSE;
 	return (order);
 }
 
