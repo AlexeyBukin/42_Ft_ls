@@ -13,15 +13,54 @@
 #ifndef FT_LS_H
 # define FT_LS_H
 
-# include <sys/types.h>
-# include <sys/stat.h>
-# include <dirent.h>
-# include <time.h>
-# include <pwd.h>
-# include <grp.h>
-# include <errno.h>
-# include "libft.h"
-# define LS_USAGE "usage: ft_ls [-Ralrt] [file ...]"
+#include <sys/types.h>
+#include <sys/xattr.h>
+#include <sys/stat.h>
+#include <sys/acl.h>
+#include <dirent.h>
+#include <time.h>
+#include <pwd.h>
+#include <grp.h>
+#include <errno.h>
+#include "libft.h"
+
+//typedef struct _dirdesc {
+//	int	dd_fd;		/* file descriptor associated with directory */
+//	long	dd_loc;		/* offset in current buffer */
+//	long	dd_size;	/* amount of data returned by getdirentries */
+//	char	*dd_buf;	/* data buffer */
+//	int	dd_len;		/* size of data buffer */
+//	long	dd_seek;	/* magic cookie returned by getdirentries */
+//	long	dd_rewind;	/* magic cookie for rewinding */
+//	int	dd_flags;	/* flags for readdir */
+//	pthread_mutex_t	dd_lock; /* for thread locking */
+//	struct _telldir *dd_td;	/* telldir position recording */
+//} DIR;
+
+//struct dirent { /* when _DARWIN_FEATURE_64_BIT_INODE is defined */
+//	ino_t      d_fileno;     /* file number of entry */
+//	__uint16_t d_seekoff;    /* seek offset (optional, used by servers) */
+//	__uint16_t d_reclen;     /* length of this record */
+//	__uint16_t d_namlen;     /* length of string in d_name */
+//	__uint8_t  d_type;       /* file type, see below */
+//	char    d_name[1024];    /* name must be no longer than this */
+//};
+
+//      *
+//      * File types [d_type]
+//      */
+//#define DT_UNKNOWN       0
+//#define DT_FIFO          1
+//#define DT_CHR           2
+//#define DT_DIR           4
+//#define DT_BLK           6
+//#define DT_REG           8
+//#define DT_LNK          10
+//#define DT_SOCK         12
+//#define DT_WHT          14
+
+//# define LS_USAGE "usage: ft_ls [-Ralrt] [file ...]"
+# define LS_USAGE "usage: ls [-@ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1%] [file ...]"
 
 typedef struct dirent	t_dirent;
 typedef struct stat	t_stat;
@@ -42,6 +81,15 @@ typedef enum		e_show
 	SHOW_HIDDEN
 }					t_show;
 
+typedef enum		e_ls_attr
+{
+	LS_ATTR_NO,
+	LS_ATTR_YES,
+	LS_ATTR_ACL
+}					t_ls_attr;
+
+//TODO implement -F fancy
+
 typedef struct		s_input
 {
 	char			**order_names;
@@ -52,7 +100,7 @@ typedef struct		s_input
 	t_bool			list;
 	t_sort_time		time_sort;
 	t_bool			fancy;
-	t_bool			current_dir;
+	time_t			time_now;
 }					t_input;
 
 typedef struct		s_listable
@@ -67,11 +115,11 @@ typedef struct		s_entry
 	char			*full_name;
 	t_dirent		dirent;
 	t_stat			stat;
-	char			*owner;
-	char			*group;
-	char			*link_num_str;
-	char			*size_str;
-
+	char 			*owner;
+	char 			*group;
+	char 			*link_num_str;
+	char 			*size_str;
+	t_ls_attr		attr;
 }					t_entry;
 
 typedef struct		s_ls_order
@@ -139,8 +187,16 @@ void				ls_print(t_ls_order *order_list, t_input *input);
 int					ls_print_short(t_entry **entries, t_input *input);
 int					ls_print_long(t_entry **entries, t_input *input);
 t_entry				*ls_entry_list_create(t_input *input, t_ls_order *order);
+t_entry				*ls_entry_nameonly(char *name);
 t_ls_order			*ls_order_list_create(t_input *input);
-void				order_list_fill_stat(t_ls_order *order_list);
+
+void				order_list_fill_stat(t_ls_order *order_list, t_input *input);
+//void				order_list_fill_stat(t_ls_order *order_list);
+
+/*
+** ls_sort.c
+*/
+
 t_ls_order			*ls_entry_list_sort(t_entry *entry_list, t_input *input);
 t_ls_order			*ls_order_list_sort(t_ls_order *order_list, t_input *input);
 void				free_order_list(t_ls_order *order_list);

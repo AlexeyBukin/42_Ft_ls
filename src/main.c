@@ -68,17 +68,40 @@ int				main(int ac, char **av)
 {
 	t_input		input;
 	t_ls_order	*order_list;
+	t_ls_order	*list_second_elem;
 
 	ft_bzero(&input, sizeof(t_input));
 	ls_flags(ac, av, &input);
 	ls_nullptr((order_list = ls_order_list_create(&input)));
 	if (stat_needed(&input))
-		order_list_fill_stat(order_list);
+		order_list_fill_stat(order_list, &input);
+
+//	ft_printf("main\n");
+	//print_order_list(order_list);
+//	ft_printf("\n------after sort:\n");
+
+	list_second_elem = order_list->next;
+	order_list->next = NULL;
+
+	//sorting
 	ls_nullptr((order_list = ls_order_list_sort(order_list, &input)));
+	if (list_second_elem != NULL)
+		ls_nullptr((list_second_elem = ls_order_list_sort(list_second_elem, &input)));
+
+//	ft_printf("\n------after sort:\n");
+//	print_order_list(order_list);
+
+
+	//reverting
 	if (input.rev == TRUE)
 	{
 		ls_nullptr(order_list = order_list_revert(order_list));
+		if (list_second_elem != NULL)
+			ls_nullptr(list_second_elem = order_list_revert(list_second_elem));
 	}
+
+	order_list->next = list_second_elem;
+
 	ls_print(order_list, &input);
 	free_order_list(order_list);
 	free(input.order_names);

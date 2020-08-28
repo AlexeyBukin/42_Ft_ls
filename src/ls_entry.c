@@ -6,7 +6,7 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 01:33:37 by hush              #+#    #+#             */
-/*   Updated: 2020/08/23 03:19:35 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/08/28 06:34:44 by u18600003        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_entry			*ls_entry_create(t_dirent *dirent)
 	t_entry		*entry;
 
 	ls_nullptr(dirent);
-	entry = (t_entry*)malloc(sizeof(t_entry));
+	entry = (t_entry*)ft_memalloc(sizeof(t_entry));
 	ls_nullptr(entry);
 	entry->dirent = *dirent;
 	entry->name = entry->dirent.d_name;
@@ -27,6 +27,7 @@ t_entry			*ls_entry_create(t_dirent *dirent)
 	entry->size_str = NULL;
 	entry->link_num_str = NULL;
 	entry->entry_next = NULL;
+	entry->attr = LS_ATTR_NO;
 	return (entry);
 }
 
@@ -61,4 +62,23 @@ t_entry			*ls_entry_list_create(t_input *input, t_ls_order *order)
 	}
 	closedir(order->dir);
 	return (entry_list);
+}
+
+t_entry				*ls_entry_nameonly(char *name)
+{
+	t_entry			*entry;
+
+	ls_nullptr(name);
+	entry = (t_entry*)ft_memalloc(sizeof(t_entry));
+	ls_nullptr(entry);
+	entry->dirent.d_type = DT_REG;
+	entry->name = name;
+	entry->full_name = NULL;//ft_strdup(name);
+	entry->group = NULL;
+	entry->owner = NULL;
+	entry->size_str = NULL;
+	entry->link_num_str = NULL;
+	entry->entry_next = NULL;
+	entry->attr = LS_ATTR_NO;
+	return (entry);
 }

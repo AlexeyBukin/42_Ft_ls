@@ -18,10 +18,20 @@ void	ls_unknown_error(int err_id)
 	exit(0);
 }
 
+/*
+** replacing 'e' with illegal option c
+** writing to error stream
+*/
+
 void	ls_illegal_option(char c)
 {
-	ft_printf("ft_ls: illegal option -- %c\n%s\n", c, LS_USAGE);
-	exit(0);
+	char		*str;
+
+	str = ft_strdup("/bin/ls: illegal option -- e\n"LS_USAGE"\n");
+	str[27] = c;
+	ft_putstr_fd(str, 2);
+	ft_free(str);
+	exit(1);
 }
 
 void	ls_nullptr(const void *ptr)

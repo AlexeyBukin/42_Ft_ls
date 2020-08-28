@@ -6,7 +6,7 @@
 /*   By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 01:08:21 by kcharla           #+#    #+#             */
-/*   Updated: 2020/08/22 18:15:00 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/08/28 06:51:33 by u18600003        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int			ls_enter_flag(char c, t_input *input)
 		input->time_sort = SORT_TIME_MOD;
 	else if (c == 'u')
 		input->time_sort = SORT_TIME_ACCESS;
-	else
+	else if (ft_strchr("1gf\\", c) == NULL)
 		ls_illegal_option(c);
 	return (LS_OK);
 }
@@ -64,14 +64,6 @@ t_bool		arg_is_double_dash(char *arg)
 	return (FALSE);
 }
 
-t_bool		arg_is_dot(char *arg)
-{
-	if (arg[0] == '.')
-		if (arg[1] == '\0')
-			return (TRUE);
-	return (FALSE);
-}
-
 void		ls_check_arg(char *arg, t_bool *flags_done, t_input *input)
 {
 	size_t		j;
@@ -79,15 +71,6 @@ void		ls_check_arg(char *arg, t_bool *flags_done, t_input *input)
 	ls_nullptr(arg);
 	ls_nullptr(flags_done);
 	ls_nullptr(input);
-	if (arg_is_dot(arg))
-	{
-		if (input->order_num == 0)
-			input->current_dir = TRUE;
-		else
-			input->current_dir = FALSE;
-	}
-	else
-		input->current_dir = FALSE;
 	if (arg_is_double_dash(arg))
 		*flags_done = TRUE;
 	else if (arg[0] != '-' || *flags_done == TRUE)
@@ -99,3 +82,28 @@ void		ls_check_arg(char *arg, t_bool *flags_done, t_input *input)
 			ls_enter_flag(arg[j++], input);
 	}
 }
+
+void				ls_flags(int ac, char **av, t_input *input)
+{
+	t_bool			flags_done;
+	size_t			i;
+
+	ls_nullptr(input);
+	ls_nullptr(av);
+	i = 0;
+	flags_done = FALSE;
+	input->order_names = (char**)malloc(sizeof(char*) * 2);
+	ls_nullptr(input->order_names);
+	input->order_names[0] = NULL;
+	input->order_num = 0;
+	while ((int)++i < ac)
+	{
+		ls_check_arg(av[i], &flags_done, input);
+	}
+	if (input->order_num == 0)
+	{
+		ls_add_order_name(input, ".");
+	}
+	input->time_now = time(NULL);
+}
+
