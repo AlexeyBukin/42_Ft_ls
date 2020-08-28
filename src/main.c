@@ -54,8 +54,6 @@ t_ls_order	*order_list_revert(t_ls_order *temp)
 
 int		main(int ac, char **av)
 {
-//	size_t		i = 0;
-
 	t_input		input;
 	t_ls_order	*order_list;
 	t_ls_order	*list_second_elem;

@@ -164,6 +164,7 @@ int 				ls_print_short(t_entry **entries, t_input *input);
 int 				ls_print_long(t_entry **entries, t_input *input);
 
 t_entry				*ls_entry_list_create(t_input *input, t_ls_order *order);
+t_entry				*ls_entry_nameonly(char *name);
 t_ls_order			*ls_order_list_create(t_input *input);
 
 void				order_list_fill_stat(t_ls_order *order_list, t_input *input);

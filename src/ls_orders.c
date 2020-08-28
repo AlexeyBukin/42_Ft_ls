@@ -6,13 +6,14 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 01:00:57 by hush              #+#    #+#             */
-/*   Updated: 2020/08/28 04:41:14 by u18600003        ###   ########.fr       */
+/*   Updated: 2020/08/28 06:34:36 by u18600003        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
 #define READLINK_BUF_SIZE 1023
+
 void	entry_fill_link(t_entry *entry, t_input *input)
 {
 	char		buf[READLINK_BUF_SIZE + 1];
@@ -43,7 +44,10 @@ void	order_list_fill_stat(t_ls_order *order_list, t_input *input)
 		entry = order_list->list;
 		while (entry != NULL)
 		{
-			ls_nullptr((entry->full_name = ft_strjoin_3(order_list->name, "/", entry->name)));
+			if (order_list->is_dir == FALSE)
+				ls_nullptr((entry->full_name = ft_strdup(entry->name)));
+			else
+				ls_nullptr((entry->full_name = ft_strjoin_3(order_list->name, "/", entry->name)));
 			if (entry->dirent.d_type == DT_LNK)
 				entry_fill_link(entry, input);
 			else if (stat(entry->full_name, &(entry->stat)) != 0)
@@ -122,6 +126,10 @@ t_ls_order		*ls_order_create(t_input *input, char *order_name)
 		order->is_dir = TRUE;
 		order->list = ls_entry_list_create(input, order);
 	}
+	else
+	{
+		order->list = ls_entry_nameonly(order_name);
+	}
 	if (order->error == E_LS_NO_SUCH_FILE)
 		ft_printf("ft_ls: %s: No such file or directory\n", order_name);
 	return (order);
@@ -196,14 +204,36 @@ t_ls_order			*ls_order_list_create_plain(t_input *input,
 	while (i < input->order_num)
 	{
 		ls_nullptr((order = ls_order_create(input, input->order_names[i])));
+
 		if (order_list != NULL)
 		{
-			if (order_tmp == NULL)
-				order_tmp = order_list;
-			order_tmp->next = order;
+			if (order->is_dir == FALSE)
+			{
+				if (order_list->is_dir == FALSE)
+				{
+					order->list->entry_next = order_list->list;
+					order_list->list = order->list;
+					order->list = NULL;
+					free_order_list(order);
+				}
+				else
+				{
+					order->next = order_list;
+					order_list = order;
+				}
+			}
+			else
+			{
+				order_tmp->next = order;
+				order_tmp = order;
+			}
 		}
 		else
+		{
+			order_tmp = order;
 			order_list = order;
+		}
+
 		i++;
 	}
 	return (order_list);

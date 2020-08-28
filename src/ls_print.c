@@ -6,27 +6,27 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 18:46:58 by hush              #+#    #+#             */
-/*   Updated: 2020/08/28 03:32:43 by u18600003        ###   ########.fr       */
+/*   Updated: 2020/08/28 06:35:32 by u18600003        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-//void	print_order_list(t_ls_order *order_list)
-//{
-//	t_ls_order *tmp_ord = order_list;
-//	while (tmp_ord != NULL)
-//	{
-//		ft_printf("main dir : %s, p=%p, next=%p\n", tmp_ord->name, tmp_ord, tmp_ord->next);
-//		t_entry *temp = tmp_ord->list;
-//		while (temp != NULL)
-//		{
-//			ft_printf("     ent : \'%20s\', p=%p, next=%p\n", temp->name, temp, temp->entry_next);
-//			temp = temp->entry_next;
-//		}
-//		tmp_ord = tmp_ord->next;
-//	}
-//}
+void	print_order_list(t_ls_order *order_list)
+{
+	t_ls_order *tmp_ord = order_list;
+	while (tmp_ord != NULL)
+	{
+		ft_printf("main dir : %s, p=%p, next=%p\n", tmp_ord->name, tmp_ord, tmp_ord->next);
+		t_entry *temp = tmp_ord->list;
+		while (temp != NULL)
+		{
+			ft_printf("     ent : \'%20s\', p=%p, next=%p\n", temp->name, temp, temp->entry_next);
+			temp = temp->entry_next;
+		}
+		tmp_ord = tmp_ord->next;
+	}
+}
 
 //void	print_flags(t_input *input)
 //{
@@ -42,23 +42,23 @@ char	*ls_rwx(t_entry *entry, char *str_10)
 	if (entry == NULL || str_10 == NULL)
 		return (NULL);
 
-	if (entry->dirent.d_type == DT_UNKNOWN)
-		str_10[0] = 'u';
-	else if (entry->dirent.d_type == DT_FIFO)
+//	if (S_ISDIR(entry->stat.st_mode))
+//		str_10[0] = 'u';
+	if (S_ISFIFO(entry->stat.st_mode))
 		str_10[0] = 'p';
-	else if (entry->dirent.d_type == DT_CHR)
+	else if (S_ISCHR(entry->stat.st_mode))
 		str_10[0] = 'c';
-	else if (entry->dirent.d_type == DT_DIR)
+	else if (S_ISDIR(entry->stat.st_mode))
 		str_10[0] = 'd';
-	else if (entry->dirent.d_type == DT_BLK)
+	else if (S_ISBLK(entry->stat.st_mode))
 		str_10[0] = 'b';
-	else if (entry->dirent.d_type == DT_REG)
+	else if (S_ISREG(entry->stat.st_mode))
 		str_10[0] = '-';
-	else if (entry->dirent.d_type == DT_LNK)
+	else if (S_ISLNK(entry->stat.st_mode))
 		str_10[0] = 'l';
-	else if (entry->dirent.d_type == DT_SOCK)
+	else if (S_ISSOCK(entry->stat.st_mode))
 		str_10[0] = 's';
-	else if (entry->dirent.d_type == DT_WHT)
+	else if (S_ISWHT(entry->stat.st_mode))
 		str_10[0] = 'w';
 
 	str_10[1] = (entry->stat.st_mode & S_IRUSR) ? 'r' : '-';
@@ -93,7 +93,7 @@ void	ls_print_list(t_ls_order *order_list, t_input *input)
 		{
 			if (is_first == FALSE)
 				ft_printf("\n");
-			if (input->order_num > 1 || (input->rec == TRUE && is_first == FALSE))
+			if ((input->order_num > 1 || (input->rec == TRUE && is_first == FALSE)) && order_list->is_dir == TRUE)
 				ft_printf("%s:\n", order_list->name);
 			is_first = FALSE;
 			//biggest user str size
@@ -123,7 +123,7 @@ void	ls_print_list(t_ls_order *order_list, t_input *input)
 				dirsize += entry->stat.st_blocks;
 				entry = entry->entry_next;
 			}
-			if (order_list->list != NULL)
+			if (order_list->list != NULL && order_list->is_dir == TRUE)
 				ft_printf("total %llu\n", dirsize);
 			entry = order_list->list;
 			while (entry != NULL)
@@ -158,22 +158,17 @@ void	ls_print_plain(t_ls_order *order_list, t_input *input)
 	{
 		if (is_first == FALSE)
 			ft_printf("\n");
-
 		if (order_list->error == 0)
 		{
-			if (input->order_num > 1 || (input->rec == TRUE && is_first == FALSE))
+			if ((input->order_num > 1 || (input->rec == TRUE && is_first == FALSE)) && order_list->is_dir == TRUE)
 				ft_printf("%s:\n", order_list->name);
 			entry = order_list->list;
 			while (entry != NULL)
 			{
-//				ft_printf("%s  ", entry->name);
 				ft_printf("%s\n", entry->name);
 				entry = entry->entry_next;
 			}
-//			if (order_list->list != NULL)
-//				ft_printf("\n");
 		}
-
 		is_first = FALSE;
 		order_list = order_list->next;
 	}
