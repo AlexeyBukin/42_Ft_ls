@@ -6,7 +6,7 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 18:46:58 by hush              #+#    #+#             */
-/*   Updated: 2020/08/28 06:35:32 by u18600003        ###   ########.fr       */
+/*   Updated: 2020/08/28 07:04:35 by u18600003        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ char	*ls_rwx(t_entry *entry, char *str_10)
 	return (str_10);
 }
 
+#define SIX_MONTH_IN_SECONDS 15552000
+
 void	ls_print_list(t_ls_order *order_list, t_input *input)
 {
 	t_bool		is_first;
@@ -129,7 +131,13 @@ void	ls_print_list(t_ls_order *order_list, t_input *input)
 			while (entry != NULL)
 			{
 				ls_nullptr((ls_rwx(entry, str_rwx)));
-				char * time_str = ft_strsub(ctime(&entry->stat.st_mtime), 4, 12);
+				char * time_str;
+				if (input->time_now - entry->stat.st_mtime < SIX_MONTH_IN_SECONDS)
+					time_str = ft_strsub(ctime(&entry->stat.st_mtime), 4, 12);
+				else
+					time_str = ft_strjoin_free(ft_strsub(ctime(&entry->stat.st_mtime), 4, 7),
+								ft_strsub(ctime(&entry->stat.st_mtime), 19, 5));
+//				char * time_str = ft_strsub(ctime(&entry->stat.st_mtime), 4, 12);
 				char * links_str = ft_strf_width(entry->link_num_str, max_len_links, ' ', FALSE);
 				char * bytes_str = ft_strf_width(entry->size_str, max_len_size, ' ', FALSE);
 				char * ownername = ft_strf_width(entry->owner, max_len_owner, ' ', TRUE);

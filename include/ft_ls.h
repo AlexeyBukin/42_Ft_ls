@@ -90,7 +90,7 @@ typedef struct		s_input
 	t_bool			list;
 	t_sort_time		time_sort;
 	t_bool			fancy;
-	t_bool			current_dir;
+	time_t			time_now;
 }					t_input;
 
 typedef struct		s_listable
