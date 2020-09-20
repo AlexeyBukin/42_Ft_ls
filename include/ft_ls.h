@@ -49,6 +49,7 @@
 
 //# define LS_USAGE "usage: ft_ls [-Ralrt] [file ...]"
 # define LS_USAGE "usage: ls [-@ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1%] [file ...]"
+# define SIX_MONTH_IN_SECONDS 15552000
 
 typedef struct		dirent	t_dirent;
 typedef struct		stat	t_stat;

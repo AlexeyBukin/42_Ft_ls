@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/09/20 16:22:39 by kcharla           #+#    #+#             */
+/*   Updated: 2020/09/20 16:24:17 by kcharla          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
-int 	stat_needed(t_input *input)
+int				stat_needed(t_input *input)
 {
 	ls_nullptr(input);
 	if (input->list == TRUE || input->time_sort == TRUE)
@@ -29,7 +41,7 @@ t_entry			*entry_list_reverse(t_entry *temp)
 	return (reversed);
 }
 
-t_ls_order	*order_list_revert(t_ls_order *temp)
+t_ls_order		*order_list_revert(t_ls_order *temp)
 {
 	t_ls_order		*reversed;
 	t_ls_order		*to_do;
@@ -52,55 +64,36 @@ t_ls_order	*order_list_revert(t_ls_order *temp)
 	return (reversed);
 }
 
-int		main(int ac, char **av)
+int				main(int ac, char **av)
 {
 	t_input		input;
 	t_ls_order	*order_list;
-	t_ls_order	*list_second_elem;
+	t_ls_order	*second_elem;
 
 	ft_bzero(&input, sizeof(t_input));
 	ls_flags(ac, av, &input);
-
 	ls_nullptr((order_list = ls_order_list_create(&input)));
-
-//
-//	ft_printf("\n------before sort:\n");
-//	print_order_list(order_list);
-
 	if (stat_needed(&input))
 		order_list_fill_stat(order_list, &input);
-
-//	ft_printf("main\n");
-	//print_order_list(order_list);
-//	ft_printf("\n------after sort:\n");
-
-	list_second_elem = order_list->next;
+	second_elem = order_list->next;
 	order_list->next = NULL;
-
-	//sorting
 	ls_nullptr((order_list = ls_order_list_sort(order_list, &input)));
-	if (list_second_elem != NULL)
-		ls_nullptr((list_second_elem = ls_order_list_sort(list_second_elem, &input)));
-
-//	ft_printf("\n------after sort:\n");
-//	print_order_list(order_list);
-
-
-	//reverting
+	if (second_elem != NULL)
+		ls_nullptr((second_elem = ls_order_list_sort(second_elem, &input)));
 	if (input.rev == TRUE)
 	{
 		ls_nullptr(order_list = order_list_revert(order_list));
-		if (list_second_elem != NULL)
-			ls_nullptr(list_second_elem = order_list_revert(list_second_elem));
+		if (second_elem != NULL)
+			ls_nullptr(second_elem = order_list_revert(second_elem));
 	}
-
-	order_list->next = list_second_elem;
-
+	order_list->next = second_elem;
 	ls_print(order_list, &input);
-
-//	print_order_list(order_list);
 	free_order_list(order_list);
 	free(input.order_names);
-
 	return (0);
 }
+
+/*
+**  ft_printf("\n------before sort:\n");
+**	print_order_list(order_list);
+*/

@@ -10,16 +10,11 @@ project(ft_ls)
 
 #TODO change makefile, laggyy when make
 
-# find src -type f -name '*.c' | sed "s/^/        /"
+# find src -type f -name '*.c' | sed "s/^/       /" | sort | column -c 100
 set(SOURCES
-        src/main.c
-        src/ls_flags.c
-        src/ls_entry.c
-        src/ls_errors.c
-        src/ls_orders.c
-        src/ls_sort.c
-        src/ls_free.c
-        src/ls_print.c
+        src/ls_debug.c          src/ls_flags.c          src/ls_print.c
+        src/ls_entry.c          src/ls_free.c           src/ls_sort.c
+        src/ls_errors.c         src/ls_orders.c         src/main.c
         )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

@@ -6,7 +6,7 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 01:00:57 by hush              #+#    #+#             */
-/*   Updated: 2020/08/28 06:34:36 by u18600003        ###   ########.fr       */
+/*   Updated: 2020/09/20 16:20:07 by kcharla          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ t_ls_order	*ls_order_malloc(char *order_name)
 	ls_nullptr(order_name);
 	ls_nullptr((order = (t_ls_order*)ft_memalloc(sizeof(t_ls_order))));
 	order->name = order_name;
+	order->is_dir = FALSE;
 	return (order);
 }
 
@@ -205,7 +206,10 @@ t_ls_order			*ls_order_list_create_plain(t_input *input,
 			{
 				if (order_list->is_dir == FALSE)
 				{
-					order->list->entry_next = order_list->list;
+					if (order->list)
+						order->list->entry_next = order_list->list;
+					else
+						order->list = order_list->list;
 					order_list->list = order->list;
 					order->list = NULL;
 					free_order_list(order);
