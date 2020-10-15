@@ -6,7 +6,7 @@
 /*   By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 16:22:39 by kcharla           #+#    #+#             */
-/*   Updated: 2020/09/20 16:24:17 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/10/15 20:29:54 by kcharla          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,9 @@ int				main(int ac, char **av)
 	ft_bzero(&input, sizeof(t_input));
 	ls_flags(ac, av, &input);
 	ls_nullptr((order_list = ls_order_list_create(&input)));
+
+	ls_nullptr((order_list = ls_order_list_arrange(order_list)));
+
 	if (stat_needed(&input))
 		order_list_fill_stat(order_list, &input);
 	second_elem = order_list->next;

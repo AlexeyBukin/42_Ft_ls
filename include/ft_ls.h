@@ -51,6 +51,8 @@
 # define LS_USAGE "usage: ls [-@ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1%] [file ...]"
 # define SIX_MONTH_IN_SECONDS 15552000
 
+#define READLINK_BUF_SIZE 1023
+
 typedef struct		dirent	t_dirent;
 typedef struct		stat	t_stat;
 typedef struct		passwd	t_passwd;
@@ -166,7 +168,14 @@ int 				ls_print_long(t_entry **entries, t_input *input);
 
 t_entry				*ls_entry_list_create(t_input *input, t_ls_order *order);
 t_entry				*ls_entry_nameonly(char *name);
+t_ls_order			*ls_order_malloc(char *order_name);
 t_ls_order			*ls_order_list_create(t_input *input);
+
+/*
+** ls_order_arrange.c
+*/
+
+t_ls_order			*ls_order_list_arrange(t_ls_order *order_list);
 
 void				order_list_fill_stat(t_ls_order *order_list, t_input *input);
 //void				order_list_fill_stat(t_ls_order *order_list);

@@ -6,15 +6,13 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 01:00:57 by hush              #+#    #+#             */
-/*   Updated: 2020/09/20 16:20:07 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/10/15 16:55:10 by kcharla          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-#define READLINK_BUF_SIZE 1023
-
-void	entry_fill_link(t_entry *entry, t_input *input)
+void			entry_fill_link(t_entry *entry, t_input *input)
 {
 	char		buf[READLINK_BUF_SIZE + 1];
 	ssize_t		name_size;
@@ -30,10 +28,9 @@ void	entry_fill_link(t_entry *entry, t_input *input)
 		buf[name_size] = '\0';
 		ls_nullptr(entry->name = ft_strjoin_3(entry->name, " -> ", buf));
 	}
-
 }
 
-void	order_list_fill_stat(t_ls_order *order_list, t_input *input)
+void			order_list_fill_stat(t_ls_order *order_list, t_input *input)
 {
 	t_passwd	*passwd;
 	t_group		*group;
@@ -86,8 +83,7 @@ void	order_list_fill_stat(t_ls_order *order_list, t_input *input)
 	}
 }
 
-static
-t_ls_order	*ls_order_malloc(char *order_name)
+t_ls_order		*ls_order_malloc(char *order_name)
 {
 	t_ls_order		*order;
 
@@ -139,7 +135,7 @@ t_ls_order		*ls_order_create_rec(t_input *input, char *order_name)
 
 	ls_nullptr((order_rec = ls_order_create(input, order_name)));
 	if (order_rec->is_dir == FALSE)
-		return (NULL);
+		return (order_rec);
 	order = order_rec;
 	entry = order->list;
 	while (entry != NULL)
@@ -157,7 +153,7 @@ t_ls_order		*ls_order_create_rec(t_input *input, char *order_name)
 }
 
 static
-t_ls_order			*ls_order_list_create_rec(t_input *input,
+t_ls_order		*ls_order_list_create_rec(t_input *input,
 					t_ls_order *order_list)
 {
 	t_ls_order			*order_tmp;
@@ -186,7 +182,7 @@ t_ls_order			*ls_order_list_create_rec(t_input *input,
 }
 
 static
-t_ls_order			*ls_order_list_create_plain(t_input *input,
+t_ls_order		*ls_order_list_create_plain(t_input *input,
 					t_ls_order *order_list)
 {
 	t_ls_order			*order_tmp;
@@ -237,7 +233,7 @@ t_ls_order			*ls_order_list_create_plain(t_input *input,
 	return (order_list);
 }
 
-t_ls_order			*ls_order_list_create(t_input *input)
+t_ls_order		*ls_order_list_create(t_input *input)
 {
 	t_ls_order			*order_list;
 

@@ -17,14 +17,12 @@ t_listable	*merge_lists(t_listable *list_1, t_listable *list_2,
 {
 	t_listable		*merged;
 	t_listable		*tmp;
-//	int				cmp;
 
 	ls_nullptr(compare);
 	if (list_1 == NULL)
 		return (list_2);
 	if (list_2 == NULL)
 		return (list_1);
-
 	if (compare(list_1, list_2) < 0)
 	{
 		merged = list_1;
@@ -75,7 +73,6 @@ t_listable	*sort_listable(t_listable *list, int (compare)(void*, void*))
 		list = list->next;
 		stack[pos]->next = NULL;
 		pos++;
-
 		while ((pos > 1) && (levels[pos - 1] == levels[pos - 2]))
 		{
 			stack[pos - 2] = merge_lists(stack[pos - 2], stack[pos - 1], compare);
