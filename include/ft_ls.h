@@ -186,8 +186,26 @@ void				order_list_fill_stat(t_ls_order *order_list, t_input *input);
 ** ls_sort.c
 */
 
+# define LS_SORT_DEPTH 32
+
 t_ls_order			*ls_entry_list_sort(t_entry *entry_list, t_input *input);
 t_ls_order			*ls_order_list_sort(t_ls_order *order_list, t_input *input);
+
+/*
+** ls_sort_merge.c
+*/
+
+t_listable	*merge_lists(t_listable *list_1, t_listable *list_2,
+						   int (compare)(void*, void*));
+
+/*
+** ls_sort_compare.c
+*/
+
+int			entry_compare_time(void *en_1_void, void *en_2_void);
+int			entry_compare_alphabet(void *en_1_void, void *en_2_void);
+int			order_compare_time(void *order_1_void, void *order_2_void);
+int			order_compare_alphabet(void *order_1_void, void *order_2_void);
 
 /*
 ** ls_free.c

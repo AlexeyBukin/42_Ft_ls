@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ls_errors.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/10/16 20:02:10 by kcharla           #+#    #+#             */
+/*   Updated: 2020/10/16 20:02:14 by kcharla          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 void	ls_unknown_error(int err_id)
@@ -22,7 +34,7 @@ void	ls_illegal_option(char c)
 	exit(1);
 }
 
-void	ls_nullptr(const void* ptr)
+void	ls_nullptr(const void *ptr)
 {
 	if (ptr == NULL)
 	{
