@@ -6,7 +6,7 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 01:00:57 by hush              #+#    #+#             */
-/*   Updated: 2020/10/15 16:55:10 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/10/16 18:51:33 by kcharla          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ t_ls_order		*ls_order_create(t_input *input, char *order_name)
 
 	ls_nullptr(input);
 	ls_nullptr((order = ls_order_malloc(order_name)));
+	order->error = E_LS_NONE;
 	if (lstat(order_name, &(order->stat)) != 0)
 	{
 		if (errno == ENOENT)
@@ -134,16 +135,25 @@ t_ls_order		*ls_order_create_rec(t_input *input, char *order_name)
 	t_ls_order		*order_rec;
 
 	ls_nullptr((order_rec = ls_order_create(input, order_name)));
-	if (order_rec->is_dir == FALSE)
+	if (order_rec->is_dir == FALSE && order_rec->error == E_LS_NONE)
+	{
+		order_rec->error = E_LS_PLAIN_FILE;
 		return (order_rec);
+	}
 	order = order_rec;
 	entry = order->list;
 	while (entry != NULL)
 	{
 		if (ft_strcmp(entry->name, ".") != 0 && ft_strcmp(entry->name, "..") != 0)
 		{
+
 			order->next = ls_order_create_rec(input,
 				ft_strjoin_3(order_name, "/", entry->name));
+			if (order->next->error == E_LS_PLAIN_FILE)
+			{
+				free_order_list(order->next);
+				order->next = NULL;
+			}
 			while (order->next != NULL)
 				order = order->next;
 		}
@@ -165,7 +175,12 @@ t_ls_order		*ls_order_list_create_rec(t_input *input,
 	i = 0;
 	while (i < input->order_num)
 	{
-		ls_nullptr((order = ls_order_create_rec(input, input->order_names[i])));
+		ls_nullptr(order = ls_order_create_rec(input, input->order_names[i]));
+		if (order->error == E_LS_PLAIN_FILE)
+		{
+			free_order_list(order);
+			ls_nullptr(order = ls_order_create(input, input->order_names[i]));
+		}
 		if (order_list != NULL)
 		{
 			if (order_tmp == NULL)

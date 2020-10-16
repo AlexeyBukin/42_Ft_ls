@@ -139,7 +139,9 @@ typedef enum		e_ls_error
 	E_LS_ILLEGAL_OPTION,
 	E_LS_NO_SUCH_FILE,
 	E_LS_PERMISSION_DENIED,
+	E_LS_PLAIN_FILE,
 	E_LS_UNKNOWN_ERROR,
+	E_LS_NONE = 0,
 }					t_ls_error;
 
 typedef enum		e_param_res
@@ -192,6 +194,7 @@ t_ls_order			*ls_order_list_sort(t_ls_order *order_list, t_input *input);
 */
 
 void				free_order_list(t_ls_order *order_list);
+void				free_order_list_struct_only(t_ls_order *order_list);
 void				free_entry_list(t_entry *e_list);
 
 /*
