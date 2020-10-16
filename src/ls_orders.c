@@ -6,15 +6,13 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 01:00:57 by hush              #+#    #+#             */
-/*   Updated: 2020/08/28 06:34:36 by u18600003        ###   ########.fr       */
+/*   Updated: 2020/10/16 18:51:33 by kcharla          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-#define READLINK_BUF_SIZE 1023
-
-void	entry_fill_link(t_entry *entry, t_input *input)
+void			entry_fill_link(t_entry *entry, t_input *input)
 {
 	char		buf[READLINK_BUF_SIZE + 1];
 	ssize_t		name_size;
@@ -30,10 +28,9 @@ void	entry_fill_link(t_entry *entry, t_input *input)
 		buf[name_size] = '\0';
 		ls_nullptr(entry->name = ft_strjoin_3(entry->name, " -> ", buf));
 	}
-
 }
 
-void	order_list_fill_stat(t_ls_order *order_list, t_input *input)
+void			order_list_fill_stat(t_ls_order *order_list, t_input *input)
 {
 	t_passwd	*passwd;
 	t_group		*group;
@@ -86,14 +83,14 @@ void	order_list_fill_stat(t_ls_order *order_list, t_input *input)
 	}
 }
 
-static
-t_ls_order	*ls_order_malloc(char *order_name)
+t_ls_order		*ls_order_malloc(char *order_name)
 {
 	t_ls_order		*order;
 
 	ls_nullptr(order_name);
 	ls_nullptr((order = (t_ls_order*)ft_memalloc(sizeof(t_ls_order))));
 	order->name = order_name;
+	order->is_dir = FALSE;
 	return (order);
 }
 
@@ -104,6 +101,7 @@ t_ls_order		*ls_order_create(t_input *input, char *order_name)
 
 	ls_nullptr(input);
 	ls_nullptr((order = ls_order_malloc(order_name)));
+	order->error = E_LS_NONE;
 	if (lstat(order_name, &(order->stat)) != 0)
 	{
 		if (errno == ENOENT)
@@ -137,16 +135,25 @@ t_ls_order		*ls_order_create_rec(t_input *input, char *order_name)
 	t_ls_order		*order_rec;
 
 	ls_nullptr((order_rec = ls_order_create(input, order_name)));
-	if (order_rec->is_dir == FALSE)
-		return (NULL);
+	if (order_rec->is_dir == FALSE && order_rec->error == E_LS_NONE)
+	{
+		order_rec->error = E_LS_PLAIN_FILE;
+		return (order_rec);
+	}
 	order = order_rec;
 	entry = order->list;
 	while (entry != NULL)
 	{
 		if (ft_strcmp(entry->name, ".") != 0 && ft_strcmp(entry->name, "..") != 0)
 		{
+
 			order->next = ls_order_create_rec(input,
 				ft_strjoin_3(order_name, "/", entry->name));
+			if (order->next->error == E_LS_PLAIN_FILE)
+			{
+				free_order_list(order->next);
+				order->next = NULL;
+			}
 			while (order->next != NULL)
 				order = order->next;
 		}
@@ -156,7 +163,7 @@ t_ls_order		*ls_order_create_rec(t_input *input, char *order_name)
 }
 
 static
-t_ls_order			*ls_order_list_create_rec(t_input *input,
+t_ls_order		*ls_order_list_create_rec(t_input *input,
 					t_ls_order *order_list)
 {
 	t_ls_order			*order_tmp;
@@ -168,7 +175,12 @@ t_ls_order			*ls_order_list_create_rec(t_input *input,
 	i = 0;
 	while (i < input->order_num)
 	{
-		ls_nullptr((order = ls_order_create_rec(input, input->order_names[i])));
+		ls_nullptr(order = ls_order_create_rec(input, input->order_names[i]));
+		if (order->error == E_LS_PLAIN_FILE)
+		{
+			free_order_list(order);
+			ls_nullptr(order = ls_order_create(input, input->order_names[i]));
+		}
 		if (order_list != NULL)
 		{
 			if (order_tmp == NULL)
@@ -185,7 +197,7 @@ t_ls_order			*ls_order_list_create_rec(t_input *input,
 }
 
 static
-t_ls_order			*ls_order_list_create_plain(t_input *input,
+t_ls_order		*ls_order_list_create_plain(t_input *input,
 					t_ls_order *order_list)
 {
 	t_ls_order			*order_tmp;
@@ -205,7 +217,10 @@ t_ls_order			*ls_order_list_create_plain(t_input *input,
 			{
 				if (order_list->is_dir == FALSE)
 				{
-					order->list->entry_next = order_list->list;
+					if (order->list)
+						order->list->entry_next = order_list->list;
+					else
+						order->list = order_list->list;
 					order_list->list = order->list;
 					order->list = NULL;
 					free_order_list(order);
@@ -233,7 +248,7 @@ t_ls_order			*ls_order_list_create_plain(t_input *input,
 	return (order_list);
 }
 
-t_ls_order			*ls_order_list_create(t_input *input)
+t_ls_order		*ls_order_list_create(t_input *input)
 {
 	t_ls_order			*order_list;
 

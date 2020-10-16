@@ -49,6 +49,9 @@
 
 //# define LS_USAGE "usage: ft_ls [-Ralrt] [file ...]"
 # define LS_USAGE "usage: ls [-@ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1%] [file ...]"
+# define SIX_MONTH_IN_SECONDS 15552000
+
+#define READLINK_BUF_SIZE 1023
 
 typedef struct		dirent	t_dirent;
 typedef struct		stat	t_stat;
@@ -136,7 +139,9 @@ typedef enum		e_ls_error
 	E_LS_ILLEGAL_OPTION,
 	E_LS_NO_SUCH_FILE,
 	E_LS_PERMISSION_DENIED,
+	E_LS_PLAIN_FILE,
 	E_LS_UNKNOWN_ERROR,
+	E_LS_NONE = 0,
 }					t_ls_error;
 
 typedef enum		e_param_res
@@ -165,7 +170,14 @@ int 				ls_print_long(t_entry **entries, t_input *input);
 
 t_entry				*ls_entry_list_create(t_input *input, t_ls_order *order);
 t_entry				*ls_entry_nameonly(char *name);
+t_ls_order			*ls_order_malloc(char *order_name);
 t_ls_order			*ls_order_list_create(t_input *input);
+
+/*
+** ls_order_arrange.c
+*/
+
+t_ls_order			*ls_order_list_arrange(t_ls_order *order_list);
 
 void				order_list_fill_stat(t_ls_order *order_list, t_input *input);
 //void				order_list_fill_stat(t_ls_order *order_list);
@@ -182,6 +194,7 @@ t_ls_order			*ls_order_list_sort(t_ls_order *order_list, t_input *input);
 */
 
 void				free_order_list(t_ls_order *order_list);
+void				free_order_list_struct_only(t_ls_order *order_list);
 void				free_entry_list(t_entry *e_list);
 
 /*

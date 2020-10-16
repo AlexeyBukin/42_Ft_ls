@@ -30,12 +30,11 @@ LIB_FT_DIR  := libft
 LIB_FT_FILE := $(LIB_FT_DIR)/libft.a
 INCLUDE     := -I include/ -I $(LIB_FT_DIR)/include/
 
-#find src -type f -name '*.c' | sed 'N;N;s/\n/ /g' | sed "s/\$/ \\\\/" | column -t
+# find src -type f -name '*.c' | sort | column -c 100 | sed 's/$/ \\\\/'
 SRC_FILES := \
-src/ls_print.c  src/ls_sort.c    src/ls_free.c    \
-src/main.c      src/ls_errors.c  src/ls_orders.c  \
-src/ls_flags.c  \
-src/ls_entry.c
+src/ls_debug.c          src/ls_flags.c          src/ls_orders_arrange.c src/main.c \
+src/ls_entry.c          src/ls_free.c           src/ls_print.c \
+src/ls_errors.c         src/ls_orders.c         src/ls_sort.c \
 
 SRC_FILES_LEN := $(words $(SRC_FILES))
 OBJ_FILES     := $(SRC_FILES:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

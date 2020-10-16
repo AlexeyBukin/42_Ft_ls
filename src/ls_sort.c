@@ -6,7 +6,7 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/26 13:34:40 by gekans            #+#    #+#             */
-/*   Updated: 2020/08/26 13:34:43 by gekans           ###   ########.fr       */
+/*   Updated: 2020/10/16 19:06:17 by kcharla          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,12 @@ t_listable	*merge_lists(t_listable *list_1, t_listable *list_2,
 {
 	t_listable		*merged;
 	t_listable		*tmp;
-//	int				cmp;
 
 	ls_nullptr(compare);
 	if (list_1 == NULL)
 		return (list_2);
 	if (list_2 == NULL)
 		return (list_1);
-
 	if (compare(list_1, list_2) < 0)
 	{
 		merged = list_1;
@@ -75,7 +73,6 @@ t_listable	*sort_listable(t_listable *list, int (compare)(void*, void*))
 		list = list->next;
 		stack[pos]->next = NULL;
 		pos++;
-
 		while ((pos > 1) && (levels[pos - 1] == levels[pos - 2]))
 		{
 			stack[pos - 2] = merge_lists(stack[pos - 2], stack[pos - 1], compare);
@@ -174,7 +171,7 @@ t_ls_order	*ls_order_list_sort_alpha(t_ls_order *order_list)
 	tmp = order_list;
 	while (tmp != NULL)
 	{
-		if (tmp->error == 0 && tmp->is_dir == TRUE && tmp->list_size > 0)
+		if (tmp->error == E_LS_NONE && tmp->list_size > 0)
 		{
 			tmp->list = (t_entry*)sort_listable(
 					(t_listable*)tmp->list, entry_compare_alphabet);
