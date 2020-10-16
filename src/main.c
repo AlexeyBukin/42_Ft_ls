@@ -6,7 +6,7 @@
 /*   By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 16:22:39 by kcharla           #+#    #+#             */
-/*   Updated: 2020/10/16 19:09:03 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/10/16 21:07:31 by kcharla          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,30 +67,28 @@ t_ls_order		*order_list_revert(t_ls_order *temp)
 int				main(int ac, char **av)
 {
 	t_input		input;
-	t_ls_order	*order_list;
-	t_ls_order	*second_elem;
+	t_ls_order	*order_list[2];
 
 	ft_bzero(&input, sizeof(t_input));
 	ls_flags(ac, av, &input);
-	ls_nullptr((order_list = ls_order_list_create(&input)));
-	ls_nullptr((order_list = ls_order_list_arrange(order_list)));
-
+	ls_nullptr((order_list[0] = ls_order_list_create(&input)));
+	ls_nullptr((order_list[0] = ls_order_list_arrange(order_list[0])));
 	if (stat_needed(&input))
-		order_list_fill_stat(order_list, &input);
-	second_elem = order_list->next;
-	order_list->next = NULL;
-	ls_nullptr((order_list = ls_order_list_sort(order_list, &input)));
-	if (second_elem != NULL)
-		ls_nullptr((second_elem = ls_order_list_sort(second_elem, &input)));
+		order_list_fill_stat(order_list[0], &input);
+	order_list[1] = order_list[0]->next;
+	order_list[0]->next = NULL;
+	ls_nullptr((order_list[0] = ls_order_list_sort(order_list[0], &input)));
+	if (order_list[1] != NULL)
+		ls_nullptr((order_list[1] = ls_order_list_sort(order_list[1], &input)));
 	if (input.rev == TRUE)
 	{
-		ls_nullptr(order_list = order_list_revert(order_list));
-		if (second_elem != NULL)
-			ls_nullptr(second_elem = order_list_revert(second_elem));
+		ls_nullptr(order_list[0] = order_list_revert(order_list[0]));
+		if (order_list[1] != NULL)
+			ls_nullptr(order_list[1] = order_list_revert(order_list[1]));
 	}
-	order_list->next = second_elem;
-	ls_print(order_list, &input);
-	free_order_list(order_list);
+	order_list[0]->next = order_list[1];
+	ls_print(order_list[0], &input);
+	free_order_list(order_list[0]);
 	free(input.order_names);
 	return (0);
 }
