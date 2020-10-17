@@ -6,176 +6,11 @@
 /*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 01:00:57 by hush              #+#    #+#             */
-/*   Updated: 2020/10/16 20:59:22 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/10/17 17:37:06 by kcharla          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-
-void				entry_fill_link(t_entry *entry, t_input *input)
-{
-	char		buf[RDLINK_BUF_SIZE + 1];
-	ssize_t		name_size;
-
-	ls_nullptr(entry);
-	ls_nullptr(input);
-	if (lstat(entry->full_name, &(entry->stat)) != 0)
-		ls_unknown_error(errno);
-	if (input->list)
-	{
-		if ((name_size = readlink(entry->full_name, buf, RDLINK_BUF_SIZE)) < 0)
-			ls_unknown_error(1);
-		buf[name_size] = '\0';
-		ls_nullptr(entry->name = ft_strjoin_3(entry->name, " -> ", buf));
-	}
-}
-
-void				entry_set_attr(t_entry *entry)
-{
-	ssize_t			xattr;
-	acl_entry_t		dummy;
-	acl_t			acl;
-
-	xattr = listxattr(entry->full_name, NULL, 0, XATTR_NOFOLLOW);
-	acl = NULL;
-	acl = acl_get_link_np(entry->full_name, ACL_TYPE_EXTENDED);
-	if (acl && acl_get_entry(acl, ACL_FIRST_ENTRY, &dummy) == -1)
-	{
-		acl_free(acl);
-		acl = NULL;
-	}
-	if (xattr < 0)
-		xattr = 0;
-	if (xattr > 0)
-		entry->attr = LS_ATTR_YES;
-	else if (acl != NULL)
-		entry->attr = LS_ATTR_ACL;
-}
-
-void				entry_set_pwuid_group(t_entry *entry)
-{
-	t_passwd	*passwd;
-	t_group		*group;
-
-	if ((passwd = getpwuid(entry->stat.st_uid)) != NULL)
-		entry->owner = ft_strdup(passwd->pw_name);
-	else
-		ls_unknown_error(errno);
-	if ((group = getgrgid(entry->stat.st_gid)) != NULL)
-		entry->group = ft_strdup(group->gr_name);
-	else
-		ls_unknown_error(errno);
-}
-
-void				order_list_fill_stat(t_ls_order *order_list, t_input *input)
-{
-	t_entry		*entry;
-
-	while (order_list != NULL)
-	{
-		entry = order_list->list;
-		while (entry != NULL)
-		{
-			if (order_list->is_dir == FALSE)
-				ls_nullptr((entry->full_name = ft_strdup(entry->name)));
-			else
-				ls_nullptr((entry->full_name =
-						ft_strjoin_3(order_list->name, "/", entry->name)));
-			if (entry->dirent.d_type == DT_LNK)
-				entry_fill_link(entry, input);
-			else if (stat(entry->full_name, &(entry->stat)) != 0)
-				ls_unknown_error(errno);
-			entry_set_pwuid_group(entry);
-			entry_set_attr(entry);
-			entry = entry->entry_next;
-		}
-		order_list = order_list->next;
-	}
-}
-
-t_ls_order			*ls_order_malloc(char *order_name)
-{
-	t_ls_order		*order;
-
-	ls_nullptr(order_name);
-	ls_nullptr((order = (t_ls_order*)ft_memalloc(sizeof(t_ls_order))));
-	order->name = order_name;
-	order->is_dir = FALSE;
-	return (order);
-}
-
-t_ls_order			*ls_order_error(t_ls_order *order, int error)
-{
-	if (order != NULL)
-		order->error = error;
-	return (order);
-}
-
-static t_ls_order	*ls_order_create(t_input *input, char *order_name)
-{
-	t_ls_order		*order;
-
-	ls_nullptr(input);
-	ls_nullptr((order = ls_order_malloc(order_name)));
-	order->error = E_LS_NONE;
-	if (lstat(order_name, &(order->stat)) != 0)
-	{
-		if (errno == ENOENT)
-			ft_printf("ft_ls: %s: No such file or directory\n", order_name);
-		else if (errno == EACCES)
-			return (ls_order_error(order, E_LS_PERMISSION_DENIED));
-		else
-			ls_unknown_error(errno);
-	}
-	if (!(order->stat.st_mode & S_IRUSR))
-		return (ls_order_error(order, E_LS_PERMISSION_DENIED));
-	if (S_ISDIR(order->stat.st_mode))
-	{
-		order->is_dir = TRUE;
-		order->list = ls_entry_list_create(input, order);
-	}
-	else
-		order->list = ls_entry_nameonly(order_name);
-	return (order);
-}
-
-void				ls_order_create_rec_helper(t_entry *entry,
-						t_ls_order **order, char *order_name, t_input *input)
-{
-	while (entry != NULL)
-	{
-		if (ft_strcmp(entry->name, ".") != 0 &&
-				ft_strcmp(entry->name, "..") != 0)
-		{
-			(*order)->next = ls_order_create_rec(input,
-								ft_strjoin_3(order_name, "/", entry->name));
-			if ((*order)->next->error == E_LS_PLAIN_FILE)
-			{
-				free_order_list((*order)->next);
-				(*order)->next = NULL;
-			}
-			while ((*order)->next != NULL)
-				*order = (*order)->next;
-		}
-		entry = entry->entry_next;
-	}
-}
-
-t_ls_order			*ls_order_create_rec(t_input *input, char *order_name)
-{
-	t_ls_order		*order;
-	t_ls_order		*order_rec;
-
-	ls_nullptr((order_rec = ls_order_create(input, order_name)));
-	if (order_rec->is_dir == FALSE && order_rec->error == E_LS_NONE)
-	{
-		order_rec->error = E_LS_PLAIN_FILE;
-		return (order_rec);
-	}
-	order = order_rec;
-	ls_order_create_rec_helper(order->list, &order, order_name, input);
-	return (order_rec);
-}
 
 static t_ls_order	*ls_order_create_rec_safe(t_input *input, char *name)
 {
@@ -218,6 +53,36 @@ static t_ls_order	*ls_order_list_create_rec(t_input *input,
 	return (order_list);
 }
 
+void				ls_order_list_create_plain_helper(t_ls_order **order,
+					t_ls_order **order_list, t_ls_order **order_tmp)
+{
+	if (order == NULL || order_list == NULL || order_tmp == NULL)
+		return ;
+	if ((*order)->is_dir == FALSE)
+	{
+		if ((*order_list)->is_dir == FALSE)
+		{
+			if ((*order)->list != NULL)
+				(*order)->list->entry_next = (*order_list)->list;
+			else
+				(*order)->list = (*order_list)->list;
+			(*order_list)->list = (*order)->list;
+			(*order)->list = NULL;
+			free_order_list(*order);
+		}
+		else
+		{
+			(*order)->next = *order_list;
+			*order_list = *order;
+		}
+	}
+	else
+	{
+		(*order_tmp)->next = *order;
+		(*order_tmp) = *order;
+	}
+}
+
 static t_ls_order	*ls_order_list_create_plain(t_input *input,
 					t_ls_order *order_list)
 {
@@ -230,32 +95,11 @@ static t_ls_order	*ls_order_list_create_plain(t_input *input,
 	i = 0;
 	while (i < input->order_num)
 	{
-		ls_nullptr((order = ls_order_create(input, input->order_names[i])));
+		order = ls_order_create(input, input->order_names[i]);
+		ls_nullptr(order);
 		if (order_list != NULL)
 		{
-			if (order->is_dir == FALSE)
-			{
-				if (order_list->is_dir == FALSE)
-				{
-					if (order->list != NULL)
-						order->list->entry_next = order_list->list;
-					else
-						order->list = order_list->list;
-					order_list->list = order->list;
-					order->list = NULL;
-					free_order_list(order);
-				}
-				else
-				{
-					order->next = order_list;
-					order_list = order;
-				}
-			}
-			else
-			{
-				order_tmp->next = order;
-				order_tmp = order;
-			}
+			ls_order_list_create_plain_helper(&order, &order_list, &order_tmp);
 		}
 		else
 		{

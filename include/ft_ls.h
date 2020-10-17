@@ -173,6 +173,7 @@ t_entry				*ls_entry_list_create(t_input *input, t_ls_order *order);
 t_entry				*ls_entry_nameonly(char *name);
 t_ls_order			*ls_order_malloc(char *order_name);
 t_ls_order			*ls_order_list_create(t_input *input);
+t_ls_order			*ls_order_create(t_input *input, char *order_name);
 
 /*
 ** ls_order_arrange.c
