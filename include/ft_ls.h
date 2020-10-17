@@ -128,6 +128,14 @@ typedef struct		s_ls_order
 	t_entry				*list;
 }					t_ls_order;
 
+typedef struct		s_ls_max
+{
+	size_t			owner;
+	size_t			group;
+	size_t			size;
+	size_t			links;
+}					t_ls_max;
+
 typedef enum		e_ls_values
 {
 	LS_OK = 0,
@@ -182,7 +190,6 @@ t_ls_order			*ls_order_create(t_input *input, char *order_name);
 t_ls_order			*ls_order_list_arrange(t_ls_order *order_list);
 
 void				order_list_fill_stat(t_ls_order *order_list, t_input *input);
-//void				order_list_fill_stat(t_ls_order *order_list);
 
 /*
 ** ls_sort.c
@@ -229,4 +236,10 @@ void				ls_nullptr(const void* ptr);
 ** TODO comment
 */
 
+void	ls_print_order_header(t_ls_order *order, t_input *input,
+							  t_bool *is_first);
+void	ls_print_order_helper(t_entry *entry, t_ls_max *max_len,
+							  t_input *input, char *str_rwx);
+void	ls_print_order_entry_helper(t_entry *entry, t_ls_max *max_len,
+									size_t *dirsize);
 #endif
