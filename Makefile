@@ -13,7 +13,6 @@ WHITE   := "\e[1;37m"
 RESET   := "\e[0m"
 INDEX   := 1
 
-
 NAME    := ft_ls
 
 CC      := clang
@@ -23,7 +22,6 @@ CFLAGS  := -Wall -Wextra -Werror $(DEBUG) $(OPTIM)
 
 BUILD_DIR := build
 OBJ_DIR   := $(BUILD_DIR)/obj
-#DEPDIR    := $(BUILD_DIR)/.deps
 SRC_DIR   := src
 
 LIB_FT_DIR  := libft
@@ -41,42 +39,33 @@ src/ls_free.c                   src/ls_print.c                  src/main.c \
 SRC_FILES_LEN := $(words $(SRC_FILES))
 OBJ_FILES     := $(SRC_FILES:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
-#DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.d
-#DEPFILES = $(SRC_FILES:$(SRC_DIR)/%.c=$(DEPDIR)/%.d)
-
 .PHONY:    clean fclean all re lclean lfclean lre
-#.PRECIOUS: $(DEPFILES)
 
 all: $(NAME)
-#	@printf "%b %s %b\n" $(CYAN) "$(NAME) is ready" $(RESET)
+	@printf "%b %s %b\n" $(CYAN) "$(NAME) is ready" $(RESET)
 
 $(NAME): $(LIB_FT_FILE) $(OBJ_FILES)
 	@$(CC) $(CFLAGS) $(OBJ_FILES) $(INCLUDE) -o $(NAME) $(LIB_FT_FILE)
 	@printf "%b %s compiled %b\n" $(GREEN) $(NAME) $(RESET)
 
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
-#	@make -j $(DEPDIR)/%.d
 	@mkdir -vp $(@D)
-#	@$(CC) $(CFLAGS) $(DEPFLAGS) $(INCLUDE) -c $< -o $@
 	@$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 	@printf "%b %s / %s : %s\n" $(YELLOW) $(INDEX) $(SRC_FILES_LEN) $@
-	#@$(eval INDEX=$(shell echo $$(($(INDEX)+1))))
+	@$(eval INDEX=$(shell echo $$(($(INDEX)+1))))
 
 $(LIB_FT_FILE):
 	@make DEBUG=$(DEBUG) OPTIM=$(OPTIM) -C $(LIB_FT_DIR)
 
-#$(DEPDIR)/%.d:
-#	@mkdir -p $(@D)
-
 clean:
 	@make clean -C $(LIB_FT_DIR)
 	@rm -rf $(BUILD_DIR)
-#	@printf "%b %s successfully cleaned %b\n" $(BLUE) $(NAME) $(RESET)
+	@printf "%b %s successfully cleaned %b\n" $(BLUE) $(NAME) $(RESET)
 
 fclean: lclean
 	@make fclean -C $(LIB_FT_DIR)
 	@rm -f $(NAME)
-#	@printf "%b %s fully cleaned %b\n" $(RED) $(NAME) $(RESET)
+	@printf "%b %s fully cleaned %b\n" $(RED) $(NAME) $(RESET)
 
 re: fclean all
 	@printf "%b %s recompiled %b\n" $(GREEN) $(NAME) $(RESET)
@@ -92,6 +81,3 @@ lfclean: lclean
 lre: lfclean all
 	@printf "%b %s locally recompiled %b\n" $(GREEN) $(NAME) $(RESET)
 
-#$(DEPFILES):
-
-#-include $(wildcard $(DEPFILES))
