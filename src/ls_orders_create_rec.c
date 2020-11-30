@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ls_orders_create_rec.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 17:38:26 by kcharla           #+#    #+#             */
-/*   Updated: 2020/10/17 17:38:43 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/11/30 23:13:49 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,16 @@ t_ls_order			*ls_order_create(t_input *input, char *order_name)
 void				ls_order_create_rec_helper(t_entry *entry,
 						t_ls_order **order, char *order_name, t_input *input)
 {
+	char *test;
+
+	test = NULL;
 	while (entry != NULL)
 	{
 		if (ft_strcmp(entry->name, ".") != 0 &&
 				ft_strcmp(entry->name, "..") != 0)
 		{
-			(*order)->next = ls_order_create_rec(input,
-								ft_strjoin_3(order_name, "/", entry->name));
+			test = ft_strjoin_3(order_name, "/", entry->name);
+			(*order)->next = ls_order_create_rec(input, test);
 			if ((*order)->next->error == E_LS_PLAIN_FILE)
 			{
 				free_order_list((*order)->next);

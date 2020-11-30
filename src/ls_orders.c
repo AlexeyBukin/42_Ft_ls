@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ls_orders.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 01:00:57 by hush              #+#    #+#             */
-/*   Updated: 2020/10/17 17:37:06 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/11/30 23:12:56 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ static t_ls_order	*ls_order_list_create_rec(t_input *input,
 	i = 0;
 	while (i < input->order_num)
 	{
-		order = ls_order_create_rec_safe(input, input->order_names[i]);
+		order = ls_order_create_rec_safe(input,
+		ft_strdup(input->order_names[i]));
 		if (order_list != NULL)
 		{
 			if (order_tmp == NULL)
@@ -95,7 +96,7 @@ static t_ls_order	*ls_order_list_create_plain(t_input *input,
 	i = 0;
 	while (i < input->order_num)
 	{
-		order = ls_order_create(input, input->order_names[i]);
+		order = ls_order_create(input, ft_strdup(input->order_names[i]));
 		ls_nullptr(order);
 		if (order_list != NULL)
 		{

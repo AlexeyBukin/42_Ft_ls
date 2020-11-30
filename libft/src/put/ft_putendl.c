@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putendl.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/13 15:52:27 by kcharla           #+#    #+#             */
-/*   Updated: 2020/10/15 16:12:54 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/11/30 23:20:08 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	ft_putendl(char const *s)
 {
 	size_t			len;
-	char 			*str;
+	char			*str;
 
 	str = (char*)s;
 	len = ft_strlen(s);

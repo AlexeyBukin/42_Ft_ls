@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ls.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 19:32:02 by kcharla           #+#    #+#             */
-/*   Updated: 2020/10/17 19:36:38 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/11/30 20:22:32 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ typedef struct		s_ls_order
 {
 	struct s_ls_order	*next;
 	char				*name;
-	char				*full_name;
 	t_stat				stat;
 	t_bool				is_dir;
 	int					error;

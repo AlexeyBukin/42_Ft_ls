@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 16:22:39 by kcharla           #+#    #+#             */
-/*   Updated: 2020/10/16 21:07:31 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/11/30 23:12:30 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,3 @@ int				main(int ac, char **av)
 	free(input.order_names);
 	return (0);
 }
-
-/*
-**  ft_printf("\n------before sort:\n");
-**	print_order_list(order_list);
-*/
