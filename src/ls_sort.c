@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/26 13:34:40 by gekans            #+#    #+#             */
-/*   Updated: 2020/12/01 05:27:21 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/01 21:47:39 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,26 @@ t_ls_order	*ls_order_list_sort_time_access(t_ls_order *order_list)
 	return (order_list);
 }
 
+t_ls_order	*ls_order_list_sort_size(t_ls_order *order_list)
+{
+	t_ls_order		*tmp;
+
+	ls_nullptr(order_list);
+	tmp = order_list;
+	while (tmp != NULL)
+	{
+		if (tmp->error == E_LS_NONE && tmp->list_size > 0)
+		{
+			tmp->list = (t_entry*)sort_listable(
+					(t_listable*)tmp->list, entry_compare_size);
+		}
+		tmp = tmp->next;
+	}
+	order_list = (t_ls_order*)sort_listable(
+			(t_listable*)order_list, order_compare_size);
+	return (order_list);
+}
+
 t_ls_order	*ls_order_list_sort(t_ls_order *order_list, t_input *input)
 {
 	t_ls_order	*sorted;
@@ -119,5 +139,7 @@ t_ls_order	*ls_order_list_sort(t_ls_order *order_list, t_input *input)
 	{
 		sorted = ls_order_list_sort_time_access(sorted);
 	}
+	else if (input->size_sort == TRUE)
+		sorted = ls_order_list_sort_size(sorted);
 	return (sorted);
 }

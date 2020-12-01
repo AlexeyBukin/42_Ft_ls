@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 17:38:26 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/01 04:52:45 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/01 22:27:09 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,24 @@ t_ls_order			*ls_order_error(t_ls_order *order, int error)
 {
 	if (order != NULL)
 	{
-		if (S_ISDIR(order->stat.st_mode))
+		if (error == E_LS_NO_SUCH_FILE)
+		{
+			ft_printf("ft_ls: %s: No such file or directory\n", order->name);
+			order->error = error;
+			order->is_dir = TRUE;
+			order->list = NULL;
+			// ls_nullptr(order->list = ls_entry_nameonly(order->name));
+		}
+		else if (S_ISDIR(order->stat.st_mode))
 		{
 				// ft_printf("ERROR is dir: %s\n", order->name);
 				order->is_dir = TRUE;
 				order->error = error;
 		}
+		// else if (error == E_LS_NO_SUCH_FILE)
+		// {
+			
+		// }
 		else
 		{
 			// ft_printf("ERROR is not dir: %s\n", order->name);
@@ -60,7 +72,13 @@ t_ls_order			*ls_order_create(t_input *input, char *order_name)
 	if (lstat(order_name, &(order->stat)) != 0)
 	{
 		if (errno == ENOENT)
-			ft_printf("ft_ls: %s: No such file or directory\n", order_name);
+		{
+			// ft_printf("test: %s\n\n", order->name);
+			// order->error = E_LS_NO_SUCH_FILE;
+			
+			return (ls_order_error(order, E_LS_NO_SUCH_FILE));
+			// return (NULL);
+		}
 		else if (errno == EACCES)
 		{
 			return (ls_order_error(order, E_LS_PERMISSION_DENIED));
@@ -74,17 +92,20 @@ t_ls_order			*ls_order_create(t_input *input, char *order_name)
 	}
 	if (!(order->stat.st_mode & S_IRUSR))
 	{
+		// ft_printf("1\n\n");
 		// ft_printf("ENTRY EACCESS TOUCHED \'%s\'\n", order->name);
-		return (ls_order_error(order, E_LS_PERMISSION_DENIED));
+		return (ls_order_error(order, order->error));
 	}
 	if (S_ISDIR(order->stat.st_mode))
 	{
+		// ft_printf("2\n\n");
 		// ft_printf("ISDIR TOUCHED \'%s\'\n", order->name);
 		order->is_dir = TRUE;
 		order->list = ls_entry_list_create(input, order);
 	}
 	else
 	{
+		// ft_printf("3\n\n");
 		// ft_printf("ENTRY NAMEONLY TOUCHED \'%s\'\n", order->name);
 		order->is_dir = FALSE;
 		order->list = ls_entry_nameonly(order_name);

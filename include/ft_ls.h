@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 19:32:02 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/01 05:28:56 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/01 22:59:09 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ typedef struct		s_input
 	t_sort_time		time_sort;
 	t_bool			fancy;
 	time_t			time_now;
+	t_bool			size_sort;
+	t_bool			cancel_rec;
 }					t_input;
 
 typedef struct		s_listable
@@ -181,12 +183,16 @@ t_listable			*merge_lists(t_listable *list_1, t_listable *list_2,
 ** ls_sort_compare.c
 */
 
+int					entry_compare_size(void *en_1_void, void *en_2_void);
 int					entry_compare_time(void *en_1_void, void *en_2_void);
 int					entry_compare_time_access(void *en_1_void, void *en_2_void);
 int					entry_compare_alphabet(void *en_1_void, void *en_2_void);
 int					order_compare_time(void *order_1_void, void *order_2_void);
 int					order_compare_time_access(void *order_1_void, void *order_2_void);
 int					order_compare_alphabet(void *ord1_void, void *ord2_void);
+int					order_compare_size(void *order_1_void, void *order_2_void);
+
+
 
 /*
 ** ls_free.c

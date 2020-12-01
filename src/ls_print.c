@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 18:46:58 by hush              #+#    #+#             */
-/*   Updated: 2020/12/01 05:03:06 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/01 21:09:52 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	ls_print_list(t_ls_order *order_list, t_input *input)
 	is_first = TRUE;
 	while (order_list != NULL)
 	{
-		if (order_list->error == 0)
+		if (order_list->error == E_LS_NONE)
 			ls_print_order(order_list, input, is_first, str_rwx);
 			else
 		{
@@ -88,13 +88,20 @@ void	ls_print_plain(t_ls_order *order_list, t_input *input)
 		// ft_printf("%s:\n", order_list->name);
 		// (void)input;
 
-		if (is_first == FALSE)
+		if (order_list->error != E_LS_NO_SUCH_FILE)
+		{
+			if (is_first == FALSE)
 			ft_printf("\n");
-		if ((input->order_num > 1 ||
-		(input->rec == TRUE && is_first == FALSE))
-		&& order_list->is_dir == TRUE)
-			ft_printf("%s:\n", order_list->name);
-		if (order_list->error == 0)
+			if ((input->order_num > 1 ||
+			(input->rec == TRUE && is_first == FALSE))
+			&& order_list->is_dir == TRUE)
+				ft_printf("%s:\n", order_list->name);
+		}
+		
+		
+		// ft_printf("err: %d\n", order_list->error);
+		
+		if (order_list->error == E_LS_NONE)
 		{
 			// if ((input->order_num > 1 ||
 			// (input->rec == TRUE && is_first == FALSE))
@@ -106,9 +113,11 @@ void	ls_print_plain(t_ls_order *order_list, t_input *input)
 				ft_printf("%s\n", entry->name);
 				entry = entry->entry_next;
 			}
+			// ft_printf("1\n");
 		}
 		else
 		{
+			// ft_printf("2\n");
 			if (order_list->error == E_LS_PERMISSION_DENIED)
 			{
 				char *basename = ft_strrchr(order_list->name, '/');
