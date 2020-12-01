@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 19:32:02 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/02 00:22:33 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/02 02:01:38 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,10 @@ typedef enum		e_param_res
 	PARAM_DOUBLE_DASH
 }					t_param_res;
 
+void				ls_print_order(t_ls_order *order, t_input *input,
+					t_bool is_first, char *str_rwx);
+
+void				ls_print_list(t_ls_order *order_list, t_input *input);
 void				print_order_list(t_ls_order *order_list);
 
 void				ls_flags(int ac, char **av, t_input *input);
@@ -171,6 +175,10 @@ void				order_list_fill_stat(t_ls_order *olist, t_input *input);
 
 t_ls_order			*ls_entry_list_sort(t_entry *entry_list, t_input *input);
 t_ls_order			*ls_order_list_sort(t_ls_order *order_list, t_input *input);
+t_ls_order			*ls_order_list_sort_time(t_ls_order *order_list);
+t_ls_order			*ls_order_list_sort_time_access(t_ls_order *order_list);
+t_ls_order			*ls_order_list_sort_size(t_ls_order *order_list);
+t_listable			*sort_listable(t_listable *list, int (cmp)(void*, void*));
 
 /*
 ** ls_sort_merge.c
@@ -196,9 +204,9 @@ int					order_compare_size(void *order_1_void, void *order_2_void);
 ** ls_free.c
 */
 
-void				free_order_list(t_ls_order *order_list);
+void				free_order_list(t_ls_order *order_list, t_bool flag_list);
 void				free_order_list_struct_only(t_ls_order *order_list);
-void				free_entry_list(t_entry *e_list);
+void				free_entry_list(t_entry *e_list, t_bool flag_list);
 
 /*
 ** ls_errors.c, error management
@@ -208,6 +216,8 @@ void				ls_unknown_error(int err_id);
 void				ls_illegal_option(char c);
 void				ls_nullptr(const void *ptr);
 void				ls_nullptr2(const void *ptr, const void *ptr2);
+
+char				*ls_rwx(t_entry *entry, char *str_10);
 
 /*
 ** TODO comment

@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 20:02:10 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/01 23:18:33 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/02 02:00:19 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ls_unknown_error(int err_id)
 {
-	ft_printf("ft_ls: Unknown error: %d\n", err_id);
+	(void)err_id;
 	exit(0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 17:38:26 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/02 00:20:20 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/02 01:37:36 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void				ls_order_create_rec_helper(t_entry *entry,
 								ft_strjoin_3(order_name, "/", entry->name));
 			if ((*order)->next->error == E_LS_PLAIN_FILE)
 			{
-				free_order_list((*order)->next);
+				free_order_list((*order)->next, input->list);
 				(*order)->next = NULL;
 			}
 			while ((*order)->next != NULL)

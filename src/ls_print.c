@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 18:46:58 by hush              #+#    #+#             */
-/*   Updated: 2020/12/02 00:19:34 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/02 01:39:07 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,28 +42,18 @@ void	ls_print_order(t_ls_order *order, t_input *input, t_bool is_first,
 
 void	print_plain_helper(t_ls_order *order_list, t_entry **entry)
 {
-	char *basename;
-
-	basename = ft_strrchr(order_list->name, '/');
 	if (order_list->error == E_LS_NONE)
 	{
-		entry = order_list->list;
-		while (entry != NULL)
+		*entry = order_list->list;
+		while (*entry != NULL)
 		{
 			ft_printf("%s\n", (*entry)->name);
-			entry = (*entry)->entry_next;
+			*entry = (*entry)->entry_next;
 		}
 	}
 	else
 	{
-		if (order_list->error == E_LS_PERMISSION_DENIED)
-		{
-			if (basename == NULL)
-				basename = order_list->name;
-			else
-				basename++;
-			ft_printf("ft_ls: %s: Permission denied\n", basename);
-		}
+		ft_printf("ft_ls: %s: Permission denied\n", order_list->name);
 	}
 }
 

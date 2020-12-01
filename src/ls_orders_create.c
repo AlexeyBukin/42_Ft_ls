@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/02 00:21:00 by hinterfa          #+#    #+#             */
-/*   Updated: 2020/12/02 00:21:09 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/02 00:25:11 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void				ls_order_create_helper(t_ls_order **order,
 	if (S_ISDIR((*order)->stat.st_mode))
 	{
 		(*order)->is_dir = TRUE;
-		(*order)->list = ls_entry_list_create(input, order);
+		(*order)->list = ls_entry_list_create(input, *order);
 	}
 	else
 	{
