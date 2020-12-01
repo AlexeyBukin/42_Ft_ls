@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 01:33:37 by hush              #+#    #+#             */
-/*   Updated: 2020/12/01 02:58:47 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/01 23:19:42 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,9 @@ t_entry			*ls_entry_list_create(t_input *input, t_ls_order *order)
 	t_entry		*entry;
 	t_dirent	*dir_ent;
 
-	ls_nullptr(order);
-	ls_nullptr(input);
+	ls_nullptr2(order, input);
 	entry_list = NULL;
 	entry = NULL;
-
 	if ((order->dir = opendir(order->name)) == NULL)
 	{
 		ls_order_error(order, E_LS_PERMISSION_DENIED);

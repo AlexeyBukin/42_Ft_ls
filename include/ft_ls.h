@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 19:32:02 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/01 22:59:09 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/02 00:22:33 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,11 +188,9 @@ int					entry_compare_time(void *en_1_void, void *en_2_void);
 int					entry_compare_time_access(void *en_1_void, void *en_2_void);
 int					entry_compare_alphabet(void *en_1_void, void *en_2_void);
 int					order_compare_time(void *order_1_void, void *order_2_void);
-int					order_compare_time_access(void *order_1_void, void *order_2_void);
+int					order_compare_time_access(void *order_1_v, void *order_2_v);
 int					order_compare_alphabet(void *ord1_void, void *ord2_void);
 int					order_compare_size(void *order_1_void, void *order_2_void);
-
-
 
 /*
 ** ls_free.c
@@ -209,6 +207,7 @@ void				free_entry_list(t_entry *e_list);
 void				ls_unknown_error(int err_id);
 void				ls_illegal_option(char c);
 void				ls_nullptr(const void *ptr);
+void				ls_nullptr2(const void *ptr, const void *ptr2);
 
 /*
 ** TODO comment

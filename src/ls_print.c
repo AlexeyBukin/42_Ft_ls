@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 18:46:58 by hush              #+#    #+#             */
-/*   Updated: 2020/12/01 21:09:52 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/02 00:19:34 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,38 +40,30 @@ void	ls_print_order(t_ls_order *order, t_input *input, t_bool is_first,
 	}
 }
 
-void	ls_print_list(t_ls_order *order_list, t_input *input)
+void	print_plain_helper(t_ls_order *order_list, t_entry **entry)
 {
-	t_bool		is_first;
-	char		str_rwx[12];
+	char *basename;
 
-	str_rwx[11] = '\0';
-	ls_nullptr(order_list);
-	is_first = TRUE;
-	while (order_list != NULL)
+	basename = ft_strrchr(order_list->name, '/');
+	if (order_list->error == E_LS_NONE)
 	{
-		if (order_list->error == E_LS_NONE)
-			ls_print_order(order_list, input, is_first, str_rwx);
-			else
+		entry = order_list->list;
+		while (entry != NULL)
 		{
-			if (order_list->error == E_LS_PERMISSION_DENIED)
-			{
-				if (is_first == FALSE)
-					ft_printf("\n");
-				if ((input->order_num > 1 || (input->rec == TRUE && is_first == FALSE))
-								&& order_list->is_dir == TRUE)
-					ft_printf("%s:\n", order_list->name);
-
-				char *basename = ft_strrchr(order_list->name, '/');
-				if (basename == NULL)
-					basename = order_list->name;
-				else
-					basename++;				
-				ft_printf("ft_ls: %s: Permission denied\n", basename);
-			}
+			ft_printf("%s\n", (*entry)->name);
+			entry = (*entry)->entry_next;
 		}
-		is_first = FALSE;
-		order_list = order_list->next;
+	}
+	else
+	{
+		if (order_list->error == E_LS_PERMISSION_DENIED)
+		{
+			if (basename == NULL)
+				basename = order_list->name;
+			else
+				basename++;
+			ft_printf("ft_ls: %s: Permission denied\n", basename);
+		}
 	}
 }
 
@@ -80,55 +72,20 @@ void	ls_print_plain(t_ls_order *order_list, t_input *input)
 	t_bool		is_first;
 	t_entry		*entry;
 
-	ls_nullptr(order_list);
 	is_first = TRUE;
+	ls_nullptr(order_list);
 	while (order_list != NULL)
 	{
-		//TODO deleteme
-		// ft_printf("%s:\n", order_list->name);
-		// (void)input;
-
 		if (order_list->error != E_LS_NO_SUCH_FILE)
 		{
 			if (is_first == FALSE)
-			ft_printf("\n");
+				ft_printf("\n");
 			if ((input->order_num > 1 ||
 			(input->rec == TRUE && is_first == FALSE))
 			&& order_list->is_dir == TRUE)
 				ft_printf("%s:\n", order_list->name);
 		}
-		
-		
-		// ft_printf("err: %d\n", order_list->error);
-		
-		if (order_list->error == E_LS_NONE)
-		{
-			// if ((input->order_num > 1 ||
-			// (input->rec == TRUE && is_first == FALSE))
-			// && order_list->is_dir == TRUE)
-			// 	ft_printf("%s:\n", order_list->name);
-			entry = order_list->list;
-			while (entry != NULL)
-			{
-				ft_printf("%s\n", entry->name);
-				entry = entry->entry_next;
-			}
-			// ft_printf("1\n");
-		}
-		else
-		{
-			// ft_printf("2\n");
-			if (order_list->error == E_LS_PERMISSION_DENIED)
-			{
-				char *basename = ft_strrchr(order_list->name, '/');
-				if (basename == NULL)
-					basename = order_list->name;
-				else
-					basename++;				
-				ft_printf("ft_ls: %s: Permission denied\n", basename);
-			}
-				
-		}
+		print_plain_helper(order_list, &entry);
 		is_first = FALSE;
 		order_list = order_list->next;
 	}

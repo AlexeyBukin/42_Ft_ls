@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 18:44:24 by hush              #+#    #+#             */
-/*   Updated: 2020/12/01 06:09:41 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/01 23:13:38 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ void	free_order_list_struct_only(t_ls_order *order_list)
 	while (order_list != NULL)
 	{
 		tmp_ord = order_list->next;
-		// free(order_list->name);
 		free(order_list);
 		order_list = tmp_ord;
 	}

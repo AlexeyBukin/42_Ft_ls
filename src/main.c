@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 16:22:39 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/01 18:59:09 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/01 23:10:56 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,39 +71,8 @@ int				main(int ac, char **av)
 
 	ft_bzero(&input, sizeof(t_input));
 	ls_flags(ac, av, &input);
-
-	// char *tmp_str = NULL;
-	// size_t i = 0;
-	// while (i < input.order_num)
-	// {
-	// 	tmp_str = input.order_names[i];
-	// 	ft_printf("order: %s\n", tmp_str);
-	// 	i++;
-	// }
-	// ft_printf("1\n");
 	ls_nullptr((order_list[0] = ls_order_list_create(&input)));
-	
-	// t_ls_order *tmp = order_list[0];
-	// while (tmp != NULL)
-	// {
-	// 	ft_printf("arrange before order: %s, %p\n", tmp->name, tmp->name);
-	// 	tmp = tmp->next;
-	// }
-	
-	// ft_printf("1\n");
-	// ls_print(order_list[0], &input);
-	// ft_printf("\n\n");
 	ls_nullptr((order_list[0] = ls_order_list_arrange(order_list[0])));
-	// ls_print(order_list[0], &input);
-
-
-	// t_entry *tmp = order_list[0]->list;
-	// while (tmp != NULL)
-	// {
-	// 	ft_printf("arrange entry in monofiles: %s, %p\n", tmp->name, tmp->name);
-	// 	tmp = tmp->entry_next;
-	// }
-	
 	if (stat_needed(&input))
 		order_list_fill_stat(order_list[0], &input);
 	order_list[1] = order_list[0]->next;

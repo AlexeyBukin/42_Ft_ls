@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 01:08:21 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/01 21:42:48 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/01 23:13:25 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static int			ls_enter_flag(char c, t_input *input)
 		input->time_sort = SORT_TIME_MOD;
 	else if (c == 'u')
 		input->time_sort = SORT_TIME_ACCESS;
-	else if (c == 'S')								//
+	else if (c == 'S')
 		input->size_sort = TRUE;
 	else if (c == 'd')
 		input->cancel_rec = TRUE;

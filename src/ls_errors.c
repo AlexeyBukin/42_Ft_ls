@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ls_errors.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 20:02:10 by kcharla           #+#    #+#             */
-/*   Updated: 2020/10/16 20:02:14 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/12/01 23:18:33 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,10 @@ void	ls_nullptr(const void *ptr)
 		ft_printf("ft_ls: Null pointer exception\n");
 		exit(0);
 	}
+}
+
+void	ls_nullptr2(const void *ptr, const void *ptr2)
+{
+	ls_nullptr(ptr);
+	ls_nullptr(ptr2);
 }
