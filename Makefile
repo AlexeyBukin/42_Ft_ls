@@ -16,7 +16,7 @@ INDEX   := 1
 NAME    := ft_ls
 
 CC      := gcc
-DEBUG   := 
+DEBUG   := -g
 OPTIM   := -O2
 CFLAGS  := -Wall -Wextra -Werror $(DEBUG) $(OPTIM)
 

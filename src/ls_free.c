@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 18:44:24 by hush              #+#    #+#             */
-/*   Updated: 2020/12/01 02:02:54 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/01 06:09:41 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	free_entry_list(t_entry *e_list)
 		free(e_list->group);
 		free(e_list->link_num_str);
 		free(e_list->size_str);
+		if (e_list->dirent.d_type == DT_LNK)
+			free(e_list->name);
 		temp = e_list->entry_next;
 		free(e_list);
 		e_list = temp;

@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 16:22:39 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/01 05:06:30 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/01 06:04:26 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ int				main(int ac, char **av)
 	// }
 	order_list[0]->next = order_list[1];
 	ls_print(order_list[0], &input);
-//	free_order_list(order_list[0]);
+	free_order_list(order_list[0]);
 	free(input.order_names);
 	return (0);
 }
