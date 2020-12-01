@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ls_entry.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 01:33:37 by hush              #+#    #+#             */
-/*   Updated: 2020/10/16 20:08:19 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/12/01 02:58:47 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,12 @@ t_entry			*ls_entry_list_create(t_input *input, t_ls_order *order)
 	ls_nullptr(input);
 	entry_list = NULL;
 	entry = NULL;
-	ls_nullptr(order->dir = opendir(order->name));
+
+	if ((order->dir = opendir(order->name)) == NULL)
+	{
+		ls_order_error(order, E_LS_PERMISSION_DENIED);
+		return (ls_entry_nameonly(order->name));
+	}
 	order->list_size = 0;
 	while ((dir_ent = readdir(order->dir)) != NULL)
 	{

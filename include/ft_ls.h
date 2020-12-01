@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 19:32:02 by kcharla           #+#    #+#             */
-/*   Updated: 2020/11/30 20:22:32 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/01 05:28:56 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include <errno.h>
 # include "libft.h"
 
-# define LS_USAGE "usage: ls [-@Ralrt] [file ...]"
+# define LS_USAGE "usage: ls [-Ralrtu] [file ...]"
 # define SIX_MONTH_IN_SECONDS 15552000
 # define RDLINK_BUF_SIZE 1023
 
@@ -145,6 +145,7 @@ void				ls_print(t_ls_order *order_list, t_input *input);
 int					ls_print_short(t_entry **entries, t_input *input);
 int					ls_print_long(t_entry **entries, t_input *input);
 
+t_ls_order			*ls_order_error(t_ls_order *order, int error);
 t_ls_order			*ls_order_create_rec(t_input *input, char *order_name);
 t_entry				*ls_entry_list_create(t_input *input, t_ls_order *order);
 t_entry				*ls_entry_nameonly(char *name);
@@ -181,8 +182,10 @@ t_listable			*merge_lists(t_listable *list_1, t_listable *list_2,
 */
 
 int					entry_compare_time(void *en_1_void, void *en_2_void);
+int					entry_compare_time_access(void *en_1_void, void *en_2_void);
 int					entry_compare_alphabet(void *en_1_void, void *en_2_void);
 int					order_compare_time(void *order_1_void, void *order_2_void);
+int					order_compare_time_access(void *order_1_void, void *order_2_void);
 int					order_compare_alphabet(void *ord1_void, void *ord2_void);
 
 /*
@@ -206,7 +209,7 @@ void				ls_nullptr(const void *ptr);
 */
 
 void				ls_print_order_header(t_ls_order *order, t_input *input,
-									t_bool *is_first);
+									t_bool is_first);
 void				ls_print_order_helper(t_entry *entry, t_ls_max *max_len,
 									t_input *input, char *str_rwx);
 void				ls_print_order_entry_helper(t_entry *entry,

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ls_print_order.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 18:47:56 by kcharla           #+#    #+#             */
-/*   Updated: 2020/10/17 18:47:56 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/12/01 05:34:26 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ void	ls_print_order_entry_helper(t_entry *entry, t_ls_max *max_len,
 void	ls_print_order_helper(t_entry *entry, t_ls_max *max_len,
 								t_input *input, char *str_rwx)
 {
+	time_t		time_to_show;
 	char		*time_str;
 	char		*links_str;
 	char		*bytes_str;
@@ -94,11 +95,15 @@ void	ls_print_order_helper(t_entry *entry, t_ls_max *max_len,
 	if (entry == NULL || max_len == NULL || input == NULL || str_rwx == NULL)
 		return ;
 	ls_nullptr((ls_rwx(entry, str_rwx)));
-	if (input->time_now - entry->stat.st_mtime < SIX_MONTH_IN_SECONDS)
-		time_str = ft_strsub(ctime(&entry->stat.st_mtime), 4, 12);
+	time_to_show = entry->stat.st_mtime;
+	if (input->time_sort == SORT_TIME_ACCESS)
+		time_to_show = entry->stat.st_atime;
+
+	if (input->time_now - time_to_show < SIX_MONTH_IN_SECONDS)
+		time_str = ft_strsub(ctime(&time_to_show), 4, 12);
 	else
-		time_str = ft_strjoin_free(ft_strsub(ctime(&entry->stat.st_mtime),
-				4, 7), ft_strsub(ctime(&entry->stat.st_mtime), 19, 5));
+		time_str = ft_strjoin_free(ft_strsub(ctime(&time_to_show),
+				4, 7), ft_strsub(ctime(&time_to_show), 19, 5));
 	links_str = ft_strf_width(entry->link_num_str, max_len->links, ' ', FALSE);
 	bytes_str = ft_strf_width(entry->size_str, max_len->size, ' ', FALSE);
 	ownername = ft_strf_width(entry->owner, max_len->owner, ' ', TRUE);
@@ -113,14 +118,14 @@ void	ls_print_order_helper(t_entry *entry, t_ls_max *max_len,
 }
 
 void	ls_print_order_header(t_ls_order *order, t_input *input,
-								t_bool *is_first)
+								t_bool is_first)
 {
-	if (order == NULL || input == NULL || is_first == NULL)
+	if (order == NULL || input == NULL)
 		return ;
-	if (*is_first == FALSE)
+	if (is_first == FALSE)
 		ft_printf("\n");
-	if ((input->order_num > 1 || (input->rec == TRUE && *is_first == FALSE))
+	if ((input->order_num > 1 || (input->rec == TRUE && is_first == FALSE))
 													&& order->is_dir == TRUE)
 		ft_printf("%s:\n", order->name);
-	*is_first = FALSE;
+	// *is_first = FALSE;
 }

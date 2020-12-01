@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ls_sort.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hush <hush@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/26 13:34:40 by gekans            #+#    #+#             */
-/*   Updated: 2020/10/16 19:47:07 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/12/01 05:27:21 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ t_ls_order	*ls_order_list_sort_time(t_ls_order *order_list)
 	tmp = order_list;
 	while (tmp != NULL)
 	{
-		if (tmp->error == 0 && tmp->is_dir == TRUE && tmp->list != NULL)
+		if (tmp->error == E_LS_NONE && tmp->list_size > 0)
 		{
 			tmp->list = (t_entry*)sort_listable(
 					(t_listable*)tmp->list, entry_compare_time);
@@ -85,15 +85,39 @@ t_ls_order	*ls_order_list_sort_time(t_ls_order *order_list)
 	return (order_list);
 }
 
+t_ls_order	*ls_order_list_sort_time_access(t_ls_order *order_list)
+{
+	t_ls_order		*tmp;
+
+	ls_nullptr(order_list);
+	tmp = order_list;
+	while (tmp != NULL)
+	{
+		if (tmp->error == E_LS_NONE && tmp->list_size > 0)
+		{
+			tmp->list = (t_entry*)sort_listable(
+					(t_listable*)tmp->list, entry_compare_time_access);
+		}
+		tmp = tmp->next;
+	}
+	order_list = (t_ls_order*)sort_listable(
+			(t_listable*)order_list, order_compare_time_access);
+	return (order_list);
+}
+
 t_ls_order	*ls_order_list_sort(t_ls_order *order_list, t_input *input)
 {
 	t_ls_order	*sorted;
 
 	ls_nullptr(input);
 	sorted = ls_order_list_sort_alpha(order_list);
-	if (input->time_sort == TRUE)
+	if (input->time_sort == SORT_TIME_MOD)
 	{
 		sorted = ls_order_list_sort_time(sorted);
+	}
+	else if (input->time_sort == SORT_TIME_ACCESS)
+	{
+		sorted = ls_order_list_sort_time_access(sorted);
 	}
 	return (sorted);
 }
