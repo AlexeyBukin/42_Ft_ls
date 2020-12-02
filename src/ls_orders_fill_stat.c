@@ -76,7 +76,7 @@ void				order_list_fill_stat(t_ls_order *order_list, t_input *input)
 		entry = order_list->list;
 		while (entry != NULL)
 		{
-			if (order_list->is_dir == FALSE)
+			if (order_list->is_dir == FALSE || entry->name[0] == '/')
 				ls_nullptr((entry->full_name = ft_strdup(entry->name)));
 			else
 				ls_nullptr((entry->full_name =

@@ -27,7 +27,7 @@ void	ls_illegal_option(char c)
 {
 	char		*str;
 
-	str = ft_strdup("/bin/ls: illegal option -- e\n"LS_USAGE"\n");
+	str = ft_strdup("ft_ls: illegal option -- e\n"LS_USAGE"\n");
 	str[27] = c;
 	ft_putstr_fd(str, 2);
 	ft_free(str);

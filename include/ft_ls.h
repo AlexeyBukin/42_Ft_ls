@@ -24,7 +24,7 @@
 # include <errno.h>
 # include "libft.h"
 
-# define LS_USAGE "usage: ls [-Ralrtu] [file ...]"
+# define LS_USAGE "usage: ls [-aAdlrRStu] [file ...]"
 # define SIX_MONTH_IN_SECONDS 15552000
 # define RDLINK_BUF_SIZE 1023
 
