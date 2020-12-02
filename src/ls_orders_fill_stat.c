@@ -50,6 +50,7 @@ void				entry_set_attr(t_entry *entry)
 		entry->attr = LS_ATTR_YES;
 	else if (acl != NULL)
 		entry->attr = LS_ATTR_ACL;
+	acl_free(acl);
 }
 
 void				entry_set_pwuid_group(t_entry *entry)
