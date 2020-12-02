@@ -55,6 +55,7 @@ void	free_order_list_struct_only(t_ls_order *order_list)
 	{
 		tmp_ord = order_list->next;
 		free(order_list);
+		free(order_list->name);
 		order_list = tmp_ord;
 	}
 }

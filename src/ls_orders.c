@@ -33,7 +33,7 @@ static t_ls_order	*ls_order_list_create_rec(t_input *input,
 	while (i < input->order_num)
 	{
 		order = ls_order_create_rec_safe(input,
-		ft_strdup(input->order_names[i]));
+			ft_strdup(input->order_names[i]));
 		if (order_list != NULL)
 		{
 			if (order_tmp == NULL)
