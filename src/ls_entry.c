@@ -91,7 +91,8 @@ t_entry			*ls_entry_nameonly(char *name)
 	entry = (t_entry*)ft_memalloc(sizeof(t_entry));
 	ls_nullptr(entry);
 	entry->dirent.d_type = DT_REG;
-	entry->name = name;
+	ft_strcpy(entry->dirent.d_name, name);
+	entry->name = entry->dirent.d_name;
 	entry->full_name = NULL;
 	entry->group = NULL;
 	entry->owner = NULL;
