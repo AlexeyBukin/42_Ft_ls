@@ -59,6 +59,7 @@ typedef struct		s_input
 	char			**order_names;
 	size_t			order_num;
 	t_show			show;
+	t_bool			big_a;
 	t_bool			rec;
 	t_bool			rev;
 	t_bool			list;

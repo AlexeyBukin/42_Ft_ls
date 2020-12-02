@@ -1,6 +1,6 @@
 # ecole 42 project | school 21 project
 # ft_ls Makefile
-# @kcharla, 2020
+# @kcharla, @hinterfa 2020
 
 BLACK   := "\e[0;30m"
 RED     := "\e[0;31m"
@@ -28,8 +28,10 @@ LIB_FT_DIR  := libft
 LIB_FT_FILE := $(LIB_FT_DIR)/libft.a
 INCLUDE     := -I include/ -I $(LIB_FT_DIR)/include/
 
+HEADERS     := include/ft_ls.h
+
 # find src -type f -name '*.c' | sort | column -c 100 | sed 's/$/ \\/'
-SRC_FILES := \
+SRC_FILES   := \
 src/ls_debug.c                  src/ls_orders_create.c          src/ls_sort.c \
 src/ls_entry.c                  src/ls_orders_create_rec.c      src/ls_sort_compare_entry.c \
 src/ls_errors.c                 src/ls_orders_fill_stat.c       src/ls_sort_compare_order.c \
@@ -46,11 +48,11 @@ OBJ_FILES     := $(SRC_FILES:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 all: $(NAME)
 	@printf "%b %s %b\n" $(CYAN) "$(NAME) is ready" $(RESET)
 
-$(NAME): $(LIB_FT_FILE) $(OBJ_FILES)
+$(NAME): $(LIB_FT_FILE) $(OBJ_FILES) $(HEADERS)
 	@$(CC) $(CFLAGS) $(OBJ_FILES) $(INCLUDE) -o $(NAME) $(LIB_FT_FILE)
 	@printf "%b %s compiled %b\n" $(GREEN) $(NAME) $(RESET)
 
-$(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
+$(OBJ_DIR)/%.o : $(SRC_DIR)/%.c $(HEADERS)
 	@mkdir -vp $(@D)
 	@$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 	@printf "%b %s / %s : %s\n" $(YELLOW) $(INDEX) $(SRC_FILES_LEN) $@

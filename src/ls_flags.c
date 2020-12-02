@@ -41,7 +41,7 @@ static int			ls_enter_flag(char c, t_input *input)
 	else if (c == 'a')
 		input->show = SHOW_ALL;
 	else if (c == 'A')
-		input->show = SHOW_HIDDEN;
+		input->big_a = TRUE;
 	else if (c == 'l')
 		input->list = TRUE;
 	else if (c == 'r')
@@ -54,7 +54,7 @@ static int			ls_enter_flag(char c, t_input *input)
 		input->size_sort = TRUE;
 	else if (c == 'd')
 		input->cancel_rec = TRUE;
-	else if (ft_strchr("1gf\\", c) == NULL)
+	else if (ft_strchr("1", c) == NULL)
 		ls_illegal_option(c);
 	return (LS_OK);
 }
@@ -108,9 +108,9 @@ void				ls_flags(int ac, char **av, t_input *input)
 		input->time_sort = SORT_TIME_NONE;
 	if (input->cancel_rec == TRUE)
 		input->rec = FALSE;
+	if (input->big_a == TRUE && input->show == SHOW_VISIBLE)
+		input->show = SHOW_HIDDEN;
 	if (input->order_num == 0)
-	{
 		ls_add_order_name(input, ".");
-	}
 	input->time_now = time(NULL);
 }

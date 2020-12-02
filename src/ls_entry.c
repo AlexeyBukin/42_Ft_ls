@@ -38,6 +38,22 @@ void			ls_entry_list_create_helper(t_entry **entry,
 	*entry = *entry_set;
 }
 
+int				ls_do_not_create(char *name, t_input *input)
+{
+	ls_nullptr2(name, input);
+	if (input->show == SHOW_VISIBLE)
+	{
+		if (name[0] == '.')
+			return (1);
+	}
+	if (input->show == SHOW_HIDDEN)
+	{
+		if (ft_strequ(name, ".") || ft_strequ(name, ".."))
+			return (1);
+	}
+	return (0);
+}
+
 t_entry			*ls_entry_list_create(t_input *input, t_ls_order *order)
 {
 	t_entry		*entry_list;
@@ -55,7 +71,7 @@ t_entry			*ls_entry_list_create(t_input *input, t_ls_order *order)
 	order->list_size = 0;
 	while ((dir_ent = readdir(order->dir)) != NULL)
 	{
-		if (dir_ent->d_name[0] == '.' && input->show == FALSE)
+		if (ls_do_not_create(dir_ent->d_name, input))
 			continue ;
 		if (entry_list == NULL)
 			ls_entry_list_create_helper(&entry, &entry_list, dir_ent);
