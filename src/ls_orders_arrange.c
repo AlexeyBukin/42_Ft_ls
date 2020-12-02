@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 16:23:08 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/01 23:26:53 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/02 22:37:03 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ t_ls_order			*ls_order_list_arrange(t_ls_order *order_list)
 	order_list_tmp = NULL;
 	mono_files_list = NULL;
 	mono_files_tmp = NULL;
+	// ft_printf("%s\n", tmp->name);
 	while (tmp != NULL)
 	{
 		if (tmp->is_dir == FALSE)
@@ -98,6 +99,7 @@ t_ls_order			*ls_order_list_arrange(t_ls_order *order_list)
 			ls_order_list_arrange_list(&order_list, &order_list_tmp, &tmp);
 	}
 	mono_files_list = ls_monofiles_to_plain(mono_files_list);
+	// ft_printf("%s\n", mono_files_list->list->name);
 	if (mono_files_list != NULL)
 		mono_files_list->next = order_list;
 	else

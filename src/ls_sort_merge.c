@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ls_sort_merge.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 19:49:31 by kcharla           #+#    #+#             */
-/*   Updated: 2020/10/16 20:00:49 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/12/02 18:54:44 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void		merge_lists_helper(t_listable **list_1, t_listable **list_2,
 					int (compare)(void*, void*), t_listable **setted)
 {
-	if (compare(*list_1, *list_2) < 0)
+	if (compare(*list_1, *list_2) <= 0)
 	{
 		*setted = *list_1;
 		*list_1 = (*list_1)->next;

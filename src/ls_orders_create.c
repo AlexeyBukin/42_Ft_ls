@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/02 00:21:00 by hinterfa          #+#    #+#             */
-/*   Updated: 2020/12/02 00:25:11 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/02 22:39:02 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,16 @@ t_ls_order			*ls_order_error(t_ls_order *order, int error)
 	{
 		if (error == E_LS_NO_SUCH_FILE)
 		{
-			ft_printf("ft_ls: %s: No such file or directory\n", order->name);
+			// ft_printf("ft_ls: %s: No such file or directory\n", order->name);
 			order->error = error;
+			// ft_printf("%s\n", order->name);
 			order->is_dir = TRUE;
 			order->list = NULL;
+			// ls_nullptr(order->list = ls_entry_nameonly(order->name));
 		}
 		else if (S_ISDIR(order->stat.st_mode))
 		{
+			// ft_printf("without entity\n");
 			order->is_dir = TRUE;
 			order->error = error;
 		}
@@ -73,6 +76,7 @@ t_ls_order			*ls_order_create(t_input *input, char *order_name)
 	order->error = E_LS_NONE;
 	if (lstat(order_name, &(order->stat)) != 0)
 	{
+		// ft_printf("got one!\n");
 		if (errno == ENOENT)
 			return (ls_order_error(order, E_LS_NO_SUCH_FILE));
 		else if (errno == EACCES)
@@ -80,8 +84,10 @@ t_ls_order			*ls_order_create(t_input *input, char *order_name)
 		else
 			ls_unknown_error(errno);
 	}
-	if (!(order->stat.st_mode & S_IRUSR))
-		return (ls_order_error(order, order->error));
+	//
+	// if (!(order->stat.st_mode & S_IRUSR))
+	// 	return (ls_order_error(order, order->error));
+	//
 	ls_order_create_helper(&order, input, order_name);
 	return (order);
 }

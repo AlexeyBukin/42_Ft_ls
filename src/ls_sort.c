@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/26 13:34:40 by gekans            #+#    #+#             */
-/*   Updated: 2020/12/02 00:15:02 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/02 18:52:35 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,12 @@ t_ls_order	*ls_order_list_sort(t_ls_order *order_list, t_input *input)
 	t_ls_order	*sorted;
 
 	ls_nullptr(input);
+	// sorted = order_list;
 	sorted = ls_order_list_sort_alpha(order_list);
 	if (input->time_sort == SORT_TIME_MOD)
 	{
 		sorted = ls_order_list_sort_time(sorted);
+		// sorted = ls_order_list_sort_alpha2(sorted);
 	}
 	else if (input->time_sort == SORT_TIME_ACCESS)
 	{

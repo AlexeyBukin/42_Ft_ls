@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/02 00:19:04 by hinterfa          #+#    #+#             */
-/*   Updated: 2020/12/02 00:19:10 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/02 17:10:11 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,10 @@ void	ls_print_list(t_ls_order *order_list, t_input *input)
 	is_first = TRUE;
 	str_rwx[11] = '\0';
 	ls_nullptr(order_list);
+	// ft_printf("ll be ok\n");
 	while (order_list != NULL)
 	{
+		// ft_printf("fail\n");
 		if (order_list->error == E_LS_NONE)
 			ls_print_order(order_list, input, is_first, str_rwx);
 		else

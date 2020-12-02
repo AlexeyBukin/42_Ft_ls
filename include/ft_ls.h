@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 19:32:02 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/02 02:01:38 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/02 18:48:59 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,6 +212,8 @@ void				free_entry_list(t_entry *e_list, t_bool flag_list);
 /*
 ** ls_errors.c, error management
 */
+
+int 				ft_cmp_low(const char *s1, const char *s2);
 
 void				ls_unknown_error(int err_id);
 void				ls_illegal_option(char c);
