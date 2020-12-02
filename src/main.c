@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 16:22:39 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/02 01:34:06 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/03 00:40:03 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,14 @@ int				main(int ac, char **av)
 	ft_bzero(&input, sizeof(t_input));
 	ls_flags(ac, av, &input);
 	ls_nullptr((order_list[0] = ls_order_list_create(&input)));
-	ls_nullptr((order_list[0] = ls_order_list_arrange(order_list[0])));
+
+	// print_order_list(order_list[0]);
+	ls_nullptr((order_list[0] = ls_order_test_arrange(order_list[0])));
+	// ls_nullptr((order_list[0] = ls_order_list_arrange(order_list[0])));
+
+	ft_printf("\n\n\n");
+	// print_order_list(order_list[0]);
+
 	if (stat_needed(&input))
 		order_list_fill_stat(order_list[0], &input);
 	order_list[1] = order_list[0]->next;

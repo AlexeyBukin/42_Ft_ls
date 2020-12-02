@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 19:32:02 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/02 18:48:59 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/03 00:30:40 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,8 @@ t_ls_order			*ls_order_create(t_input *input, char *order_name);
 /*
 ** ls_order_arrange.c
 */
+
+t_ls_order			*ls_order_test_arrange(t_ls_order *order_list);
 
 t_ls_order			*ls_order_list_arrange(t_ls_order *order_list);
 

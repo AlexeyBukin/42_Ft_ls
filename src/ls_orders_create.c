@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/02 00:21:00 by hinterfa          #+#    #+#             */
-/*   Updated: 2020/12/02 22:39:02 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/02 23:35:24 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ t_ls_order			*ls_order_error(t_ls_order *order, int error)
 			order->error = error;
 			// ft_printf("%s\n", order->name);
 			order->is_dir = TRUE;
-			order->list = NULL;
-			// ls_nullptr(order->list = ls_entry_nameonly(order->name));
+			// order->list = NULL;
+			ls_nullptr(order->list = ls_entry_nameonly(order->name));
 		}
 		else if (S_ISDIR(order->stat.st_mode))
 		{

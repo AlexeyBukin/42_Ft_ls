@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 16:23:08 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/02 22:37:03 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/03 00:53:08 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,5 +104,65 @@ t_ls_order			*ls_order_list_arrange(t_ls_order *order_list)
 		mono_files_list->next = order_list;
 	else
 		mono_files_list = order_list;
+	return (mono_files_list);
+}
+
+t_ls_order			*ls_order_test_arrange(t_ls_order *order_list)
+{
+	t_ls_order		*mono_files_list;
+	t_ls_order		*mono_files_tmp;
+	t_ls_order		*order_list_tmp;
+	t_ls_order		*no_files_list;
+	t_ls_order		*no_files_tmp;
+	t_ls_order		*tmp;
+
+	tmp = order_list;
+	order_list = NULL;
+	order_list_tmp = NULL;
+	mono_files_list = NULL;
+	mono_files_tmp = NULL;
+	no_files_list = NULL;
+	no_files_tmp = NULL;
+	ft_printf("%d\n", tmp->is_dir);
+	while (tmp != NULL)
+	{
+		// ft_printf("%d\n", tmp->is_dir);
+		if (tmp->error == E_LS_NO_SUCH_FILE)
+		{
+			// ft_printf("%d\n", tmp->is_dir);
+			ls_order_list_arrange_list(&no_files_list, &no_files_tmp, &tmp);
+			// ft_printf("%d\n", tmp->is_dir);
+		}
+		else if (tmp->is_dir == FALSE)
+			ls_order_list_arrange_list(&mono_files_list, &mono_files_tmp, &tmp);
+		else
+			ls_order_list_arrange_list(&order_list, &order_list_tmp, &tmp);
+	}
+	mono_files_list = ls_monofiles_to_plain(mono_files_list);
+	no_files_list = ls_monofiles_to_plain(no_files_list);
+	// ft_printf("%s\n", no_files_list->list->name);			//debug trash
+	while (no_files_list->list)
+	{
+		ft_printf("%s\n", no_files_list->list->name);
+		no_files_list->list = no_files_list->list->entry_next;
+	}
+	if (mono_files_list != NULL)
+	{
+		mono_files_list->next = order_list;
+		if (no_files_list != NULL)
+		{
+			no_files_list->next = mono_files_list;
+			return (no_files_list);
+		}
+	}
+	else
+	{
+		mono_files_list = order_list;
+		if (no_files_list != NULL)
+		{
+			no_files_list->next = mono_files_list;
+			return (no_files_list);
+		}
+	}
 	return (mono_files_list);
 }
