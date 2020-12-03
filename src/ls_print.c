@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 18:46:58 by hush              #+#    #+#             */
-/*   Updated: 2020/12/02 17:20:36 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/03 22:25:07 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,8 @@ void	ls_print_order(t_ls_order *order, t_input *input, t_bool is_first,
 
 void	print_plain_helper(t_ls_order *order_list, t_entry **entry)
 {
-	// ft_printf("here ?\n");
 	if (order_list->error == E_LS_NONE)
 	{
-		// ft_printf("wtf??\n");
 		*entry = order_list->list;
 		while (*entry != NULL)
 		{
@@ -53,7 +51,6 @@ void	print_plain_helper(t_ls_order *order_list, t_entry **entry)
 			*entry = (*entry)->entry_next;
 		}
 	}
-	// add '== E_LS_PERMISSION_DENIED'
 	else if (order_list->error == E_LS_PERMISSION_DENIED)
 	{
 		ft_printf("ft_ls: %s: Permission denied\n", order_list->name);
@@ -69,6 +66,7 @@ void	ls_print_plain(t_ls_order *order_list, t_input *input)
 	ls_nullptr(order_list);
 	while (order_list != NULL)
 	{
+		// ft_printf("%d\n", order_list->error);
 		if (order_list->error != E_LS_NO_SUCH_FILE)
 		{
 			if (is_first == FALSE)
@@ -88,7 +86,13 @@ void	ls_print(t_ls_order *order_list, t_input *input)
 {
 	ls_nullptr(input);
 	if (input->list == TRUE)
+	{
+		// ft_printf("here\n");
 		ls_print_list(order_list, input);
+	}
 	else
+	{
+		// ft_printf("plain\n");
 		ls_print_plain(order_list, input);
+	}
 }

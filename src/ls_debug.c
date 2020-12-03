@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 16:25:53 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/01 23:13:35 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/03 16:56:20 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ void	print_order_list(t_ls_order *order_list)
 	tmp_ord = order_list;
 	while (tmp_ord != NULL)
 	{
-		ft_printf("main dir : %s, is_dir: %d, p=%p, next=%p\n",
-			tmp_ord->name, tmp_ord->is_dir, tmp_ord, tmp_ord->next);
+		ft_printf("main dir : %s, is_dir: %d, p=%p, next=%p, error=%d\n",
+			tmp_ord->name, tmp_ord->is_dir, tmp_ord, tmp_ord->next, tmp_ord->error);
 		temp = tmp_ord->list;
 		while (temp != NULL)
 		{

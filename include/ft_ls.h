@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 19:32:02 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/03 00:30:40 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/03 19:30:31 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ typedef enum		e_param_res
 	PARAM_DOUBLE_DASH
 }					t_param_res;
 
+void				print_plain_helper(t_ls_order *order_list, t_entry **entry);
 void				ls_print_order(t_ls_order *order, t_input *input,
 					t_bool is_first, char *str_rwx);
 
@@ -164,11 +165,16 @@ t_ls_order			*ls_order_create(t_input *input, char *order_name);
 ** ls_order_arrange.c
 */
 
+t_ls_order			*ls_monofiles_to_plain(t_ls_order *mono_list);
+
 t_ls_order			*ls_order_test_arrange(t_ls_order *order_list);
 
 t_ls_order			*ls_order_list_arrange(t_ls_order *order_list);
 
 void				order_list_fill_stat(t_ls_order *olist, t_input *input);
+
+void				ls_order_list_arrange_list(t_ls_order **mfiles,
+						t_ls_order **mfiles_tmp, t_ls_order **tmp);
 
 /*
 ** ls_sort.c

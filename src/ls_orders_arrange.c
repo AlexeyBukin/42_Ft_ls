@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 16:23:08 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/03 00:56:26 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/03 17:40:30 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,35 @@ t_ls_order			*ls_monofiles_to_plain(t_ls_order *mono_list)
 	if (mono_list == NULL)
 		return (NULL);
 	ls_nullptr(monofiles = ls_order_malloc(ft_strdup("monofiles")));
+	monofiles_ent = NULL;
+	free_me = mono_list;
+	while (mono_list != NULL)
+	{
+		if (monofiles_ent == NULL)
+		{
+			monofiles_ent = mono_list->list;
+			monofiles->list = monofiles_ent;
+		}
+		else
+		{
+			monofiles_ent->entry_next = mono_list->list;
+			monofiles_ent = monofiles_ent->entry_next;
+		}
+		mono_list = mono_list->next;
+	}
+	free_order_list_struct_only(free_me);
+	return (ls_monofiles_calc_list_len(monofiles));
+}
+
+t_ls_order			*ls_nofiles_to_plain(t_ls_order *mono_list)
+{
+	t_ls_order		*free_me;
+	t_ls_order		*monofiles;
+	t_entry			*monofiles_ent;
+
+	if (mono_list == NULL)
+		return (NULL);
+	ls_nullptr(monofiles = ls_order_malloc(ft_strdup("nofiles")));
 	monofiles_ent = NULL;
 	free_me = mono_list;
 	while (mono_list != NULL)
@@ -123,7 +152,7 @@ t_ls_order			*ls_order_test_arrange(t_ls_order *order_list)
 	mono_files_tmp = NULL;
 	no_files_list = NULL;
 	no_files_tmp = NULL;
-	ft_printf("%d\n", tmp->is_dir);
+	// ft_printf("%d\n", tmp->is_dir);
 	while (tmp != NULL)
 	{
 		// ft_printf("%d\n", tmp->is_dir);
@@ -139,13 +168,13 @@ t_ls_order			*ls_order_test_arrange(t_ls_order *order_list)
 			ls_order_list_arrange_list(&order_list, &order_list_tmp, &tmp);
 	}
 	mono_files_list = ls_monofiles_to_plain(mono_files_list);
-	no_files_list = ls_monofiles_to_plain(no_files_list);
+	no_files_list = ls_nofiles_to_plain(no_files_list);
 	// ft_printf("%s\n", no_files_list->list->name);			//debug trash
-	while (no_files_list->list)
-	{
-		ft_printf("%s\n", no_files_list->list->name);
-		no_files_list->list = no_files_list->list->entry_next;
-	}
+	// while (no_files_list->list)
+	// {
+	// 	ft_printf("%s\n", no_files_list->list->name);
+	// 	no_files_list->list = no_files_list->list->entry_next;
+	// }
 	if (mono_files_list != NULL)
 	{
 		mono_files_list->next = order_list;
