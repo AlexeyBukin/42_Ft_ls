@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 20:02:10 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/02 02:00:19 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/04 20:01:52 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	ls_illegal_option(char c)
 	char		*str;
 
 	str = ft_strdup("ft_ls: illegal option -- e\n"LS_USAGE"\n");
-	str[27] = c;
+	str[25] = c;
 	ft_putstr_fd(str, 2);
 	ft_free(str);
 	exit(1);

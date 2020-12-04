@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 16:23:08 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/03 17:40:30 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/04 19:23:57 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ t_ls_order			*ls_monofiles_to_plain(t_ls_order *mono_list)
 	if (mono_list == NULL)
 		return (NULL);
 	ls_nullptr(monofiles = ls_order_malloc(ft_strdup("monofiles")));
+	
 	monofiles_ent = NULL;
 	free_me = mono_list;
 	while (mono_list != NULL)

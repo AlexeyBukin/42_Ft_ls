@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 16:25:53 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/03 16:56:20 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/04 19:02:08 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	print_order_list(t_ls_order *order_list)
 	t_ls_order		*tmp_ord;
 	t_entry			*temp;
 
+	ls_nullptr(order_list);
 	tmp_ord = order_list;
 	while (tmp_ord != NULL)
 	{
