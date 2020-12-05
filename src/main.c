@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 16:22:39 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/04 19:56:32 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/05 17:02:31 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,6 @@ t_ls_order	*test(t_ls_order *order_list)
 	res_list = NULL;
 	res_tmp = NULL;
 	ft_bzero(&input, sizeof(t_input));
-	
 	while (tmp != NULL)
 	{
 		if (tmp->error == E_LS_NO_SUCH_FILE)
@@ -109,10 +108,12 @@ t_ls_order	*test(t_ls_order *order_list)
 			ls_order_list_arrange_list(&res_list, &res_tmp, &tmp);
 		}
 	}
-	
-	nofiles_list = ls_monofiles_to_plain(nofiles_list);
-	nofiles_list = ls_order_list_sort(nofiles_list, &input);
-	ls_print_plain2(nofiles_list, &input);
+	if (nofiles_list != NULL)
+	{
+		nofiles_list = ls_monofiles_to_plain(nofiles_list);
+		nofiles_list = ls_order_list_sort(nofiles_list, &input);
+		ls_print_plain2(nofiles_list, &input);
+	}
 	// rename
 	return(res_list);
 }
@@ -126,9 +127,14 @@ int				main(int ac, char **av)
 	ls_flags(ac, av, &input);
 	ls_nullptr((order_list[0] = ls_order_list_create(&input)));
 
-	ls_nullptr(order_list[0] = test(order_list[0]));
-
 	
+	if (!(order_list[0] = test(order_list[0])))
+		return (0);
+	// ls_nullptr(order_list[0] = test(order_list[0]));
+
+	// print_order_list(order_list[0]);
+	// ft_printf("fdf\n");
+
 	ls_nullptr((order_list[0] = ls_order_list_arrange(order_list[0])));
 	
 	// ft_printf("\n\n\n");

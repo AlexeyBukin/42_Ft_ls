@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 19:32:02 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/03 19:30:31 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/05 17:27:48 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ t_entry				**ls_ent_get(t_input *input);
 t_entry				**ls_ent_get_rec(char **dirs, t_input *input);
 
 void				ls_print(t_ls_order *order_list, t_input *input);
-
+void				print_list_helper(t_ls_order *order_list);
 int					ls_print_short(t_entry **entries, t_input *input);
 int					ls_print_long(t_entry **entries, t_input *input);
 

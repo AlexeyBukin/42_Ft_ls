@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 01:08:21 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/04 20:05:34 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/05 18:44:14 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void				ls_check_arg(char *arg, t_bool *flags_done, t_input *input)
 	ls_nullptr(input);
 	if (arg_is_double_dash(arg))
 		*flags_done = TRUE;
-	else if (arg[0] != '-' || *flags_done == TRUE)
+	else if ((arg[0] != '-' || ft_strlen(arg) == 1) || *flags_done == TRUE)	//akkuratno!
 	{
 		ls_add_order_name(input, arg);
 		*flags_done = TRUE;

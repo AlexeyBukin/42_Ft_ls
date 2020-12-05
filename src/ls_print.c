@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 18:46:58 by hush              #+#    #+#             */
-/*   Updated: 2020/12/03 22:25:07 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/05 17:28:46 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	print_plain_helper(t_ls_order *order_list, t_entry **entry)
 	}
 	else if (order_list->error == E_LS_PERMISSION_DENIED)
 	{
-		ft_printf("ft_ls: %s: Permission denied\n", order_list->name);
+		print_list_helper(order_list);
 	}
 }
 
