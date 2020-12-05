@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 01:08:21 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/05 18:44:14 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/05 23:51:51 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,10 @@ static int			ls_enter_flag(char c, t_input *input)
 	else if (c == 'S')
 		input->size_sort = TRUE;
 	else if (c == 'd')
+	{
 		input->cancel_rec = TRUE;
+		input->show = SHOW_ALL;
+	}
 	else if (ft_strchr("1", c) == NULL)
 		ls_illegal_option(c);
 	return (LS_OK);
@@ -110,7 +113,10 @@ void				ls_flags(int ac, char **av, t_input *input)
 	if (input->size_sort == TRUE)
 		input->time_sort = SORT_TIME_NONE;
 	if (input->cancel_rec == TRUE)
+	{
 		input->rec = FALSE;
+		// input->show = SHOW_HIDDEN;
+	}
 	if (input->big_a == TRUE && input->show == SHOW_VISIBLE)
 		input->show = SHOW_HIDDEN;
 	if (input->order_num == 0)

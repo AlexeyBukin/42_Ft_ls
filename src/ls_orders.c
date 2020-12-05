@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 01:00:57 by hush              #+#    #+#             */
-/*   Updated: 2020/12/01 23:28:24 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/06 00:18:18 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,11 +107,46 @@ static t_ls_order	*ls_order_list_create_plain(t_input *input,
 	return (order_list);
 }
 
+static t_ls_order			*ls_order_cr_crec(t_input *input,
+					t_ls_order *order_list)
+{
+	t_ls_order			*order_tmp;
+	t_ls_order			*order;
+	size_t				i;
+
+	ls_nullptr(input);
+	order_tmp = NULL;
+	i = 0;
+	while (i < input->order_num)
+	{
+		order = ls_order_create(input, ft_strdup(input->order_names[i]));
+		ls_nullptr(order);
+		// ft_printf("name - %s %d\n", input->order_names[i], input->order_num);
+		// ft_printf("name - %s\n", order->name);
+		// if (order_list != NULL)
+		// {
+			// ls_order_list_create_plain_helper(&order, &order_list, &order_tmp);
+		// }
+		// else
+		// {
+		// order->list = NULL;
+		order_tmp = order;
+		order_list = order;
+		// }
+		i++;
+	}
+	ft_printf("%d\n", input->order_num);
+	print_order_list(order_list);
+	return (order_list);
+}
+
 t_ls_order			*ls_order_list_create(t_input *input)
 {
 	t_ls_order			*order_list;
 
 	order_list = NULL;
+	if (input->cancel_rec)
+		return (ls_order_cr_crec(input, order_list));
 	if (input->rec == TRUE)
 		return (ls_order_list_create_rec(input, order_list));
 	return (ls_order_list_create_plain(input, order_list));

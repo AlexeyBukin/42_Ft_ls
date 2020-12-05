@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/15 01:33:37 by hush              #+#    #+#             */
-/*   Updated: 2020/12/01 23:19:42 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/06 00:27:23 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ t_entry			*ls_entry_list_create(t_input *input, t_ls_order *order)
 	order->list_size = 0;
 	while ((dir_ent = readdir(order->dir)) != NULL)
 	{
+		// ft_printf("got one!\n");
 		if (ls_do_not_create(dir_ent->d_name, input))
 			continue ;
 		if (entry_list == NULL)
@@ -78,6 +79,37 @@ t_entry			*ls_entry_list_create(t_input *input, t_ls_order *order)
 		else
 			ls_entry_list_create_helper(&entry, &(entry->entry_next), dir_ent);
 		order->list_size++;
+	}
+	closedir(order->dir);
+	return (entry_list);
+}
+
+t_entry			*ls_entry_for_d(t_input *input, t_ls_order *order)
+{
+	t_entry		*entry_list;
+	t_entry		*entry;
+	t_dirent	*dir_ent;
+
+	ls_nullptr2(order, input);
+	entry_list = NULL;
+	entry = NULL;
+	if ((order->dir = opendir(order->name)) == NULL)
+	{
+		ls_order_error(order, E_LS_PERMISSION_DENIED);
+		return (ls_entry_nameonly(order->name));
+	}
+	order->list_size = 0;
+	// dir_ent = readdir(order->dir);
+	while (order->list_size < input->order_num + 1)
+	{
+	(dir_ent = readdir(order->dir));
+	if (ls_do_not_create(dir_ent->d_name, input))
+		return (NULL);
+	if (entry_list == NULL)
+		ls_entry_list_create_helper(&entry, &entry_list, dir_ent);
+	else
+		ls_entry_list_create_helper(&entry, &(entry->entry_next), dir_ent);
+	order->list_size++;
 	}
 	closedir(order->dir);
 	return (entry_list);

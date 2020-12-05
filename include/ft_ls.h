@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 19:32:02 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/05 17:27:48 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/06 00:00:45 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ typedef enum		e_show
 {
 	SHOW_VISIBLE,
 	SHOW_ALL,
-	SHOW_HIDDEN
+	SHOW_HIDDEN,
+	SHOW_DIR
 }					t_show;
 
 typedef enum		e_ls_attr
@@ -156,6 +157,7 @@ int					ls_print_long(t_entry **entries, t_input *input);
 t_ls_order			*ls_order_error(t_ls_order *order, int error);
 t_ls_order			*ls_order_create_rec(t_input *input, char *order_name);
 t_entry				*ls_entry_list_create(t_input *input, t_ls_order *order);
+t_entry				*ls_entry_for_d(t_input *input, t_ls_order *order);
 t_entry				*ls_entry_nameonly(char *name);
 t_ls_order			*ls_order_malloc(char *order_name);
 t_ls_order			*ls_order_list_create(t_input *input);

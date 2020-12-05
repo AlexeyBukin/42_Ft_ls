@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 17:38:26 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/02 01:37:36 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/05 22:37:06 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,12 @@ void				ls_order_create_rec_helper(t_entry *entry,
 {
 	while (entry != NULL)
 	{
-		if (ft_strcmp(entry->name, ".") != 0 &&
+		if ((*order)->error == E_LS_NO_SUCH_FILE)			// accuratno!
+		{
+			while ((*order)->next != NULL)
+				*order = (*order)->next;
+		}
+		else if (ft_strcmp(entry->name, ".") != 0 &&
 				ft_strcmp(entry->name, "..") != 0)
 		{
 			(*order)->next = ls_order_create_rec(input,

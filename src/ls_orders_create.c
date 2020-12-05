@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/02 00:21:00 by hinterfa          #+#    #+#             */
-/*   Updated: 2020/12/03 16:41:52 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/06 00:03:48 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,12 @@ t_ls_order			*ls_order_error(t_ls_order *order, int error)
 void				ls_order_create_helper(t_ls_order **order,
 						t_input *input, char *order_name)
 {
-	if (S_ISDIR((*order)->stat.st_mode))
+	if (input->cancel_rec)
+	{
+		(*order)->is_dir = TRUE;
+		(*order)->list = ls_entry_for_d(input, *order);
+	}
+	else if (S_ISDIR((*order)->stat.st_mode))
 	{
 		(*order)->is_dir = TRUE;
 		(*order)->list = ls_entry_list_create(input, *order);
@@ -76,7 +81,7 @@ t_ls_order			*ls_order_create(t_input *input, char *order_name)
 	order->error = E_LS_NONE;
 	if (lstat(order_name, &(order->stat)) != 0)
 	{
-		// ft_printf("got one!\n");
+		ft_printf("got one!\n");
 		if (errno == ENOENT)
 			return (ls_order_error(order, E_LS_NO_SUCH_FILE));
 		else if (errno == EACCES)
@@ -84,6 +89,7 @@ t_ls_order			*ls_order_create(t_input *input, char *order_name)
 		else
 			ls_unknown_error(errno);
 	}
+	// ft_printf("sho?!\n");
 	//
 	// if (!(order->stat.st_mode & S_IRUSR))
 	// 	return (ls_order_error(order, order->error));

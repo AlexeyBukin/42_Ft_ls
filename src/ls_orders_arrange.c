@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 16:23:08 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/04 19:23:57 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/05 20:13:00 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,6 @@ t_ls_order			*ls_order_list_arrange(t_ls_order *order_list)
 	order_list_tmp = NULL;
 	mono_files_list = NULL;
 	mono_files_tmp = NULL;
-	// ft_printf("%s\n", tmp->name);
 	while (tmp != NULL)
 	{
 		if (tmp->is_dir == FALSE)
@@ -129,7 +128,6 @@ t_ls_order			*ls_order_list_arrange(t_ls_order *order_list)
 			ls_order_list_arrange_list(&order_list, &order_list_tmp, &tmp);
 	}
 	mono_files_list = ls_monofiles_to_plain(mono_files_list);
-	// ft_printf("%s\n", mono_files_list->list->name);
 	if (mono_files_list != NULL)
 		mono_files_list->next = order_list;
 	else
@@ -153,16 +151,10 @@ t_ls_order			*ls_order_test_arrange(t_ls_order *order_list)
 	mono_files_tmp = NULL;
 	no_files_list = NULL;
 	no_files_tmp = NULL;
-	// ft_printf("%d\n", tmp->is_dir);
 	while (tmp != NULL)
 	{
-		// ft_printf("%d\n", tmp->is_dir);
 		if (tmp->error == E_LS_NO_SUCH_FILE)
-		{
-			// ft_printf("%d\n", tmp->is_dir);
 			ls_order_list_arrange_list(&no_files_list, &no_files_tmp, &tmp);
-			// ft_printf("%d\n", tmp->is_dir);
-		}
 		else if (tmp->is_dir == FALSE)
 			ls_order_list_arrange_list(&mono_files_list, &mono_files_tmp, &tmp);
 		else
@@ -170,12 +162,6 @@ t_ls_order			*ls_order_test_arrange(t_ls_order *order_list)
 	}
 	mono_files_list = ls_monofiles_to_plain(mono_files_list);
 	no_files_list = ls_nofiles_to_plain(no_files_list);
-	// ft_printf("%s\n", no_files_list->list->name);			//debug trash
-	// while (no_files_list->list)
-	// {
-	// 	ft_printf("%s\n", no_files_list->list->name);
-	// 	no_files_list->list = no_files_list->list->entry_next;
-	// }
 	if (mono_files_list != NULL)
 	{
 		mono_files_list->next = order_list;
