@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 16:23:08 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/05 20:13:00 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/06 16:50:19 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ t_ls_order			*ls_monofiles_to_plain(t_ls_order *mono_list)
 	if (mono_list == NULL)
 		return (NULL);
 	ls_nullptr(monofiles = ls_order_malloc(ft_strdup("monofiles")));
-	
 	monofiles_ent = NULL;
 	free_me = mono_list;
 	while (mono_list != NULL)
@@ -132,53 +131,5 @@ t_ls_order			*ls_order_list_arrange(t_ls_order *order_list)
 		mono_files_list->next = order_list;
 	else
 		mono_files_list = order_list;
-	return (mono_files_list);
-}
-
-t_ls_order			*ls_order_test_arrange(t_ls_order *order_list)
-{
-	t_ls_order		*mono_files_list;
-	t_ls_order		*mono_files_tmp;
-	t_ls_order		*order_list_tmp;
-	t_ls_order		*no_files_list;
-	t_ls_order		*no_files_tmp;
-	t_ls_order		*tmp;
-
-	tmp = order_list;
-	order_list = NULL;
-	order_list_tmp = NULL;
-	mono_files_list = NULL;
-	mono_files_tmp = NULL;
-	no_files_list = NULL;
-	no_files_tmp = NULL;
-	while (tmp != NULL)
-	{
-		if (tmp->error == E_LS_NO_SUCH_FILE)
-			ls_order_list_arrange_list(&no_files_list, &no_files_tmp, &tmp);
-		else if (tmp->is_dir == FALSE)
-			ls_order_list_arrange_list(&mono_files_list, &mono_files_tmp, &tmp);
-		else
-			ls_order_list_arrange_list(&order_list, &order_list_tmp, &tmp);
-	}
-	mono_files_list = ls_monofiles_to_plain(mono_files_list);
-	no_files_list = ls_nofiles_to_plain(no_files_list);
-	if (mono_files_list != NULL)
-	{
-		mono_files_list->next = order_list;
-		if (no_files_list != NULL)
-		{
-			no_files_list->next = mono_files_list;
-			return (no_files_list);
-		}
-	}
-	else
-	{
-		mono_files_list = order_list;
-		if (no_files_list != NULL)
-		{
-			no_files_list->next = mono_files_list;
-			return (no_files_list);
-		}
-	}
 	return (mono_files_list);
 }

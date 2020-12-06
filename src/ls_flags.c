@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 01:08:21 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/05 23:51:51 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/06 17:08:33 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,8 @@ static int			ls_enter_flag(char c, t_input *input)
 		input->time_sort = SORT_TIME_ACCESS;
 	else if (c == 'S')
 		input->size_sort = TRUE;
-	else if (c == 'd')
-	{
-		input->cancel_rec = TRUE;
-		input->show = SHOW_ALL;
-	}
+	else if (c == 'p')
+		input->show_slash = TRUE;
 	else if (ft_strchr("1", c) == NULL)
 		ls_illegal_option(c);
 	return (LS_OK);
@@ -80,7 +77,7 @@ void				ls_check_arg(char *arg, t_bool *flags_done, t_input *input)
 	ls_nullptr(input);
 	if (arg_is_double_dash(arg))
 		*flags_done = TRUE;
-	else if ((arg[0] != '-' || ft_strlen(arg) == 1) || *flags_done == TRUE)	//akkuratno!
+	else if ((arg[0] != '-' || ft_strlen(arg) == 1) || *flags_done == TRUE)
 	{
 		ls_add_order_name(input, arg);
 		*flags_done = TRUE;
@@ -107,16 +104,9 @@ void				ls_flags(int ac, char **av, t_input *input)
 	input->order_names[0] = NULL;
 	input->order_num = 0;
 	while ((int)++i < ac)
-	{
 		ls_check_arg(av[i], &flags_done, input);
-	}
 	if (input->size_sort == TRUE)
 		input->time_sort = SORT_TIME_NONE;
-	if (input->cancel_rec == TRUE)
-	{
-		input->rec = FALSE;
-		// input->show = SHOW_HIDDEN;
-	}
 	if (input->big_a == TRUE && input->show == SHOW_VISIBLE)
 		input->show = SHOW_HIDDEN;
 	if (input->order_num == 0)

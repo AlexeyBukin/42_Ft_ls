@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/02 00:08:45 by hinterfa          #+#    #+#             */
-/*   Updated: 2020/12/02 21:09:20 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/06 16:43:29 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int			entry_compare_alphabet(void *en_1_void, void *en_2_void)
 		return (0);
 	}
 	return (ft_strcmp(en_1->name, en_2->name));
-	// return (ft_cmp_low(en_1->name, en_2->name));		// ft_cmp_low??
 }
 
 int			entry_compare_time(void *en_1_void, void *en_2_void)

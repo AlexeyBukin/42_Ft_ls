@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 18:47:56 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/02 00:17:37 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/06 18:45:29 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,10 @@ void	ls_print_order_helper(t_entry *entry, t_ls_max *max_len,
 	bytes_str = ft_strf_width(entry->size_str, max_len->size, ' ', FALSE);
 	ownername = ft_strf_width(entry->owner, max_len->owner, ' ', TRUE);
 	groupname = ft_strf_width(entry->group, max_len->group, ' ', TRUE);
-	ft_printf("%s %s %s  %s  %s %s %s\n", str_rwx, links_str, ownername,
-					groupname, bytes_str, time_str, entry->name);
+	ft_printf("%s %s %s  %s  %s %s %s%s\n", str_rwx, links_str, ownername,
+					groupname, bytes_str, time_str, entry->name,
+					((entry->dirent.d_type == DT_DIR && input->show_slash)
+					? "/" : ""));
 	free(time_str);
 	free(links_str);
 	free(bytes_str);

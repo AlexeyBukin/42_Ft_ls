@@ -38,7 +38,7 @@ src/ls_errors.c                 src/ls_orders_fill_stat.c       src/ls_sort_comp
 src/ls_flags.c                  src/ls_print.c                  src/ls_sort_flags.c \
 src/ls_free.c                   src/ls_print_attributes.c       src/ls_sort_merge.c \
 src/ls_orders.c                 src/ls_print_list.c             src/main.c \
-src/ls_orders_arrange.c         src/ls_print_order.c
+src/ls_orders_arrange.c         src/ls_print_order.c			src/ls_nofiles.c
 
 SRC_FILES_LEN := $(words $(SRC_FILES))
 OBJ_FILES     := $(SRC_FILES:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

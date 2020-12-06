@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 19:32:02 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/06 00:00:45 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/06 18:50:01 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include <errno.h>
 # include "libft.h"
 
-# define LS_USAGE "usage: ls [-aAdlrRStu] [file ...]"
+# define LS_USAGE "usage: ls [-aAlprRStu] [file ...]"
 # define SIX_MONTH_IN_SECONDS 15552000
 # define RDLINK_BUF_SIZE 1023
 
@@ -68,7 +68,7 @@ typedef struct		s_input
 	t_bool			fancy;
 	time_t			time_now;
 	t_bool			size_sort;
-	t_bool			cancel_rec;
+	t_bool			show_slash;
 }					t_input;
 
 typedef struct		s_listable
@@ -135,7 +135,8 @@ typedef enum		e_param_res
 	PARAM_DOUBLE_DASH
 }					t_param_res;
 
-void				print_plain_helper(t_ls_order *order_list, t_entry **entry);
+void				print_plain_helper(t_ls_order *order_list, t_entry **entry,
+								t_input *input);
 void				ls_print_order(t_ls_order *order, t_input *input,
 					t_bool is_first, char *str_rwx);
 
@@ -168,8 +169,6 @@ t_ls_order			*ls_order_create(t_input *input, char *order_name);
 */
 
 t_ls_order			*ls_monofiles_to_plain(t_ls_order *mono_list);
-
-t_ls_order			*ls_order_test_arrange(t_ls_order *order_list);
 
 t_ls_order			*ls_order_list_arrange(t_ls_order *order_list);
 
@@ -223,8 +222,6 @@ void				free_entry_list(t_entry *e_list, t_bool flag_list);
 ** ls_errors.c, error management
 */
 
-int 				ft_cmp_low(const char *s1, const char *s2);
-
 void				ls_unknown_error(int err_id);
 void				ls_illegal_option(char c);
 void				ls_nullptr(const void *ptr);
@@ -242,4 +239,6 @@ void				ls_print_order_helper(t_entry *entry, t_ls_max *max_len,
 									t_input *input, char *str_rwx);
 void				ls_print_order_entry_helper(t_entry *entry,
 									t_ls_max *max_len, size_t *dirsize);
+t_ls_order			*nofile_handler(t_ls_order *order_list);
+
 #endif
