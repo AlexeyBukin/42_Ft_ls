@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 19:49:26 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/06 16:48:06 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/07 15:15:59 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int			order_compare_alphabet(void *order_1_void, void *order_2_void)
 			return (1);
 		return (0);
 	}
-	return (ft_strcmp(order_1->name, order_2->name));
+	return (test_strcmp(order_1->name, order_2->name));
 }
 
 int			order_compare_time(void *order_1_void, void *order_2_void)

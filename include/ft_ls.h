@@ -6,7 +6,7 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 19:32:02 by kcharla           #+#    #+#             */
-/*   Updated: 2020/12/06 18:50:01 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/07 15:15:50 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,5 +240,7 @@ void				ls_print_order_helper(t_entry *entry, t_ls_max *max_len,
 void				ls_print_order_entry_helper(t_entry *entry,
 									t_ls_max *max_len, size_t *dirsize);
 t_ls_order			*nofile_handler(t_ls_order *order_list);
+
+int					test_strcmp(const char *s1, const char *s2);
 
 #endif

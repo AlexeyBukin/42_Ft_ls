@@ -6,11 +6,35 @@
 /*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/02 00:08:45 by hinterfa          #+#    #+#             */
-/*   Updated: 2020/12/06 16:43:29 by hinterfa         ###   ########.fr       */
+/*   Updated: 2020/12/07 16:51:11 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
+int			test_strcmp(const char *s1, const char *s2)
+{
+	size_t		i;
+	t_byte		*t1;
+	t_byte		*t2;
+
+	i = 0;
+	t1 = (t_byte*)s1;
+	t2 = (t_byte*)s2;
+	while (t1[i] != (t_byte)'\0')
+	{
+		if (t1[i] != t2[i])
+		{
+			if (t1[i] == '/')
+				return (-1);
+			else if (t2[i] == '/')
+				return (1);
+			return (t1[i] - t2[i]);
+		}
+		i++;
+	}
+	return (t1[i] - t2[i]);
+}
 
 int			entry_compare_alphabet(void *en_1_void, void *en_2_void)
 {
