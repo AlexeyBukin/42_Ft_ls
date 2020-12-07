@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_abs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/16 18:49:38 by kcharla           #+#    #+#             */
-/*   Updated: 2020/03/06 03:10:00 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/11/30 23:22:24 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ long long int	ft_absl(long long int a)
 	return (a);
 }
 
-double          ft_absd(double a)
+double			ft_absd(double a)
 {
-    if (a < 0)
-        return (a * (-1));
-    return (a);
+	if (a < 0)
+		return (a * (-1));
+	return (a);
 }

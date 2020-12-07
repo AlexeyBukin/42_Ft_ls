@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/13 20:20:34 by kcharla           #+#    #+#             */
-/*   Updated: 2020/10/15 16:12:54 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/11/30 23:20:53 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ char	*ft_strjoin_3(const char *s1, const char *s2, const char *s3)
 
 	if (s1 == NULL || s2 == NULL || s3 == NULL)
 		return (NULL);
-	res = (char*)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + ft_strlen(s3) + 1));
+	res = (char*)malloc(sizeof(char) * (ft_strlen(s1)
+	+ ft_strlen(s2) + ft_strlen(s3) + 1));
 	if (res == NULL)
 	{
 		return (NULL);

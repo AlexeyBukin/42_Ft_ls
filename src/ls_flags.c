@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ls_get_flags.c                                     :+:      :+:    :+:   */
+/*   ls_flags.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hinterfa <hinterfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 01:08:21 by kcharla           #+#    #+#             */
-/*   Updated: 2020/08/28 06:51:33 by u18600003        ###   ########.fr       */
+/*   Updated: 2020/12/06 17:08:33 by hinterfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-static
-void				ls_add_order_name(t_input *input, char *order_name)
+static void			ls_add_order_name(t_input *input, char *order_name)
 {
 	char		**new_arr;
 	size_t		i;
@@ -21,7 +20,7 @@ void				ls_add_order_name(t_input *input, char *order_name)
 	ls_nullptr(order_name);
 	ls_nullptr(input);
 	i = input->order_num;
-	ls_nullptr((new_arr = (char**)malloc(sizeof(char*) * (i + 1)  )));
+	ls_nullptr((new_arr = (char**)malloc(sizeof(char*) * (i + 1))));
 	i = 0;
 	while (i < input->order_num)
 	{
@@ -34,8 +33,7 @@ void				ls_add_order_name(t_input *input, char *order_name)
 	input->order_num++;
 }
 
-static
-int					ls_enter_flag(char c, t_input *input)
+static int			ls_enter_flag(char c, t_input *input)
 {
 	ls_nullptr(input);
 	if (c == 'R')
@@ -43,7 +41,7 @@ int					ls_enter_flag(char c, t_input *input)
 	else if (c == 'a')
 		input->show = SHOW_ALL;
 	else if (c == 'A')
-		input->show = SHOW_HIDDEN;
+		input->big_a = TRUE;
 	else if (c == 'l')
 		input->list = TRUE;
 	else if (c == 'r')
@@ -52,13 +50,16 @@ int					ls_enter_flag(char c, t_input *input)
 		input->time_sort = SORT_TIME_MOD;
 	else if (c == 'u')
 		input->time_sort = SORT_TIME_ACCESS;
-	else if (ft_strchr("1gf\\", c) == NULL)
+	else if (c == 'S')
+		input->size_sort = TRUE;
+	else if (c == 'p')
+		input->show_slash = TRUE;
+	else if (ft_strchr("1", c) == NULL)
 		ls_illegal_option(c);
 	return (LS_OK);
 }
 
-static
-t_bool				arg_is_double_dash(char *arg)
+static t_bool		arg_is_double_dash(char *arg)
 {
 	if (arg[0] == '-')
 		if (arg[1] == '-')
@@ -67,7 +68,7 @@ t_bool				arg_is_double_dash(char *arg)
 	return (FALSE);
 }
 
-void		ls_check_arg(char *arg, t_bool *flags_done, t_input *input)
+void				ls_check_arg(char *arg, t_bool *flags_done, t_input *input)
 {
 	size_t		j;
 
@@ -76,8 +77,11 @@ void		ls_check_arg(char *arg, t_bool *flags_done, t_input *input)
 	ls_nullptr(input);
 	if (arg_is_double_dash(arg))
 		*flags_done = TRUE;
-	else if (arg[0] != '-' || *flags_done == TRUE)
+	else if ((arg[0] != '-' || ft_strlen(arg) == 1) || *flags_done == TRUE)
+	{
 		ls_add_order_name(input, arg);
+		*flags_done = TRUE;
+	}
 	else
 	{
 		j = 1;
@@ -100,12 +104,12 @@ void				ls_flags(int ac, char **av, t_input *input)
 	input->order_names[0] = NULL;
 	input->order_num = 0;
 	while ((int)++i < ac)
-	{
 		ls_check_arg(av[i], &flags_done, input);
-	}
+	if (input->size_sort == TRUE)
+		input->time_sort = SORT_TIME_NONE;
+	if (input->big_a == TRUE && input->show == SHOW_VISIBLE)
+		input->show = SHOW_HIDDEN;
 	if (input->order_num == 0)
-	{
 		ls_add_order_name(input, ".");
-	}
 	input->time_now = time(NULL);
 }
